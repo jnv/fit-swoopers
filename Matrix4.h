@@ -25,6 +25,8 @@ public:
     /// copy from array
     Matrix4(const T * f);
 
+    static const Matrix4 FromFlatArray(const T *);
+
     /// \name Math operators
     /// @{
 
@@ -108,8 +110,17 @@ public:
     operator const T*() const;
     /// @}
 
+    const T * operator[](int i) const
+    {
+        return m[i];
+    }
+
     /// print matrix
     void dump()const;
+
+    Matrix4 inverse()const;
+
+    T* toFlatArray()const;
 
 private:
     T m[4][4];
@@ -289,6 +300,21 @@ void Matrix4<T>::rotate(T a, const Vec3<T>& av)
 }
 
 template<class T>
+const Matrix4<T> Matrix4<T>::FromFlatArray(const T* ar)
+{
+    Matrix4<T> ret;
+
+    for (unsigned short j = 0; j < 4; j++)
+    {
+        for (unsigned short i = 0; i < 4; i++)
+        {
+            ret.m[i][j] = ar[j + 4 * i];
+        }
+    }
+    return ret;
+}
+
+template<class T>
 Vec3<T> Matrix4<T>::operator*(const Vec3<T>& v) const
 {
     Vec3<T> o;
@@ -367,5 +393,217 @@ void Matrix4<T>::dump()const
         std::cout << std::endl;
     }
 }
+
+/*
+ * Ripped straight out of GLM
+ * http://glm.g-truc.net/
+ *
+template<class T>
+T Matrix4<T>::inverse()const
+{
+
+    // Calculate all mat2 determinants
+    T SubFactor00 = m[2][2] * m[3][3] - m[3][2] * m[2][3];
+    T SubFactor01 = m[2][1] * m[3][3] - m[3][1] * m[2][3];
+    T SubFactor02 = m[2][1] * m[3][2] - m[3][1] * m[2][2];
+    T SubFactor03 = m[2][0] * m[3][3] - m[3][0] * m[2][3];
+    T SubFactor04 = m[2][0] * m[3][2] - m[3][0] * m[2][2];
+    T SubFactor05 = m[2][0] * m[3][1] - m[3][0] * m[2][1];
+    T SubFactor06 = m[1][2] * m[3][3] - m[3][2] * m[1][3];
+    T SubFactor07 = m[1][1] * m[3][3] - m[3][1] * m[1][3];
+    T SubFactor08 = m[1][1] * m[3][2] - m[3][1] * m[1][2];
+    T SubFactor09 = m[1][0] * m[3][3] - m[3][0] * m[1][3];
+    T SubFactor10 = m[1][0] * m[3][2] - m[3][0] * m[1][2];
+    T SubFactor11 = m[1][1] * m[3][3] - m[3][1] * m[1][3];
+    T SubFactor12 = m[1][0] * m[3][1] - m[3][0] * m[1][1];
+    T SubFactor13 = m[1][2] * m[2][3] - m[2][2] * m[1][3];
+    T SubFactor14 = m[1][1] * m[2][3] - m[2][1] * m[1][3];
+    T SubFactor15 = m[1][1] * m[2][2] - m[2][1] * m[1][2];
+    T SubFactor16 = m[1][0] * m[2][3] - m[2][0] * m[1][3];
+    T SubFactor17 = m[1][0] * m[2][2] - m[2][0] * m[1][2];
+    T SubFactor18 = m[1][0] * m[2][1] - m[2][0] * m[1][1];
+
+    T invar[4][4] = {
+        +m[1][1] * SubFactor00 - m[1][2] * SubFactor01 + m[1][3] * SubFactor02,
+        -m[1][0] * SubFactor00 + m[1][2] * SubFactor03 - m[1][3] * SubFactor04,
+        +m[1][0] * SubFactor01 - m[1][1] * SubFactor03 + m[1][3] * SubFactor05,
+        -m[1][0] * SubFactor02 + m[1][1] * SubFactor04 - m[1][2] * SubFactor05,
+
+        -m[0][1] * SubFactor00 + m[0][2] * SubFactor01 - m[0][3] * SubFactor02,
+        +m[0][0] * SubFactor00 - m[0][2] * SubFactor03 + m[0][3] * SubFactor04,
+        -m[0][0] * SubFactor01 + m[0][1] * SubFactor03 - m[0][3] * SubFactor05,
+        +m[0][0] * SubFactor02 - m[0][1] * SubFactor04 + m[0][2] * SubFactor05,
+
+        +m[0][1] * SubFactor06 - m[0][2] * SubFactor07 + m[0][3] * SubFactor08,
+        -m[0][0] * SubFactor06 + m[0][2] * SubFactor09 - m[0][3] * SubFactor10,
+        +m[0][0] * SubFactor11 - m[0][1] * SubFactor09 + m[0][3] * SubFactor12,
+        -m[0][0] * SubFactor08 + m[0][1] * SubFactor10 - m[0][2] * SubFactor12,
+
+        -m[0][1] * SubFactor13 + m[0][2] * SubFactor14 - m[0][3] * SubFactor15,
+        +m[0][0] * SubFactor13 - m[0][2] * SubFactor16 + m[0][3] * SubFactor17,
+        -m[0][0] * SubFactor14 + m[0][1] * SubFactor16 - m[0][3] * SubFactor18,
+        +m[0][0] * SubFactor15 - m[0][1] * SubFactor17 + m[0][2] * SubFactor18
+    };
+
+
+
+    T Determinant =
+            + m[0][0] * invar[0][0]
+            + m[0][1] * invar[1][0]
+            + m[0][2] * invar[2][0]
+            + m[0][3] * invar[3][0];
+
+    Inverse /= Determinant;
+    return Inverse;
+}*/
+
+template<class T>
+T* Matrix4<T>::toFlatArray()const
+{
+    T ret[16];
+    for (unsigned short j = 0; j < 4; j++)
+    {
+        for (unsigned short i = 0; i < 4; i++)
+        {
+            ret[i + 4 * j] = m[i][j];
+        }
+    }
+    return ret;
+}
+
+/**
+ * Ripped from Toxiclibs
+ * http://hg.postspectacular.com/toxiclibs/wiki/Home
+ * @return Matrix4 Inverted matrix
+ */
+template<class T>
+Matrix4<T> Matrix4<T>::inverse()const
+{
+    T tmp[12];
+    T dst[16];
+    T src[16];
+    //    T* flat = toFlatArray();
+
+    for (unsigned short j = 0; j < 4; j++)
+    {
+        for (unsigned short i = 0; i < 4; i++)
+        {
+            src[j + 4 * i] = m[i][j];
+        }
+    }
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        int i4 = i << 2;
+    //        src[i] = flat[i4];
+    //        src[i + 4] = flat[i4 + 1];
+    //        src[i + 8] = flat[i4 + 2];
+    //        src[i + 12] = flat[i4 + 3];
+    //    }
+
+    // calculate pairs for first 8 elements (cofactors)
+    tmp[0] = src[10] * src[15];
+    tmp[1] = src[11] * src[14];
+    tmp[2] = src[9] * src[15];
+    tmp[3] = src[11] * src[13];
+    tmp[4] = src[9] * src[14];
+    tmp[5] = src[10] * src[13];
+    tmp[6] = src[8] * src[15];
+    tmp[7] = src[11] * src[12];
+    tmp[8] = src[8] * src[14];
+    tmp[9] = src[10] * src[12];
+    tmp[10] = src[8] * src[13];
+    tmp[11] = src[9] * src[12];
+
+    // calculate first 8 elements (cofactors)
+    double src0 = src[0];
+    double src1 = src[1];
+    double src2 = src[2];
+    double src3 = src[3];
+    double src4 = src[4];
+    double src5 = src[5];
+    double src6 = src[6];
+    double src7 = src[7];
+    dst[0] = tmp[0] * src5 + tmp[3] * src6 + tmp[4] * src7;
+    dst[0] -= tmp[1] * src5 + tmp[2] * src6 + tmp[5] * src7;
+    dst[1] = tmp[1] * src4 + tmp[6] * src6 + tmp[9] * src7;
+    dst[1] -= tmp[0] * src4 + tmp[7] * src6 + tmp[8] * src7;
+    dst[2] = tmp[2] * src4 + tmp[7] * src5 + tmp[10] * src7;
+    dst[2] -= tmp[3] * src4 + tmp[6] * src5 + tmp[11] * src7;
+    dst[3] = tmp[5] * src4 + tmp[8] * src5 + tmp[11] * src6;
+    dst[3] -= tmp[4] * src4 + tmp[9] * src5 + tmp[10] * src6;
+    dst[4] = tmp[1] * src1 + tmp[2] * src2 + tmp[5] * src3;
+    dst[4] -= tmp[0] * src1 + tmp[3] * src2 + tmp[4] * src3;
+    dst[5] = tmp[0] * src0 + tmp[7] * src2 + tmp[8] * src3;
+    dst[5] -= tmp[1] * src0 + tmp[6] * src2 + tmp[9] * src3;
+    dst[6] = tmp[3] * src0 + tmp[6] * src1 + tmp[11] * src3;
+    dst[6] -= tmp[2] * src0 + tmp[7] * src1 + tmp[10] * src3;
+    dst[7] = tmp[4] * src0 + tmp[9] * src1 + tmp[10] * src2;
+    dst[7] -= tmp[5] * src0 + tmp[8] * src1 + tmp[11] * src2;
+
+    // calculate pairs for second 8 elements (cofactors)
+    tmp[0] = src2 * src7;
+    tmp[1] = src3 * src6;
+    tmp[2] = src1 * src7;
+    tmp[3] = src3 * src5;
+    tmp[4] = src1 * src6;
+    tmp[5] = src2 * src5;
+    tmp[6] = src0 * src7;
+    tmp[7] = src3 * src4;
+    tmp[8] = src0 * src6;
+    tmp[9] = src2 * src4;
+    tmp[10] = src0 * src5;
+    tmp[11] = src1 * src4;
+
+    // calculate second 8 elements (cofactors)
+    src0 = src[8];
+    src1 = src[9];
+    src2 = src[10];
+    src3 = src[11];
+    src4 = src[12];
+    src5 = src[13];
+    src6 = src[14];
+    src7 = src[15];
+    dst[8] = tmp[0] * src5 + tmp[3] * src6 + tmp[4] * src7;
+    dst[8] -= tmp[1] * src5 + tmp[2] * src6 + tmp[5] * src7;
+    dst[9] = tmp[1] * src4 + tmp[6] * src6 + tmp[9] * src7;
+    dst[9] -= tmp[0] * src4 + tmp[7] * src6 + tmp[8] * src7;
+    dst[10] = tmp[2] * src4 + tmp[7] * src5 + tmp[10] * src7;
+    dst[10] -= tmp[3] * src4 + tmp[6] * src5 + tmp[11] * src7;
+    dst[11] = tmp[5] * src4 + tmp[8] * src5 + tmp[11] * src6;
+    dst[11] -= tmp[4] * src4 + tmp[9] * src5 + tmp[10] * src6;
+    dst[12] = tmp[2] * src2 + tmp[5] * src3 + tmp[1] * src1;
+    dst[12] -= tmp[4] * src3 + tmp[0] * src1 + tmp[3] * src2;
+    dst[13] = tmp[8] * src3 + tmp[0] * src0 + tmp[7] * src2;
+    dst[13] -= tmp[6] * src2 + tmp[9] * src3 + tmp[1] * src0;
+    dst[14] = tmp[6] * src1 + tmp[11] * src3 + tmp[3] * src0;
+    dst[14] -= tmp[10] * src3 + tmp[2] * src0 + tmp[7] * src1;
+    dst[15] = tmp[10] * src2 + tmp[4] * src0 + tmp[9] * src1;
+    dst[15] -= tmp[8] * src1 + tmp[11] * src2 + tmp[5] * src0;
+
+    T det = 1.0 / (src[0] * dst[0] + src[1] * dst[1] + src[2] * dst[2] + src[3]
+            * dst[3]);
+
+    //    for (int i = 0, k = 0; i < 4; i++)
+    //    {
+    //        double[] m = matrix[i];
+    //        for (int j = 0; j < 4; j++)
+    //        {
+    //            m[j] = dst[k++] * det;
+    //        }
+    //    }
+
+    Matrix4<T> out;
+    for (unsigned short j = 0; j < 4; j++)
+    {
+        for (unsigned short i = 0; i < 4; i++)
+        {
+            out.m[i][j] = dst[j + 4 * i] * det;
+        }
+    }
+
+    return Matrix4<T > (out);
+}
+
+
 
 #endif // _MATRIX4_H
