@@ -273,7 +273,7 @@ TerrainNode::load(const char *baseFilename)
     return false; // ok
 }
 
-void TerrainNode::draw(const SceneParams * scene_params)
+void TerrainNode::draw(SceneParams * scene_params)
 {
     // inherited draw - draws all children
     SceneNode::draw(scene_params);

@@ -12,7 +12,7 @@ public:
   ~PyramidNode() {}
 
   /// reimplemented draw
-  void draw(const SceneParams * scene_params);
+  void draw(SceneParams * scene_params);
 
 protected:
   /// identifier for the buffer object

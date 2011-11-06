@@ -19,7 +19,7 @@ public:
     ~CameraManager();
 
     void nextCamera();
-    bool isCurrent(SceneNode*);
+    bool isCurrent(SceneNode*) const;
     void addCamera(SceneNode*);
     void sceneUpdate(SceneNode*);
     void setSceneParams(SceneParams * scene_params)
@@ -30,6 +30,8 @@ public:
     {
         return m_scene_params;
     }
+    void translate(const Vec3f& tr);
+    void rotate(const float, const Vec3f&);
 
 protected:
     Cameras m_cameras;

@@ -26,6 +26,11 @@ void TransformNode::scale(const Vec3f &sc)
     m_local_mat.scale(sc);
 }
 
+void TransformNode::invert()
+{
+    m_local_mat = m_local_mat.inverse();
+}
+
 void TransformNode::debug() const
 {
     m_local_mat.dump();

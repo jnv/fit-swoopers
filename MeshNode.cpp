@@ -112,7 +112,7 @@ bool MeshNode::loadMesh()
   return true;
 }
 
-void MeshNode::draw(const SceneParams * scene_params)
+void MeshNode::draw(SceneParams * scene_params)
 {
   // inherited draw - draws all children
   SceneNode::draw(scene_params);

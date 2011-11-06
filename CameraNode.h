@@ -17,7 +17,8 @@ public:
     CameraNode(const char* name = "camera", SceneNode* parent = NULL);
     ~CameraNode();
 
-    void update(double elapsed_time);
+//    void update(double elapsed_time);
+    void draw(SceneParams * scene_params);
 protected:
     CameraManager * m_camera_manager;
 

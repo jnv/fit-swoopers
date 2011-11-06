@@ -15,7 +15,7 @@ public:
     bool loadMesh();
 
     /// reimplemented draw
-    void draw(const SceneParams * scene_params);
+    void draw(SceneParams * scene_params);
 
     /// prints the size of the geometry box without transformation
     void printBBoxSize();

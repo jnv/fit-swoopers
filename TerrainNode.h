@@ -19,7 +19,7 @@ public:
     int load(const char * filename);
 
     /// reimplemented draw
-    void draw(const SceneParams * scene_params);
+    void draw(SceneParams * scene_params);
 
 protected:
     /// identifier for the program

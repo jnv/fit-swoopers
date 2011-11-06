@@ -139,7 +139,7 @@ PyramidNode::PyramidNode(const char * name, SceneNode * parent):
   }
 }
 
-void PyramidNode::draw(const SceneParams * scene_params)
+void PyramidNode::draw(SceneParams * scene_params)
 {
   // inherited draw - draws all children
   SceneNode::draw(scene_params);

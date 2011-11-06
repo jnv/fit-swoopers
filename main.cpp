@@ -84,7 +84,14 @@ void InitializeScene()
     MeshNode * car = new MeshNode("data/bronco.obj", ctrans);
     car->loadMesh();
     car->printBBoxSize();
-    CameraNode * cam_car = new CameraNode("cam_car", car);
+    TransformNode * cam_car_trans = new TransformNode("cam-car-trans", root_node);
+    cam_car_trans->invert();
+    cam_car_trans->translate(Vec3f(1.0, -0.53, -5.4));
+    cam_car_trans->rotate(0.18, Vec3f(1.0, 0.0, 0));
+//    cam_car_trans->rotate(-1.1, Vec3f(0.0, 1.0, 0));
+    cam_car_trans->rotate(0.02, Vec3f(1.0, 0.0, 1.0));
+//    cam_car_trans->scale(Vec3f(0.5, 0.5, 0.5));
+    CameraNode * cam_car = new CameraNode("cam_car", cam_car_trans);
 
 #if 0
     // the replacement for the left reflector by pyramid
@@ -199,13 +206,16 @@ void init()
 
 void mySpecialKeyboard(int specKey, int x, int y)
 {
+    CameraManager * cman = CameraManager::getInstance();
+
     switch(specKey)
     {
     case GLUT_KEY_UP:
-	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0, 0.1)) * scene_params.view_mat;
+	cman->translate(Vec3f(0, 0, -1));
 	break;
     case GLUT_KEY_DOWN:
-	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0, -0.1)) * scene_params.view_mat;
+	cman->translate(Vec3f(0, 0, 1));
+//	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0, -0.1)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F11:
 	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
@@ -220,24 +230,25 @@ void mySpecialKeyboard(int specKey, int x, int y)
 	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(-0.1, 0, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_LEFT:
-	scene_params.view_mat.rotate(-0.1, Vec3f(0, 1, 0));
+	cman->rotate(-0.1, Vec3f(0, 1, 0));
 	break;
     case GLUT_KEY_RIGHT:
-	scene_params.view_mat.rotate(0.1, Vec3f(0, 1, 0));
+	cman->rotate(0.1, Vec3f(0, 1, 0));
 	break;
     case GLUT_KEY_PAGE_UP:
-	scene_params.view_mat.rotate(0.1, Vec3f(0, 0, 1));
+	cman->translate(Vec3f(0, 1, 0));
 	break;
     case GLUT_KEY_PAGE_DOWN:
-	scene_params.view_mat.rotate(-0.1, Vec3f(0, 0, 1));
+	cman->translate(Vec3f(0, -1, 0));
 	break;
     case GLUT_KEY_HOME:
-	scene_params.view_mat.rotate(0.1, Vec3f(1, 0, 0));
+	cman->rotate(0.1, Vec3f(1, 0, 0));
 	break;
     case GLUT_KEY_END:
-	scene_params.view_mat.rotate(-0.1, Vec3f(1, 0, 0));
+	cman->rotate(-0.1, Vec3f(1, 0, 0));
 	break;
     }
+    scene_params.view_mat.dump();
 }
 
 /*

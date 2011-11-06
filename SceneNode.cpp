@@ -38,7 +38,7 @@ void SceneNode::update(double elapsed_time)
   }
 }
 
-void SceneNode::draw(const SceneParams * scene_params)
+void SceneNode::draw(SceneParams * scene_params)
 {
   for(Children::iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
@@ -93,7 +93,7 @@ void SceneNode::dump(unsigned indent)
 
   // print name
   std::cout << ind << "- " << nodeName() << std::endl;
-  m_local_mat.dump();
+  m_global_mat.dump();
 
   // dump all children, raise indentation
   for(Children::iterator it = m_children.begin(); it != m_children.end(); ++it)

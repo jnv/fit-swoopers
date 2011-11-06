@@ -59,6 +59,8 @@ public:
     /// returns identity matrix
     static const Matrix4 Identity();
 
+    static const Matrix4 Viewpoint();
+
     /// generates new translation matrix from tr
     static const Matrix4 FromTranslation(const Vec3<T>& tr);
     /// generates new scale matrix from sc
@@ -118,7 +120,8 @@ public:
     /// print matrix
     void dump()const;
 
-    Matrix4 inverse()const;
+    //Matrix4 inverse()const;
+    Matrix4<T> inverse()const;
 
     T* toFlatArray()const;
 
@@ -181,6 +184,21 @@ const Matrix4<T> Matrix4<T>::Zeros()
         ret.m[j][2] = 0;
         ret.m[j][3] = 0;
     }
+    return ret;
+}
+
+template<class T>
+const Matrix4<T> Matrix4<T>::Viewpoint()
+{
+    Matrix4<T> ret;
+    for (unsigned short j = 0; j < 4; j++)
+    {
+        ret.m[j][0] = 0;
+        ret.m[j][1] = 0;
+        ret.m[j][2] = 0;
+        ret.m[j][3] = 0;
+    }
+    ret.m[3][3] = 1;
     return ret;
 }
 
@@ -601,7 +619,7 @@ Matrix4<T> Matrix4<T>::inverse()const
         }
     }
 
-    return Matrix4<T > (out);
+    return out;
 }
 
 

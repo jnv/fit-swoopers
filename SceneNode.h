@@ -26,7 +26,7 @@ public:
     virtual void update(double elapsed_time);
 
     /// calls draw on child nodes
-    virtual void draw(const SceneParams * scene_params);
+    virtual void draw(SceneParams * scene_params);
 
     const SceneNode* parentNode() const
     {
@@ -65,6 +65,12 @@ public:
     const Matrix4f & localMatrix() const
     {
         return m_local_mat;
+    }
+
+    //XXX Proof-of-concept hack
+    void setLocalMatrix(Matrix4f matrix)
+    {
+        m_local_mat = matrix;
     }
 
     /// dumps the node + subtree to stdout (you can reimplement this to display additional stuff)
