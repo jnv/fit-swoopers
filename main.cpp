@@ -1,5 +1,4 @@
 // BI-PGR, 2011, put together by Vlastimil Havran and Tomas Barak
-// SRC6
 #include <string>
 #include <vector>
 #include <cstdio>
@@ -9,6 +8,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
+#include "global.h"
 #include "Matrix4.h"
 #include "util.h"
 #include "PyramidNode.h"
