@@ -9,13 +9,15 @@
 #define	CAMERANODE_H
 
 #include "SceneNode.h"
+#include "CameraManager.h"
 
 class CameraNode : public SceneNode
 {
 public:
-    CameraNode(const char* name = "<unk>", SceneNode* parent = NULL);
-    CameraNode(const CameraNode& orig);
-    virtual ~CameraNode();
+    CameraNode(const char* name = "camera", SceneNode* parent = NULL);
+    ~CameraNode();
+
+    void update(double elapsed_time);
 private:
 
 };

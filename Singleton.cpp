@@ -1,0 +1,1 @@
+//Nothing here, Singleton is template-only

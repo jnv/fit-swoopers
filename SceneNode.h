@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "Matrix4.h"
 #include "SceneParams.h"

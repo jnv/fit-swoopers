@@ -17,6 +17,8 @@
 #include "TerrainNode.h"
 #include "MeshNode.h"
 #include "SceneParams.h"
+#include "CameraManager.h"
+#include "CameraNode.h"
 
 #ifndef M_PI
 #define M_PI 3.14159f
@@ -55,6 +57,8 @@ void InitializeScene()
 {
   scene_params.view_mat = Matrix4f::Identity();
   scene_params.projection_mat = Matrix4f::Perspective(M_PI / 4, aspect_ratio, 0.1f, 100);
+
+  CameraManager::getInstance()->setSceneParams(&scene_params);
 
   // create scene root node
   root_node = new SceneNode("root");
@@ -237,7 +241,7 @@ int main(int argc, char** argv)
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
   // initial window size
   glutInitWindowSize(800, 600);
-  glutCreateWindow("05-rot-autorepeat");
+  glutCreateWindow("Swoopers");
 
   // Not used at the moment
   //glutIdleFunc(&update_function);
