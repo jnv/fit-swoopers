@@ -21,12 +21,18 @@ CameraManager::~CameraManager()
  */
 void CameraManager::nextCamera()
 {
+    if(m_cameras.empty())
+    {
+	std::cerr << "No CameraNode was added to manager" << endl;
+	return;
+    }
+
     try
     {
 	++m_current_pos;
 	m_current = m_cameras.at(m_current_pos);
     }
-    catch(std::out_of_range& oor)
+    catch(out_of_range& oor)
     {
 	std::clog << "CameraManager.nextCamera To front: " << oor.what() << endl;
 	m_current = m_cameras.front();
@@ -61,4 +67,12 @@ void CameraManager::addCamera(SceneNode* camera)
 bool CameraManager::isCurrent(SceneNode* camera)
 {
     return(m_current == camera);
+}
+
+void CameraManager::sceneUpdate(SceneNode* camera)
+{
+    if(!isCurrent(camera))
+	return;
+
+    //m_scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
 }

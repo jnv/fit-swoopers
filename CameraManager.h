@@ -21,6 +21,7 @@ public:
     void nextCamera();
     bool isCurrent(SceneNode*);
     void addCamera(SceneNode*);
+    void sceneUpdate(SceneNode*);
     void setSceneParams(SceneParams * scene_params)
     {
         m_scene_params = scene_params;
