@@ -11,8 +11,8 @@ CameraNode::CameraNode(const char* name, SceneNode* parent) :
 SceneNode(name, parent)
 {
 
-    CameraManager * manager = CameraManager::getInstance();
-    manager->addCamera(this);
+    m_camera_manager = CameraManager::getInstance();
+    m_camera_manager->addCamera(this);
 }
 
 CameraNode::~CameraNode()
@@ -21,8 +21,7 @@ CameraNode::~CameraNode()
 
 void CameraNode::update(double elapsed_time)
 {
-    //if active camera in camera manager
-    //m_global_mat = inversion of parent's global matrix;
+    m_camera_manager->sceneUpdate(this);
 
     //SceneNode::update(elapsed_time);
 }

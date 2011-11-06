@@ -18,7 +18,8 @@ public:
     ~CameraNode();
 
     void update(double elapsed_time);
-private:
+protected:
+    CameraManager * m_camera_manager;
 
 };
 

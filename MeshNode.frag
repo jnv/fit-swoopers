@@ -12,7 +12,7 @@ out vec4 outputColor;
 void main()
 {
   float k = 1;
-  vec3 L = normalize(thePosition);
+  vec3 L = normalize(-thePosition);
   vec3 N = normalize(theNormal);
   outputColor = theColor * dot(N, L);
 }

@@ -93,6 +93,7 @@ void SceneNode::dump(unsigned indent)
 
   // print name
   std::cout << ind << "- " << nodeName() << std::endl;
+  m_local_mat.dump();
 
   // dump all children, raise indentation
   for(Children::iterator it = m_children.begin(); it != m_children.end(); ++it)
