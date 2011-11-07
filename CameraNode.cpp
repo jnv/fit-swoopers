@@ -26,20 +26,23 @@ CameraNode::~CameraNode()
 //    //SceneNode::update(elapsed_time);
 //}
 
+
 void CameraNode::draw(SceneParams * scene_params)
 {
-    if(m_camera_manager->isCurrent(this))
-    {
-	glm::mat4 global = globalMatrix();
-
-	glm::mat4 view = scene_params->view_mat;
-
-	glm::mat4 coor = global * view;
-//	coor.dump();
-
-	//scene_params->view_mat = globalMatrix();
-	scene_params->view_mat = global;
-	//	scene_params->projection_mat = newm.inverse();
-    }
+//    if(m_camera_manager->isCurrent(this))
+//    {
+//	glm::mat4 global = globalMatrix();
+//	glm::mat4 local = localMatrix();
+//
+//	glm::mat4 view = scene_params->view_mat;
+//
+//	glm::mat4 coor = global * view;
+////	coor.dump();
+//
+//	//scene_params->view_mat = globalMatrix();
+//	//scene_params->view_mat = glm::inverseTranspose(global);
+//	scene_params->view_mat = global;// * glm::inverseTranspose(view);
+//    }
     //m_scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
+    m_camera_manager->sceneDraw(this);
 }

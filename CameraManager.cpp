@@ -40,6 +40,8 @@ void CameraManager::nextCamera()
     }
 
     std::clog << "Switched to " << m_current->nodeName() << " camera" << endl;
+
+    recalcView(m_current);
 }
 
 /**
@@ -69,10 +71,12 @@ bool CameraManager::isCurrent(SceneNode* camera) const
     return(m_current == camera);
 }
 
-void CameraManager::sceneUpdate(SceneNode* camera)
+void CameraManager::sceneDraw(SceneNode* camera)
 {
     if(!isCurrent(camera))
 	return;
+
+    recalcView(camera);
 
     //m_scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
 }
@@ -91,4 +95,9 @@ void CameraManager::rotate(float a, const glm::vec3& av)
     glm::mat4 local = m_current->localMatrix();
     glm::mat4 mro = glm::gtx::transform::rotate(a, av);
     m_current->setLocalMatrix(local * mro);
+}
+
+void CameraManager::recalcView(SceneNode* camera)
+{
+    m_scene_params->view_mat = camera->globalMatrix();
 }

@@ -23,7 +23,8 @@ public:
     void nextCamera();
     bool isCurrent(SceneNode*) const;
     void addCamera(SceneNode*);
-    void sceneUpdate(SceneNode*);
+    void sceneDraw(SceneNode*);
+    void recalcView(SceneNode*);
     void setSceneParams(SceneParams * scene_params)
     {
         m_scene_params = scene_params;

@@ -59,6 +59,10 @@ void InitializeScene()
 {
 
     scene_params.view_mat = glm::mat4();
+    /*glm::lookAt(glm::vec3(4, 3, 3), // Camera is at (4,3,3), in World Space
+		glm::vec3(0, 0, 0), // and looks at the origin
+		glm::vec3(0, -1, 0) // Head is up (set to 0,-1,0 to look upside-down)
+		);*/
     scene_params.projection_mat = glm::perspective(
 						   45.f, // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
 						   aspect_ratio, // Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar ?
@@ -91,9 +95,10 @@ void InitializeScene()
     MeshNode * car = new MeshNode("data/ufo.3ds", ctrans);
     car->loadMesh();
     car->printBBoxSize();
-    TransformNode * cam_car_trans = new TransformNode("cam-car-trans", root_node);
-    cam_car_trans->translate(glm::vec3(1.0, -0.53, -5.4));
+    TransformNode * cam_car_trans = new TransformNode("cam-car-trans", car);
+//    cam_car_trans->translate(glm::vec3(1.0, -0.53, -5.4));
     //    cam_car_trans->scale(glm::vec3(0.5, 0.5, 0.5));
+    cam_car_trans->rotate(90.f, glm::vec3(1, 0, 0));
     CameraNode * cam_car = new CameraNode("cam_car", cam_car_trans);
 
 #if 0
@@ -221,16 +226,16 @@ void mySpecialKeyboard(int specKey, int x, int y)
 	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, 0, -0.1)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F11:
-//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, 0.1, 0)) * scene_params.view_mat;
+	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, 0.1, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F12:
-//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, -0.1, 0)) * scene_params.view_mat;
+	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, -0.1, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F9:
-//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0.1, 0, 0)) * scene_params.view_mat;
+	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0.1, 0, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F10:
-//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(-0.1, 0, 0)) * scene_params.view_mat;
+	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(-0.1, 0, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_LEFT:
 	cman->rotate(-15, glm::vec3(0, 1, 0));
@@ -251,7 +256,7 @@ void mySpecialKeyboard(int specKey, int x, int y)
 	cman->rotate(-15, glm::vec3(1, 0, 0));
 	break;
     }
-//    scene_params.view_mat.dump();
+    //    scene_params.view_mat.dump();
 }
 
 /*

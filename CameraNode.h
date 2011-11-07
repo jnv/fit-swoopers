@@ -1,14 +1,8 @@
-/* 
- * File:   CameraNode.h
- * Author: j
- *
- * Created on 6. listopad 2011, 11:47
- */
-
 #ifndef CAMERANODE_H
 #define	CAMERANODE_H
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 #include "SceneNode.h"
 #include "CameraManager.h"
 
