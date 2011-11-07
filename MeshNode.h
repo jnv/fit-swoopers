@@ -1,6 +1,8 @@
 #ifndef MESH_HODE_H
 #define MESH_HODE_H
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
 #include "SceneNode.h"
 

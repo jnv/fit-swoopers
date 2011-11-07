@@ -5,7 +5,8 @@
 #include <string>
 #include <iostream>
 
-#include "Matrix4.h"
+#include <glm/glm.hpp>
+
 #include "SceneParams.h"
 
 /** Basic scene graph node
@@ -55,20 +56,20 @@ public:
 
     /// calculated global matrix (valid after update() call)
 
-    const Matrix4f & globalMatrix() const
+    const glm::mat4 & globalMatrix() const
     {
         return m_global_mat;
     }
 
     /// local matrix
 
-    const Matrix4f & localMatrix() const
+    const glm::mat4 & localMatrix() const
     {
         return m_local_mat;
     }
 
     //XXX Proof-of-concept hack
-    void setLocalMatrix(Matrix4f matrix)
+    void setLocalMatrix(glm::mat4 matrix)
     {
         m_local_mat = matrix;
     }
@@ -80,8 +81,8 @@ protected:
     std::string m_name;
     SceneNode* m_parent;
     Children m_children;
-    Matrix4f m_global_mat; ///< final global matrix, calculated in update()
-    Matrix4f m_local_mat; ///< local matrix, derived transformation nodes should calculate it
+    glm::mat4 m_global_mat; ///< final global matrix, calculated in update()
+    glm::mat4 m_local_mat; ///< local matrix, derived transformation nodes should calculate it
 };
 
 #endif // of __SCENENODE_H

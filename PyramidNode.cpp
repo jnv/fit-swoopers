@@ -1,6 +1,5 @@
 
 #include "PyramidNode.h"
-#include "util.h"
 
 GLuint PyramidNode::m_vertexBufferObject = 0;
 GLuint PyramidNode::m_program = 0;
@@ -144,10 +143,10 @@ void PyramidNode::draw(SceneParams * scene_params)
   // inherited draw - draws all children
   SceneNode::draw(scene_params);
 
-  Matrix4f matrix = scene_params->projection_mat * scene_params->view_mat * globalMatrix();
+  glm::mat4 matrix = scene_params->projection_mat * scene_params->view_mat * globalMatrix();
 
   glUseProgram(m_program);
-  glUniformMatrix4fv(m_PVMmatrixLoc, 1, GL_FALSE, matrix);
+  glUniformMatrix4fv(m_PVMmatrixLoc, 1, GL_FALSE, glm::value_ptr(matrix));
 
   glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
   glEnableVertexAttribArray(m_posLoc);

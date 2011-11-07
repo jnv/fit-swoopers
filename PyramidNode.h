@@ -2,7 +2,9 @@
 #define PYRAMIDNODE_H
 
 #include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 #include "SceneNode.h"
+#include "util.h"
 
 /// Node, that draws pyramid from task3
 class PyramidNode : public SceneNode

@@ -1,13 +1,12 @@
 #ifndef __SCENE_PARAMS_H
 #define __SCENE_PARAMS_H
 
-#include "Matrix4.h"
-#include "Vec3.h"
+#include <glm/glm.hpp>
 
 struct SceneParams
 {
-  Matrix4f projection_mat;
-  Matrix4f view_mat;
+  glm::mat4 projection_mat;
+  glm::mat4 view_mat;
 };
 
 #endif // of __SCENE_PARAMS_H

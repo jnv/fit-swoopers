@@ -6,7 +6,7 @@ SceneNode::SceneNode(const char *name, SceneNode *parent):
   m_name(name), m_parent(0)
 {
   setParentNode(parent);
-  m_local_mat = Matrix4f::Identity();
+  m_local_mat = glm::mat4(1.0f);
 }
 
 SceneNode::~SceneNode()
@@ -93,7 +93,6 @@ void SceneNode::dump(unsigned indent)
 
   // print name
   std::cout << ind << "- " << nodeName() << std::endl;
-  m_global_mat.dump();
 
   // dump all children, raise indentation
   for(Children::iterator it = m_children.begin(); it != m_children.end(); ++it)

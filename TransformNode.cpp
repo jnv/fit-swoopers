@@ -8,31 +8,35 @@ SceneNode(name, parent)
 
 void TransformNode::setIdentity()
 {
-    m_local_mat = Matrix4f::Identity();
+    m_local_mat = glm::mat4(1.0f);
 }
 
-void TransformNode::translate(const Vec3f &tr)
+void TransformNode::translate(const glm::vec3 &tr)
 {
-    m_local_mat.translate(tr);
+    glm::mat4 trmat = glm::gtx::transform::translate(tr);
+    m_local_mat *= trmat;
 }
 
-void TransformNode::rotate(float a, const Vec3f &vec)
+void TransformNode::rotate(float a, const glm::vec3 &vec)
 {
-    m_local_mat.rotate(a, vec);
+    glm::mat4 trmat = glm::gtx::transform::rotate(a, vec);
+    m_local_mat *= trmat;
 }
 
-void TransformNode::scale(const Vec3f &sc)
+void TransformNode::scale(const glm::vec3 &sc)
 {
-    m_local_mat.scale(sc);
+    glm::mat4 trmat = glm::gtx::transform::scale(sc);
+    m_local_mat *= trmat;
+    //    m_local_mat.scale(sc);
 }
 
 void TransformNode::invert()
 {
-    m_local_mat = m_local_mat.inverse();
+    //    m_local_mat = m_local_mat.inverse();
 }
 
 void TransformNode::debug() const
 {
-    m_local_mat.dump();
+    //    m_local_mat.dump();
     std::cout << std::endl;
 }

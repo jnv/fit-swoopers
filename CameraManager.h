@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 #include "Singleton.h"
 #include "SceneNode.h"
 #include "SceneParams.h"
@@ -30,8 +32,8 @@ public:
     {
         return m_scene_params;
     }
-    void translate(const Vec3f& tr);
-    void rotate(const float, const Vec3f&);
+    void translate(const glm::vec3& tr);
+    void rotate(const float, const glm::vec3&);
 
 protected:
     Cameras m_cameras;

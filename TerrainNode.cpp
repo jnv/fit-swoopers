@@ -1,10 +1,5 @@
 #include "TerrainNode.h"
-#include "util.h"
 
-#include <cstdlib>
-#include <cassert>
-#include <cstdio>
-#include <iostream>
 using namespace std;
 
 GLuint TerrainNode::m_program = 0;
@@ -278,11 +273,11 @@ void TerrainNode::draw(SceneParams * scene_params)
     // inherited draw - draws all children
     SceneNode::draw(scene_params);
 
-    Matrix4f VMmatrix = scene_params->view_mat * globalMatrix();
+    glm::mat4 VMmatrix = scene_params->view_mat * globalMatrix();
 
     glUseProgram(m_program);
-    glUniformMatrix4fv(m_VMmatrixLoc, 1, GL_FALSE, VMmatrix);
-    glUniformMatrix4fv(m_PmatrixLoc, 1, GL_FALSE, scene_params->projection_mat);
+    glUniformMatrix4fv(m_VMmatrixLoc, 1, GL_FALSE, glm::value_ptr(VMmatrix));
+    glUniformMatrix4fv(m_PmatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->projection_mat));
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
     glEnableVertexAttribArray(m_posLoc);

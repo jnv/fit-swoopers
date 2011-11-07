@@ -8,6 +8,7 @@
 #ifndef CAMERANODE_H
 #define	CAMERANODE_H
 
+#include <glm/glm.hpp>
 #include "SceneNode.h"
 #include "CameraManager.h"
 

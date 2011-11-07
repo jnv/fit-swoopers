@@ -1,7 +1,16 @@
 #ifndef TERRAINNODE_H
 #define TERRAINNODE_H
 
+
+#include <cstdlib>
+#include <cassert>
+#include <cstdio>
+#include <iostream>
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp> 
+
+#include "util.h"
 #include "SceneNode.h"
 
 /// Node, that draws pyramid from task3

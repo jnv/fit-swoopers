@@ -30,12 +30,12 @@ void CameraNode::draw(SceneParams * scene_params)
 {
     if(m_camera_manager->isCurrent(this))
     {
-	Matrix4f global = globalMatrix();
+	glm::mat4 global = globalMatrix();
 
-	Matrix4f view = scene_params->view_mat;
+	glm::mat4 view = scene_params->view_mat;
 
-	Matrix4f coor = global * view;
-	coor.dump();
+	glm::mat4 coor = global * view;
+//	coor.dump();
 
 	//scene_params->view_mat = globalMatrix();
 	scene_params->view_mat = global;

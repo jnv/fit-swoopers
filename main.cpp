@@ -7,9 +7,10 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "global.h"
-#include "Matrix4.h"
 #include "util.h"
 #include "PyramidNode.h"
 #include "TransformNode.h"
@@ -26,7 +27,7 @@
 
 float aspect_ratio = 1.0f;
 SceneNode * root_node = NULL; // scene root
-TransformNode * pyra_trans = NULL; // we control cessna
+TransformNode * ctrans = NULL; // we control cessna
 SceneParams scene_params;
 
 // -------------------------------------------------------------------
@@ -56,8 +57,14 @@ void functionDraw()
 
 void InitializeScene()
 {
-    scene_params.view_mat = Matrix4f::Identity();
-    scene_params.projection_mat = Matrix4f::Perspective(M_PI / 4, aspect_ratio, 0.1f, 100);
+
+    scene_params.view_mat = glm::mat4();
+    scene_params.projection_mat = glm::perspective(
+						   45.f, // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
+						   aspect_ratio, // Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar ?
+						   0.1f, // Near clipping plane. Keep as big as possible, or you'll get precision issues.
+						   100.0f // Far clipping plane. Keep as little as possible.
+						   );
 
     CameraManager::getInstance()->setSceneParams(&scene_params);
 
@@ -67,47 +74,43 @@ void InitializeScene()
 
     // create transformation for the terrain
     TransformNode * ptrans = new TransformNode("ter-trans3", root_node);
-    ptrans->translate(Vec3f(0, 0, -9));
-    ptrans->rotate(0.25, Vec3f(1, 0, 0));
-    ptrans->scale(Vec3f(12, 0.2, 12));
+    ptrans->translate(glm::vec3(0, 0, -9));
+    ptrans->rotate(14.f, glm::vec3(1, 0, 0));
+    ptrans->scale(glm::vec3(12, 0.2, 12));
     TerrainNode *terrain = new TerrainNode("terrain1", ptrans);
     terrain->load("data/terrain");
 
     // create transform matrix for the car
-    TransformNode * ctrans = new TransformNode("c-trans1", root_node);
-    ctrans->translate(Vec3f(1.0, -0.53, -5.4));
-    ctrans->rotate(0.18, Vec3f(1.0, 0.0, 0));
-    ctrans->rotate(-1.1, Vec3f(0.0, 1.0, 0));
-    ctrans->rotate(0.02, Vec3f(1.0, 0.0, 1.0));
-    ctrans->scale(Vec3f(0.02, 0.02, 0.02));
+    ctrans = new TransformNode("c-trans1", root_node);
+    ctrans->translate(glm::vec3(1.0, -0.53, -5.4));
+    //    ctrans->rotate(10, glm::vec3(1.0, 0.0, 0));
+    //    ctrans->rotate(11, glm::vec3(1.0, 0.0, 1.0));
+    ctrans->rotate(-90.f, glm::vec3(1, 0, 0));
+    ctrans->scale(glm::vec3(0.7, 0.7, 0.7));
     // load the car as the mesh
-    MeshNode * car = new MeshNode("data/bronco.obj", ctrans);
+    MeshNode * car = new MeshNode("data/ufo.3ds", ctrans);
     car->loadMesh();
     car->printBBoxSize();
     TransformNode * cam_car_trans = new TransformNode("cam-car-trans", root_node);
-    cam_car_trans->invert();
-    cam_car_trans->translate(Vec3f(1.0, -0.53, -5.4));
-    cam_car_trans->rotate(0.18, Vec3f(1.0, 0.0, 0));
-//    cam_car_trans->rotate(-1.1, Vec3f(0.0, 1.0, 0));
-    cam_car_trans->rotate(0.02, Vec3f(1.0, 0.0, 1.0));
-//    cam_car_trans->scale(Vec3f(0.5, 0.5, 0.5));
+    cam_car_trans->translate(glm::vec3(1.0, -0.53, -5.4));
+    //    cam_car_trans->scale(glm::vec3(0.5, 0.5, 0.5));
     CameraNode * cam_car = new CameraNode("cam_car", cam_car_trans);
 
 #if 0
     // the replacement for the left reflector by pyramid
     pyra_trans = new TransformNode("pyr-trans2", root_node);
-    pyra_trans->translate(Vec3f(0.309363, -0.74156, -4.86074));
-    pyra_trans->rotate(-1.0, Vec3f(0, 1, 0));
-    pyra_trans->scale(Vec3f(0.1, 0.1, 0.1));
+    pyra_trans->translate(glm::vec3(0.309363, -0.74156, -4.86074));
+    pyra_trans->rotate(-1.0, glm::vec3(0, 1, 0));
+    pyra_trans->scale(glm::vec3(0.1, 0.1, 0.1));
     PyramidNode *pyra1 = new PyramidNode("pyra", pyra_trans);
 #endif
 
 #if 0
     // the replacement for the right reflector by pyramid
     TransformNode *pyra_trans2 = new TransformNode("pyr-trans2", root_node);
-    pyra_trans2->translate(Vec3f(0.123297, -0.68428, -5.200));
-    pyra_trans2->rotate(-1.0, Vec3f(0, 1, 0));
-    pyra_trans2->scale(Vec3f(0.1, 0.1, 0.1));
+    pyra_trans2->translate(glm::vec3(0.123297, -0.68428, -5.200));
+    pyra_trans2->rotate(-1.0, glm::vec3(0, 1, 0));
+    pyra_trans2->scale(glm::vec3(0.1, 0.1, 0.1));
     PyramidNode *pyra2 = new PyramidNode("pyra", pyra_trans2);
 #endif
 
@@ -132,7 +135,7 @@ void reshape(int w, int h)
 {
     glViewport(0, 0, (GLsizei) w, (GLsizei) h);
     aspect_ratio = (float) w / (float) h;
-    scene_params.projection_mat = Matrix4f::Perspective(M_PI / 4, aspect_ratio, 0.1f, 100);
+    scene_params.projection_mat = glm::perspective(45.f, aspect_ratio, 0.1f, 100.0f);
 }
 
 //Called whenever a key on the keyboard was pressed.
@@ -150,47 +153,47 @@ void myKeyboard(unsigned char key, int x, int y)
 	// Operations that move pyramid around the scene
 	// and enable to orient in the scene
     case 'a':
-	pyra_trans->rotate(0.02, Vec3f(1, 0, 0));
+	ctrans->rotate(15, glm::vec3(1, 0, 0));
 	break;
     case 'd':
-	pyra_trans->rotate(-0.02, Vec3f(1, 0, 0));
+	ctrans->rotate(-15, glm::vec3(1, 0, 0));
 	break;
     case 's':
-	pyra_trans->rotate(0.02, Vec3f(0, 1, 0));
+	ctrans->rotate(15, glm::vec3(0, 1, 0));
 	break;
     case 'w':
-	pyra_trans->rotate(-0.02, Vec3f(0, 1, 0));
+	ctrans->rotate(-15, glm::vec3(0, 1, 0));
 	break;
     case 'e':
-	pyra_trans->rotate(0.02, Vec3f(0, 0, 1));
+	ctrans->rotate(15, glm::vec3(0, 0, 1));
 	break;
     case 'q':
-	pyra_trans->rotate(-0.02, Vec3f(0, 0, 1));
+	ctrans->rotate(-15, glm::vec3(0, 0, 1));
 	break;
     case 'y':
-	pyra_trans->translate(Vec3f(0.1, 0, 0));
+	ctrans->translate(glm::vec3(0.1, 0, 0));
 	break;
     case 'u':
-	pyra_trans->translate(Vec3f(-0.1, 0, 0));
+	ctrans->translate(glm::vec3(-0.1, 0, 0));
 	break;
     case 'h':
-	pyra_trans->translate(Vec3f(0.0, 0.1, 0));
+	ctrans->translate(glm::vec3(0.0, 0.1, 0));
 	break;
     case 'j':
-	pyra_trans->translate(Vec3f(0.0, -0.1, 0));
+	ctrans->translate(glm::vec3(0.0, -0.1, 0));
 	break;
     case 'n':
-	pyra_trans->translate(Vec3f(0.0, 0.0, 0.1));
+	ctrans->translate(glm::vec3(0.0, 0.0, 0.1));
 	break;
     case 'm':
-	pyra_trans->translate(Vec3f(0.0, 0, -0.1));
+	ctrans->translate(glm::vec3(0.0, 0, -0.1));
 	break;
     case 'c':
 	CameraManager::getInstance()->nextCamera();
     }
 
     // print out the matrix
-    //pyra_trans->debug();
+    ctrans->debug();
 
 }
 
@@ -211,44 +214,44 @@ void mySpecialKeyboard(int specKey, int x, int y)
     switch(specKey)
     {
     case GLUT_KEY_UP:
-	cman->translate(Vec3f(0, 0, -1));
+	cman->translate(glm::vec3(0, 0, -1));
 	break;
     case GLUT_KEY_DOWN:
-	cman->translate(Vec3f(0, 0, 1));
-//	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0, -0.1)) * scene_params.view_mat;
+	cman->translate(glm::vec3(0, 0, 1));
+	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, 0, -0.1)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F11:
-	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
+//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, 0.1, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F12:
-	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, -0.1, 0)) * scene_params.view_mat;
+//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, -0.1, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F9:
-	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0.1, 0, 0)) * scene_params.view_mat;
+//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0.1, 0, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_F10:
-	scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(-0.1, 0, 0)) * scene_params.view_mat;
+//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(-0.1, 0, 0)) * scene_params.view_mat;
 	break;
     case GLUT_KEY_LEFT:
-	cman->rotate(-0.1, Vec3f(0, 1, 0));
+	cman->rotate(-15, glm::vec3(0, 1, 0));
 	break;
     case GLUT_KEY_RIGHT:
-	cman->rotate(0.1, Vec3f(0, 1, 0));
+	cman->rotate(15, glm::vec3(0, 1, 0));
 	break;
     case GLUT_KEY_PAGE_UP:
-	cman->translate(Vec3f(0, 1, 0));
+	cman->translate(glm::vec3(0, 1, 0));
 	break;
     case GLUT_KEY_PAGE_DOWN:
-	cman->translate(Vec3f(0, -1, 0));
+	cman->translate(glm::vec3(0, -1, 0));
 	break;
     case GLUT_KEY_HOME:
-	cman->rotate(0.1, Vec3f(1, 0, 0));
+	cman->rotate(15, glm::vec3(1, 0, 0));
 	break;
     case GLUT_KEY_END:
-	cman->rotate(-0.1, Vec3f(1, 0, 0));
+	cman->rotate(-15, glm::vec3(1, 0, 0));
 	break;
     }
-    scene_params.view_mat.dump();
+//    scene_params.view_mat.dump();
 }
 
 /*

@@ -77,17 +77,18 @@ void CameraManager::sceneUpdate(SceneNode* camera)
     //m_scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
 }
 
-void CameraManager::translate(const Vec3f& tr)
+void CameraManager::translate(const glm::vec3& tr)
 {
     //scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0, -0.1)) * scene_params.view_mat;
     //    Matrix4f local = m_current->localMatrix();
-    Matrix4f local = m_current->localMatrix();
-    m_current->setLocalMatrix(Matrix4f::FromTranslation(tr) * local);
+    glm::mat4 local = m_current->localMatrix();
+    glm::mat4 mtr = glm::gtx::transform::translate(tr);
+    m_current->setLocalMatrix(local * mtr);
 }
 
-void CameraManager::rotate(float a, const Vec3f& av)
+void CameraManager::rotate(float a, const glm::vec3& av)
 {
-    Matrix4f local = m_current->localMatrix();
-    local.rotate(a, av);
-    m_current->setLocalMatrix(local);
+    glm::mat4 local = m_current->localMatrix();
+    glm::mat4 mro = glm::gtx::transform::rotate(a, av);
+    m_current->setLocalMatrix(local * mro);
 }
