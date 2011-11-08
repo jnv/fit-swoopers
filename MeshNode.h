@@ -32,7 +32,6 @@ protected:
     /// shader view matrix location
     static GLint m_MVPLoc;
     static GLint m_ViewMatrixLoc;
-    static GLint m_LightLoc;
     /// position attribute location
     static GLint m_posLoc;
     /// color attribute location

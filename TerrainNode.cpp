@@ -3,8 +3,9 @@
 using namespace std;
 
 GLuint TerrainNode::m_program = 0;
-GLint TerrainNode::m_VMmatrixLoc = -1;
-GLint TerrainNode::m_PmatrixLoc = -1;
+GLint TerrainNode::m_ModelMatrixLoc = -1;
+GLint TerrainNode::m_MVPLoc = -1;
+GLint TerrainNode::m_ViewMatrixLoc = -1;
 GLint TerrainNode::m_posLoc = -1;
 GLint TerrainNode::m_colLoc = -1;
 
@@ -26,8 +27,9 @@ m_nTriangles(0)
 
 	// Create the program with two shaders
 	m_program = CreateProgram(shaderList);
-	m_VMmatrixLoc = glGetUniformLocation(m_program, "VMmatrix");
-	m_PmatrixLoc = glGetUniformLocation(m_program, "Pmatrix");
+	m_ModelMatrixLoc = glGetUniformLocation(m_program, "M");
+	m_ViewMatrixLoc = glGetUniformLocation(m_program, "V");
+	m_MVPLoc = glGetUniformLocation(m_program, "MVP");
 	m_posLoc = glGetAttribLocation(m_program, "position");
 	m_colLoc = glGetAttribLocation(m_program, "color");
     }
@@ -273,11 +275,15 @@ void TerrainNode::draw(SceneParams * scene_params)
     // inherited draw - draws all children
     SceneNode::draw(scene_params);
 
-    glm::mat4 VMmatrix = scene_params->view_mat * globalMatrix();
+    glm::mat4 MVP = scene_params->projection_mat * scene_params->view_mat * globalMatrix();
 
     glUseProgram(m_program);
-    glUniformMatrix4fv(m_VMmatrixLoc, 1, GL_FALSE, glm::value_ptr(VMmatrix));
-    glUniformMatrix4fv(m_PmatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->projection_mat));
+    glUniformMatrix4fv(m_ModelMatrixLoc, 1, GL_FALSE, glm::value_ptr(globalMatrix()));
+    glUniformMatrix4fv(m_ViewMatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->view_mat));
+    glUniformMatrix4fv(m_MVPLoc, 1, GL_FALSE, glm::value_ptr(MVP));
+
+    LightManager* lm = LightManager::getInstance();
+    lm->uniformAmbient(m_program);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
     glEnableVertexAttribArray(m_posLoc);

@@ -13,7 +13,6 @@ GLint MeshNode::m_MVPLoc = -1;
 GLint MeshNode::m_posLoc = -1;
 GLint MeshNode::m_colLoc = -1;
 GLint MeshNode::m_norLoc = -1;
-GLint MeshNode::m_LightLoc = -1;
 
 MeshNode::MeshNode(const char* file_name, SceneNode* parent) :
 SceneNode(file_name, parent), m_vertexBufferObject(0), m_nVertices(0)
@@ -34,7 +33,6 @@ SceneNode(file_name, parent), m_vertexBufferObject(0), m_nVertices(0)
 	m_posLoc = glGetAttribLocation(m_program, "position");
 	m_colLoc = glGetAttribLocation(m_program, "color");
 	m_norLoc = glGetAttribLocation(m_program, "normal");
-	m_LightLoc = glGetUniformLocation(m_program, "LightPosition_worldspace");
     }
 
     glGenBuffers(1, &m_vertexBufferObject);

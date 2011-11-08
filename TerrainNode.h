@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp> 
 
+#include "LightManager.h"
 #include "util.h"
 #include "SceneNode.h"
 
@@ -34,9 +35,10 @@ protected:
     /// identifier for the program
     static GLuint m_program;
     /// shader view*model matrix location
-    static GLint m_VMmatrixLoc;
+    static GLint m_ModelMatrixLoc;
     /// shader projection matrix location
-    static GLint m_PmatrixLoc;
+    static GLint m_MVPLoc;
+    static GLint m_ViewMatrixLoc;
     /// position attribute location
     static GLint m_posLoc;
     /// color attribute location
