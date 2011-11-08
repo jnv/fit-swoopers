@@ -38,7 +38,7 @@ void main()
   gl_Position = Pmatrix * pos_v;
 }
 */
-
+/*
 void main()
 {
 	// All vertex shaders should write the transformed homogeneous clip space
@@ -67,4 +67,16 @@ void main()
     //Normal = normalMatrix * VertexNormal;
     Normal = (modelViewMatrix * vec4(VertexNormal, 0)).xyz;
     Color = VertexColor;
+}*/
+
+void main()
+{
+	mat4 modelViewMatrix = ViewMatrix * ModelMatrix;
+	mat4 mvpMatrix = ProjectionMatrix * modelViewMatrix;
+	vec4 pos = vec4(VertexPosition.x, VertexPosition.y, VertexPosition.z, 1.0);
+    gl_Position = mvpMatrix * pos;
+    
+    Normal = (modelViewMatrix * vec4(VertexNormal, 0)).xyz;
+    VertexPos = pos.xyz / pos.w;
+    LightDir = vec3(ViewMatrix * vec4(-DirectionalLight1.direction, 0.0f));
 }

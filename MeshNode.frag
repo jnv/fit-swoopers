@@ -44,11 +44,21 @@ void main()
 	float nDotL = max(0.0, dot(N, L));
 	float rDotV = max(0.0, dot(R, V));
 	
-	vec4 ambient = DirectionalLight1.ambient;// * Color; // * Material1.ambient;
-	vec4 diffuse = DirectionalLight1.diffuse * Color * nDotL; //Material1.diffuse * nDotL;
+	float frag_shininess = 20.0;
+	vec4 frag_specular = vec4(1.0, 1.0, 1.0, 1.0);
+	vec4 frag_diffuse = vec4(0.8, 0.8, 0.8, 0.0);
+	
+	vec4 diffuse_factor = nDotL * DirectionalLight1.diffuse;
+	vec4 ambient_diffuse_factor = diffuse_factor + DirectionalLight1.ambient;
+	vec4 specular_factor = max(pow(-dot(R, V), frag_shininess), 0.0) * DirectionalLight1.specular;
+	
+	//vec4 ambient = DirectionalLight1.ambient;// * Color; // * Material1.ambient;
+	//vec4 diffuse = DirectionalLight1.diffuse * Color * nDotL; //Material1.diffuse * nDotL;
 	//vec4 specular = DirectionalLight1.specular * Material1.specular * pow(rDotV, Material1.shininess);
-	vec4 specular = DirectionalLight1.specular * Color;
+	//vec4 specular = DirectionalLight1.specular * Color;
 	//vec4 texel = texture(ColorMapSampler, TexCoord);
 	
-    FragColor = ambient + diffuse + specular;
+    //FragColor = ambient + diffuse + specular;
+    FragColor = specular_factor * frag_specular + ambient_diffuse_factor * frag_diffuse;
+	//FragColor = Color;
 }
