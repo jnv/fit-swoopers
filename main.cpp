@@ -20,6 +20,7 @@
 #include "SceneParams.h"
 #include "CameraManager.h"
 #include "CameraNode.h"
+#include "InputManager.h"
 
 #ifndef M_PI
 #define M_PI 3.14159f
@@ -38,6 +39,7 @@ void FuncTimerCallback(int)
 
     if(root_node)
 	root_node->update(timed);
+    InputManager::getInstance()->update();
 
     glutTimerFunc(33, FuncTimerCallback, 0);
     glutPostRedisplay();
@@ -96,10 +98,11 @@ void InitializeScene()
     car->loadMesh();
     car->printBBoxSize();
     TransformNode * cam_car_trans = new TransformNode("cam-car-trans", car);
-//    cam_car_trans->translate(glm::vec3(1.0, -0.53, -5.4));
+    //    cam_car_trans->translate(glm::vec3(1.0, -0.53, -5.4));
     //    cam_car_trans->scale(glm::vec3(0.5, 0.5, 0.5));
     cam_car_trans->rotate(90.f, glm::vec3(1, 0, 0));
     CameraNode * cam_car = new CameraNode("cam_car", cam_car_trans);
+
 
 #if 0
     // the replacement for the left reflector by pyramid
@@ -121,6 +124,8 @@ void InitializeScene()
 
     // dump our scene graph tree for debug
     root_node->dump();
+
+    InputManager::Initialize();
 }
 
 //Called to update the display.
@@ -278,8 +283,6 @@ int main(int argc, char** argv)
     // register callback for change of window
     glutReshapeFunc(reshape);
     // register callback for keyboard
-    glutKeyboardFunc(myKeyboard);
-    glutSpecialFunc(mySpecialKeyboard);
     glutTimerFunc(33, FuncTimerCallback, 0);
 
     // load the pointers to OpenGL functions (only needed in MS Windows)
