@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "SceneNode.h"
+#include "util.h"
+#include "LightManager.h"
 
 class MeshNode : public SceneNode
 {
@@ -23,18 +25,23 @@ public:
     void printBBoxSize();
 
 protected:
+
+    static GLint m_ViewMatrixLoc;
+    static GLint m_ModelMatrixLoc;
+    static GLint m_NormalMatrixLoc;
+
     /// identifier for the program
-    static GLuint m_program;
+    static GLuint m_Program;
     /// shader view*model matrix location
     static GLint m_VMmatrixLoc;
     /// shader view matrix location
-    static GLint m_PmatrixLoc;
+    static GLint m_ProjectionMatrixLoc;
     /// position attribute location
-    static GLint m_posLoc;
+    static GLint m_PositionLoc;
     /// color attribute location
-    static GLint m_colLoc;
+    static GLint m_ColorLoc;
     /// normal attribute location
-    static GLint m_norLoc;
+    static GLint m_NormalLoc;
     /// identifier for the buffer object
     GLuint m_vertexBufferObject;
     /// count of vertices
