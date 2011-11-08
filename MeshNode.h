@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "LightManager.h"
 #include "SceneNode.h"
 #include "util.h"
 

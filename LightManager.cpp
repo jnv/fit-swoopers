@@ -15,12 +15,13 @@ LightManager::~LightManager()
 {
 }
 
-void LightManager::uniformDirectional(GLuint program)
+void LightManager::uniformAmbient(GLuint program)
 {
-    glUniform3f(glGetUniformLocation(program, "DirectionalLight1.direction"), 0.0f, 1.0f, 11.0f);
-    glUniform4f(glGetUniformLocation(program, "DirectionalLight1.ambient"), 1.0f, 1.0f, 1.0f, 1.0f);
-    glUniform4f(glGetUniformLocation(program, "DirectionalLight1.diffuse"), 1.0f, 1.0f, 1.0f, 1.0f);
-    glUniform4f(glGetUniformLocation(program, "DirectionalLight1.specular"), 1.0f, 1.0f, 1.0f, 1.0f);
+    glm::vec3 lightPos = glm::vec3(0, 1, -10);
+    glm::vec3 lightColor = glm::vec3(1, 1, 1);
+    glUniform3f(glGetUniformLocation(program, "AmbientLight0.position"), lightPos.x, lightPos.y, lightPos.z);
+    glUniform3f(glGetUniformLocation(program, "AmbientLight0.color"), lightColor.r, lightColor.g, lightColor.b);
+    glUniform1f(glGetUniformLocation(program, "AmbientLight0.power"), 50.0f);
 }
 
 void LightManager::uniformSpotlight(GLuint program)

@@ -123,13 +123,13 @@ void MeshNode::draw(SceneParams * scene_params)
 
     glm::mat4 MVP = scene_params->projection_mat * scene_params->view_mat * globalMatrix();
 
-
     glUseProgram(m_program);
     glUniformMatrix4fv(m_ModelMatrixLoc, 1, GL_FALSE, glm::value_ptr(globalMatrix()));
     glUniformMatrix4fv(m_ViewMatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->view_mat));
     glUniformMatrix4fv(m_MVPLoc, 1, GL_FALSE, glm::value_ptr(MVP));
-    glm::vec3 lightPos = glm::vec3(0, 1, -10);
-    glUniform3f(m_LightLoc, lightPos.x, lightPos.y, lightPos.z);
+
+    LightManager* lm = LightManager::getInstance();
+    lm->uniformAmbient(m_program);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
     glEnableVertexAttribArray(m_posLoc);

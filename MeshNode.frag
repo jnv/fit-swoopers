@@ -7,7 +7,12 @@ in vec3 Normal_cameraspace;
 in vec3 EyeDirection_cameraspace;
 in vec3 LightDirection_cameraspace;
 
-uniform vec3 LightPosition_worldspace;
+uniform struct AmbientLight
+{
+	vec3 color;
+	vec3 position;
+	float power;
+} AmbientLight0;
 
 out vec3 outputColor;
 
@@ -20,8 +25,8 @@ void main()
   outputColor = theColor * dot(N, L);
   */
   	// Light emission properties
-	vec3 LightColor = vec3(1,1,1);
-	float LightPower = 50.0f;
+	vec3 LightColor = AmbientLight0.color;
+	float LightPower = AmbientLight0.power;
 	
 	// Material properties
 	vec3 MaterialDiffuseColor = theColor.rgb;
@@ -29,7 +34,7 @@ void main()
 	vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
 
 	// Distance to the light
-	float distance = length( LightPosition_worldspace - Position_worldspace );
+	float distance = length( AmbientLight0.position - Position_worldspace );
 
 	// Normal of the computed fragment, in camera space
 	vec3 n = normalize( Normal_cameraspace );

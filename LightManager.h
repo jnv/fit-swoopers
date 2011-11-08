@@ -9,6 +9,7 @@
 #define	LIGHTMANAGER_H
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 #include "Singleton.h"
 
 class LightManager : public Singleton<LightManager>
@@ -18,7 +19,7 @@ public:
     LightManager();
     ~LightManager();
 
-    void uniformDirectional(GLuint);
+    void uniformAmbient(GLuint);
     void uniformSpotlight(GLuint);
 private:
 
