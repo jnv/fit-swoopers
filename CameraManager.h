@@ -6,6 +6,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
+#include <GL/glut.h>
 #include "Singleton.h"
 #include "SceneNode.h"
 #include "SceneParams.h"
@@ -27,20 +28,32 @@ public:
     void recalcView(SceneNode*);
     void setSceneParams(SceneParams * scene_params)
     {
-        m_scene_params = scene_params;
+        m_sceneParams = scene_params;
     }
     SceneParams * getSceneParams()
     {
-        return m_scene_params;
+        return m_sceneParams;
     }
     void translate(const glm::vec3& tr);
     void rotate(const float, const glm::vec3&);
+
+    void arcballEnable(int, int);
+    void arcballDisable();
+    void arcballUpdate(int, int);
 
 protected:
     Cameras m_cameras;
     SceneNode * m_current;
     unsigned int m_current_pos;
-    SceneParams * m_scene_params;
+    SceneParams * m_sceneParams;
+    bool m_abEnabled;
+    int m_abLastX;
+    int m_abCurX;
+    int m_abLastY;
+    int m_abCurY;
+
+    void arcballCalculate();
+
 
 private:
 

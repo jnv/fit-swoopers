@@ -31,10 +31,12 @@ public:
     ~InputManager();
 
     static void Initialize();
-    static void handleKeyPress(unsigned char key, int x, int y);
-    static void handleKeyRelease(unsigned char key, int x, int y);
-    static void handleSpecialKeyPress(int key, int x, int y);
-    static void handleSpecialKeyRelease(int key, int x, int y);
+    static void OnKeyPress(unsigned char key, int x, int y);
+    static void OnKeyRelease(unsigned char key, int x, int y);
+    static void OnSpecialPress(int key, int x, int y);
+    static void OnSpecialRelease(int key, int x, int y);
+    static void OnMouse(int, int, int, int);
+    static void OnMotion(int, int);
 
     void update();
 

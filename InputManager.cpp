@@ -9,10 +9,12 @@
 
 void InputManager::Initialize()
 {
-    ::glutKeyboardFunc(InputManager::handleKeyPress);
-    ::glutKeyboardUpFunc(InputManager::handleKeyRelease);
-    ::glutSpecialFunc(InputManager::handleSpecialKeyPress);
-    ::glutSpecialUpFunc(InputManager::handleSpecialKeyRelease);
+    ::glutKeyboardFunc(InputManager::OnKeyPress);
+    ::glutKeyboardUpFunc(InputManager::OnKeyRelease);
+    ::glutSpecialFunc(InputManager::OnSpecialPress);
+    ::glutSpecialUpFunc(InputManager::OnSpecialRelease);
+    ::glutMouseFunc(InputManager::OnMouse);
+    ::glutMotionFunc(InputManager::OnMotion);
 }
 
 InputManager::InputManager()
@@ -23,28 +25,55 @@ InputManager::~InputManager()
 {
 }
 
-void InputManager::handleKeyPress(unsigned char key, int x, int y)
+void InputManager::OnKeyPress(unsigned char key, int x, int y)
 {
     InputManager * m = InputManager::getInstance();
     m->press(key);
 }
 
-void InputManager::handleKeyRelease(unsigned char key, int x, int y)
+void InputManager::OnKeyRelease(unsigned char key, int x, int y)
 {
     InputManager * m = InputManager::getInstance();
     m->release(key);
 }
 
-void InputManager::handleSpecialKeyPress(int key, int x, int y)
+void InputManager::OnSpecialPress(int key, int x, int y)
 {
     InputManager * m = InputManager::getInstance();
     m->press(key);
 }
 
-void InputManager::handleSpecialKeyRelease(int key, int x, int y)
+void InputManager::OnSpecialRelease(int key, int x, int y)
 {
     InputManager * m = InputManager::getInstance();
     m->release(key);
+}
+
+void InputManager::OnMouse(int button, int state, int x, int y)
+{
+    CameraManager * cm = CameraManager::getInstance();
+    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+    {
+	cm->arcballEnable(x, y);
+	//    arcball_on = true;
+	//    last_mx = cur_mx = x;
+	//    last_my = cur_my = y;
+    }
+    else
+    {
+	cm->arcballDisable();
+	//    arcball_on = false;
+    }
+}
+
+void InputManager::OnMotion(int x, int y)
+{
+    CameraManager * cm = CameraManager::getInstance();
+    cm->arcballUpdate(x, y);
+    //  if (arcball_on) {  // if left button is pressed
+    //    cur_mx = x;
+    //    cur_my = y;
+    //  }
 }
 
 /**
