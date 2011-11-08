@@ -5,21 +5,19 @@
 #include <string.h>
 
 #include "MeshNode.h"
-#include "Singleton.h"
+#include "util.h"
 
-GLuint MeshNode::m_Program = 0;
+GLuint MeshNode::m_program = 0;
 GLint MeshNode::m_VMmatrixLoc = -1;
-GLint MeshNode::m_ProjectionMatrixLoc = -1;
-GLint MeshNode::m_PositionLoc = -1;
-GLint MeshNode::m_ColorLoc = -1;
-GLint MeshNode::m_NormalLoc = -1;
-GLint MeshNode::m_ViewMatrixLoc = -1;
-GLint MeshNode::m_ModelMatrixLoc = -1;
+GLint MeshNode::m_PmatrixLoc = -1;
+GLint MeshNode::m_posLoc = -1;
+GLint MeshNode::m_colLoc = -1;
+GLint MeshNode::m_norLoc = -1;
 
 MeshNode::MeshNode(const char* file_name, SceneNode* parent):
   SceneNode(file_name, parent), m_vertexBufferObject(0), m_nVertices(0)
 {
-  if(m_Program == 0)
+  if(m_program == 0)
   {
     std::vector<GLuint> shaderList;
 
@@ -28,16 +26,12 @@ MeshNode::MeshNode(const char* file_name, SceneNode* parent):
     shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "MeshNode.frag"));
 
     // Create the program with two shaders
-    m_Program = CreateProgram(shaderList);
-    m_VMmatrixLoc = glGetUniformLocation(m_Program, "VMmatrix");
-    m_ProjectionMatrixLoc = glGetUniformLocation(m_Program, "ProjectionMatrix");
-    m_PositionLoc = glGetAttribLocation(m_Program, "VertexPosition");
-    m_ColorLoc = glGetAttribLocation(m_Program, "VertexColor");
-    m_NormalLoc = glGetAttribLocation(m_Program, "VertexNormal");
-    m_ViewMatrixLoc = glGetAttribLocation(m_Program, "ViewMatrix");
-    m_ModelMatrixLoc = glGetAttribLocation(m_Program, "ModelMatrix");
-    LightManager * lm = LightManager::getInstance();
-    lm->uniformDirectional(m_Program);
+    m_program = CreateProgram(shaderList);
+    m_VMmatrixLoc = glGetUniformLocation(m_program, "VMmatrix");
+    m_PmatrixLoc = glGetUniformLocation(m_program, "Pmatrix");
+    m_posLoc = glGetAttribLocation(m_program, "position");
+    m_colLoc = glGetAttribLocation(m_program, "color");
+    m_norLoc = glGetAttribLocation(m_program, "normal");
   }
 
   glGenBuffers(1, &m_vertexBufferObject);
@@ -123,26 +117,26 @@ void MeshNode::draw(SceneParams * scene_params)
   // inherited draw - draws all children
   SceneNode::draw(scene_params);
 
-  glUseProgram(m_Program);
-  glUniformMatrix4fv(m_ViewMatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->view_mat));
-  glUniformMatrix4fv(m_ModelMatrixLoc, 1, GL_FALSE, glm::value_ptr(globalMatrix()));
-  glUniformMatrix4fv(m_ProjectionMatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->projection_mat));
+  glm::mat4 VMmatrix = scene_params->view_mat * globalMatrix();
 
-  //glm::mat3 Nmatrix = glm::inverseTranspose(glm::mat3(MVmatrix));
+
+  glUseProgram(m_program);
+  glUniformMatrix4fv(m_VMmatrixLoc, 1, GL_FALSE, glm::value_ptr(VMmatrix));
+  glUniformMatrix4fv(m_PmatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->projection_mat));
 
   glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
-  glEnableVertexAttribArray(m_PositionLoc);
-  glEnableVertexAttribArray(m_ColorLoc);
-  glEnableVertexAttribArray(m_NormalLoc);
-  glVertexAttribPointer(m_PositionLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-  glVertexAttribPointer(m_ColorLoc, 4, GL_FLOAT, GL_FALSE, 0, (void*)(3 * sizeof(float) * m_nVertices));
-  glVertexAttribPointer(m_NormalLoc, 3, GL_FLOAT, GL_FALSE, 0, (void*)(7 * sizeof(float) * m_nVertices));
+  glEnableVertexAttribArray(m_posLoc);
+  glEnableVertexAttribArray(m_colLoc);
+  glEnableVertexAttribArray(m_norLoc);
+  glVertexAttribPointer(m_posLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+  glVertexAttribPointer(m_colLoc, 4, GL_FLOAT, GL_FALSE, 0, (void*)(3 * sizeof(float) * m_nVertices));
+  glVertexAttribPointer(m_norLoc, 3, GL_FLOAT, GL_FALSE, 0, (void*)(7 * sizeof(float) * m_nVertices));
 
   glDrawArrays(GL_TRIANGLES, 0, m_nVertices);
 
-  glDisableVertexAttribArray(m_PositionLoc);
-  glDisableVertexAttribArray(m_ColorLoc);
-  glDisableVertexAttribArray(m_NormalLoc);
+  glDisableVertexAttribArray(m_posLoc);
+  glDisableVertexAttribArray(m_colLoc);
+  glDisableVertexAttribArray(m_norLoc);
 }
 
 /// prints the size of the geometry box without transformation
