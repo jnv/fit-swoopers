@@ -2,12 +2,15 @@
 #define	INPUTMANAGER_H
 
 #include <bitset>
+
+#include <GL/glew.h> //Make glew happy...
 #include <GL/glut.h>
 #include <iostream>
 #include <glm/glm.hpp>
 
 #include "Singleton.h"
 #include "CameraManager.h"
+#include "SwoopManager.h"
 
 #define INPUT_BITSET_SIZE 255
 

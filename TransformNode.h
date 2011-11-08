@@ -21,8 +21,10 @@ public:
     void setIdentity();
     /// translate this node by vector tr
     void translate(const glm::vec3 & tr);
+    void translate(const float, const float, const float);
     /// rotate this node by angle a along vector vec
     void rotate(float a, const glm::vec3 & vec);
+    void rotate(float a, const float, const float, const float);
     /// scale this and children nodes
     void scale(const glm::vec3 & sc);
     // debug the matrix

@@ -21,6 +21,7 @@
 #include "CameraManager.h"
 #include "CameraNode.h"
 #include "InputManager.h"
+#include "SwoopManager.h"
 
 #ifndef M_PI
 #define M_PI 3.14159f
@@ -80,24 +81,14 @@ void InitializeScene()
 
     // create transformation for the terrain
     TransformNode * ptrans = new TransformNode("ter-trans3", root_node);
-    ptrans->translate(glm::vec3(0, 0, -9));
-    ptrans->rotate(14.f, glm::vec3(1, 0, 0));
+    ptrans->translate(glm::vec3(0, -0.5, -10));
+//    ptrans->rotate(10.f, glm::vec3(1, 0, 0));
     ptrans->scale(glm::vec3(12, 0.2, 12));
     TerrainNode *terrain = new TerrainNode("terrain1", ptrans);
     terrain->load("data/terrain");
 
-    // create transform matrix for the car
-    ctrans = new TransformNode("c-trans1", root_node);
-    ctrans->translate(glm::vec3(1.0, -0.53, -5.4));
-    //    ctrans->rotate(10, glm::vec3(1.0, 0.0, 0));
-    //    ctrans->rotate(11, glm::vec3(1.0, 0.0, 1.0));
-    ctrans->rotate(-90.f, glm::vec3(1, 0, 0));
-    ctrans->scale(glm::vec3(0.7, 0.7, 0.7));
-    // load the car as the mesh
-    MeshNode * car = new MeshNode("data/ufo.3ds", ctrans);
-    car->loadMesh();
-    car->printBBoxSize();
-//    TransformNode * cam_car_trans = new TransformNode("cam-car-trans", car);
+    TransformNode * strans = SwoopManager::Initialize();
+    strans->setParentNode(root_node);
 
     //XXX Animated camera... Why the hell not?
     RotationAnimNode * cam_anim = new RotationAnimNode("cam_anim", root_node);

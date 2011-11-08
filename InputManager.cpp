@@ -121,11 +121,11 @@ void InputManager::update()
     {
 	cman->rotate(15, glm::vec3(0, 1, 0));
     }
-    if(m_keys['w']) //up
+    if(m_keys['w']) //fwd
     {
 	cman->translate(glm::vec3(0, 0, 1));
     }
-    if(m_keys['s']) //down
+    if(m_keys['s']) //bwd
     {
 	cman->translate(glm::vec3(0, 0, -1));
     }
@@ -143,87 +143,22 @@ void InputManager::update()
 	m_keys.reset('c'); //Oneshot
     }
 
-
-    //    switch(key)
-    //    {
-    //    case 27:
-    //	exit(0); //glutLeaveMainLoop();
-    //	break;
-    //	// Operations that move pyramid around the scene
-    //	// and enable to orient in the scene
-    //    case 'a':
-    //	ctrans->rotate(15, glm::vec3(1, 0, 0));
-    //	break;
-    //    case 'd':
-    //	ctrans->rotate(-15, glm::vec3(1, 0, 0));
-    //	break;
-    //    case 's':
-    //	ctrans->rotate(15, glm::vec3(0, 1, 0));
-    //	break;
-    //    case 'w':
-    //	ctrans->rotate(-15, glm::vec3(0, 1, 0));
-    //	break;
-    //    case 'e':
-    //	ctrans->rotate(15, glm::vec3(0, 0, 1));
-    //	break;
-    //    case 'q':
-    //	ctrans->rotate(-15, glm::vec3(0, 0, 1));
-    //	break;
-    //    case 'y':
-    //	ctrans->translate(glm::vec3(0.1, 0, 0));
-    //	break;
-    //    case 'u':
-    //	ctrans->translate(glm::vec3(-0.1, 0, 0));
-    //	break;
-    //    case 'h':
-    //	ctrans->translate(glm::vec3(0.0, 0.1, 0));
-    //	break;
-    //    case 'j':
-    //	ctrans->translate(glm::vec3(0.0, -0.1, 0));
-    //	break;
-    //    case 'n':
-    //	ctrans->translate(glm::vec3(0.0, 0.0, 0.1));
-    //	break;
-    //    case 'm':
-    //	ctrans->translate(glm::vec3(0.0, 0, -0.1));
-    //	break;
-    //    case 'c':
-    //	CameraManager::getInstance()->nextCamera();
-    //    }
-
-    //    switch(specKey)
-    //    {
-    //    case GLUT_KEY_UP:
-    //
-    //	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, 0, -0.1)) * scene_params.view_mat;
-    //	break;
-    //    case GLUT_KEY_F11:
-    //	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, 0.1, 0)) * scene_params.view_mat;
-    //	break;
-    //    case GLUT_KEY_F12:
-    //	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0, -0.1, 0)) * scene_params.view_mat;
-    //	break;
-    //    case GLUT_KEY_F9:
-    //	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(0.1, 0, 0)) * scene_params.view_mat;
-    //	break;
-    //    case GLUT_KEY_F10:
-    //	//	scene_params.view_mat = Matrix4<float>::FromTranslation(glm::vec3(-0.1, 0, 0)) * scene_params.view_mat;
-    //	break;
-    //    case GLUT_KEY_LEFT:
-    //
-    //	break;
-    //    case GLUT_KEY_RIGHT:
-    //
-    //	break;
-    //    case GLUT_KEY_PAGE_UP:
-    //
-    //	break;
-    //    case GLUT_KEY_HOME:
-    //	cman->rotate(15, glm::vec3(1, 0, 0));
-    //	break;
-    //    case GLUT_KEY_END:
-    //	cman->rotate(-15, glm::vec3(1, 0, 0));
-    //	break;
-    //    }
+    SwoopManager * sman = SwoopManager::getInstance();
+    if(m_specialKeys[GLUT_KEY_UP])
+    {
+	sman->forward();
+    }
+    if(m_specialKeys[GLUT_KEY_DOWN])
+    {
+	sman->backward();
+    }
+    if(m_specialKeys[GLUT_KEY_LEFT])
+    {
+	sman->left();
+    }
+    if(m_specialKeys[GLUT_KEY_RIGHT])
+    {
+	sman->right();
+    }
 
 }

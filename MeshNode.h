@@ -1,9 +1,9 @@
 #ifndef MESH_HODE_H
 #define MESH_HODE_H
 
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <GL/glew.h>
 #include "SceneNode.h"
 
 class MeshNode : public SceneNode

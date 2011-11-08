@@ -16,10 +16,22 @@ void TransformNode::translate(const glm::vec3 &tr)
     glm::mat4 trmat = glm::gtx::transform::translate(tr);
     m_local_mat *= trmat;
 }
+void TransformNode::translate(const float x, const float y, const float z)
+{
+
+    glm::mat4 trmat = glm::gtx::transform::translate(x, y, z);
+    m_local_mat *= trmat;
+}
 
 void TransformNode::rotate(float a, const glm::vec3 &vec)
 {
     glm::mat4 trmat = glm::gtx::transform::rotate(a, vec);
+    m_local_mat *= trmat;
+}
+
+void TransformNode::rotate(float a, const float x, const float y, const float z)
+{
+    glm::mat4 trmat = glm::gtx::transform::rotate(a, x, y, z);
     m_local_mat *= trmat;
 }
 
