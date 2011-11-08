@@ -97,11 +97,16 @@ void InitializeScene()
     MeshNode * car = new MeshNode("data/ufo.3ds", ctrans);
     car->loadMesh();
     car->printBBoxSize();
-    TransformNode * cam_car_trans = new TransformNode("cam-car-trans", car);
+//    TransformNode * cam_car_trans = new TransformNode("cam-car-trans", car);
+
+    //XXX Animated camera... Why the hell not?
+    RotationAnimNode * cam_anim = new RotationAnimNode("cam_anim", root_node);
     //    cam_car_trans->translate(glm::vec3(1.0, -0.53, -5.4));
     //    cam_car_trans->scale(glm::vec3(0.5, 0.5, 0.5));
-    cam_car_trans->rotate(90.f, glm::vec3(1, 0, 0));
-    CameraNode * cam_car = new CameraNode("cam_car", cam_car_trans);
+    cam_anim->setSpeed(.1);
+    cam_anim->setAxis(glm::vec3(0, 1, 0));
+//    cam_car_trans->rotate(90.f, glm::vec3(1, 0, 0));
+    CameraNode * cam2 = new CameraNode("cam2", cam_anim);
 
 
 #if 0
