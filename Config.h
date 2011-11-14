@@ -4,9 +4,7 @@
 #include <fstream>
 #include <map>
 #include "util.h"
-#include "Log.h"
 #include "Singleton.h"
-#include "exceptions/ConfigException.h"
 using namespace std;
 
 #define BUFFER_LEN 1024 //< Maximum length of line

@@ -22,15 +22,14 @@ Config::~Config()
 void Config::parseFile(const string fname)
 {
     if(loaded_)
-	throw ConfigException(config_LOADED, "Attempt to rewrite configuration", "Config::parseFile");
+	cerr << "Config::parseFile: Attempt to rewrite configuration" << endl;
 
     ifstream file(fname.c_str());
     int l = 0;
-    Log * log = Log::getInstance();
 
 
     if(!file.is_open())
-	throw ConfigException(config_FILE_OPEN, "Couldn't open conf. file: " + fname, "Config::parseFile");
+	cerr << "Config::parseFile: Couldn't open conf. file: " << fname << endl;
 
     //	string key, value;
     char buffer[BUFFER_LEN];
@@ -41,7 +40,7 @@ void Config::parseFile(const string fname)
 	file.getline(buffer, BUFFER_LEN);
 
 	if(!parseLine(buffer))
-	    log->debug("Skipping line " + intToStr(l));
+	    clog << "Config::parseFile: skipping line " << l;
     }
     file.close();
     loaded_ = true;
@@ -67,8 +66,7 @@ bool Config::parseLine(const string& line)
     if(left.empty() || right.empty())
 	return false;
 
-    Log::getInstance()->debug("Config: '" + left + "' = '" + right + "'");
-
+    clog << "Config: '" << left << "' = '" << right << "'" << endl;
     add(left, right);
     return true;
 }
@@ -114,7 +112,7 @@ int Config::getInt(const string key) const
     int ret = strToInt(val, ok);
 
     if(!ok)
-	throw ConfigException(config_INT, key, "Config::getInt");
+	cerr << "Config::getInt: failed for " << key << endl;
 
     return ret;
 }
@@ -130,7 +128,7 @@ string Config::getString(const string key) const
     map<string, string>::const_iterator it = options_.find(key);
     if(it == options_.end())
     {
-	throw ConfigException(config_KEY, key, "Config::getString");
+	cerr << "Config::getString: failed for " << key << endl;
     }
 
     return(string) (*it).second;
