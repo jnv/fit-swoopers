@@ -1,4 +1,7 @@
-// Vertex shader for meshes of class MeshNode
+// Vertex shader for meshes of class TerrainNode
+// Based on Basic Shading tutorial from http://www.opengl-tutorial.org/
+// Released under DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+
 #version 130
 
 in vec4 theColor;
@@ -18,12 +21,7 @@ out vec3 outputColor;
 
 void main()
 {
-/*
-  float k = 1;
-  vec3 L = normalize(-thePosition);
-  vec3 N = normalize(theNormal);
-  outputColor = theColor * dot(N, L);
-  */
+
   	// Light emission properties
 	vec3 LightColor = AmbientLight0.color;
 	float LightPower = AmbientLight0.power;

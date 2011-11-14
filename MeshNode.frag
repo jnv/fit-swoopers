@@ -1,4 +1,6 @@
 // Fragment shader for meshes of class MeshNode
+// Based on Basic Shading tutorial from http://www.opengl-tutorial.org/
+// Released under DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 #version 130
 
 in vec4 theColor;

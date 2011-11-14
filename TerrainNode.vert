@@ -1,4 +1,6 @@
-// Vertex shader for meshes of class MeshNode
+// Vertex shader for meshes of class TerrainNode
+// Based on Basic Shading tutorial from http://www.opengl-tutorial.org/
+// Released under DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 #version 130
 
 uniform mat4 M;
@@ -18,15 +20,6 @@ out vec4 theColor;
 
 void main()
 {
-/*
-	mat4 MV = V*M;
-  vec4 pos_v = MV * vec4(position, 1);
-  theColor = color;
-  theNormal = (MV * vec4(normal, 0)).xyz;
-  thePosition = pos_v.xyz / pos_v.w;
-  gl_Position = MVP * pos_v;
-*/
-
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position =  MVP * vec4(position,1);
 	
