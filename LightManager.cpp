@@ -1,10 +1,3 @@
-/* 
- * File:   LightManager.cpp
- * Author: j
- * 
- * Created on 8. listopad 2011, 5:12
- */
-
 #include "LightManager.h"
 
 LightManager::LightManager()
