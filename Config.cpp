@@ -40,7 +40,7 @@ void Config::parseFile(const string fname)
 	file.getline(buffer, BUFFER_LEN);
 
 	if(!parseLine(buffer))
-	    clog << "Config::parseFile: skipping line " << l;
+	    clog << "Config::parseFile: skipping line " << l << endl;
     }
     file.close();
     loaded_ = true;
@@ -105,7 +105,7 @@ void Config::add(const string key, const string value)
  * @param key Option's name.
  * @return Integer of option's value.
  */
-int Config::getInt(const string key) const
+int Config::getInt(const string& key) const
 {
     string val = getString(key);
     bool ok;
@@ -123,14 +123,33 @@ int Config::getInt(const string key) const
  * @param key Option's name.
  * @return Option's value.
  */
-string Config::getString(const string key) const
+string Config::getString(const string& key) const
 {
     map<string, string>::const_iterator it = options_.find(key);
     if(it == options_.end())
     {
-	cerr << "Config::getString: failed for " << key << endl;
+	cerr << "Config::getString: " << key << "not found" << endl;
     }
 
     return(string) (*it).second;
 }
 
+
+/**
+ * Gets option as boolean.
+ * Accepts only 0.as false.
+ *
+ * @param key Option's name
+ * @return Option's value
+ */
+bool Config::getBool(const string& key) const
+{
+    string val = getString(key);
+
+    if(val[0] == '0')
+    {
+	return false;
+    }
+
+    return true;
+}

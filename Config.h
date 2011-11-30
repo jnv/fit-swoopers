@@ -11,6 +11,8 @@ using namespace std;
 
 /**
  * Singleton for accessing configuration options, stored in ::options_ map.
+ *
+ * @todo add caching map for each type
  */
 class Config : public Singleton<Config>
 {
@@ -21,8 +23,9 @@ public:
 	//Get values of given key.
 	// Could use templates, but would be overkill for my needs
 
-	int getInt(const string) const;
-	string getString(const string) const;
+	int getInt(const string&) const;
+	string getString(const string&) const;
+        bool getBool(const string&) const;
 	friend class Singleton<Config>;
 protected:
 	Config();

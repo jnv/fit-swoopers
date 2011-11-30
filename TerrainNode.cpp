@@ -25,6 +25,9 @@ m_nTriangles(0)
 	shaderList.push_back(CreateShader(GL_VERTEX_SHADER, "TerrainNode.vert"));
 	shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "TerrainNode.frag"));
 
+//	shaderList.push_back(CreateShader(GL_VERTEX_SHADER, "Spotlight.vert"));
+	shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "Spotlight.frag"));
+
 	// Create the program with two shaders
 	m_program = CreateProgram(shaderList);
 	m_ModelMatrixLoc = glGetUniformLocation(m_program, "M");

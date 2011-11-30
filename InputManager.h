@@ -27,20 +27,20 @@ public:
 
     typedef std::bitset<INPUT_BITSET_SIZE> Keyset;
 
-    InputManager();
-    ~InputManager();
-
     static void Initialize();
-    static void OnKeyPress(unsigned char key, int x, int y);
-    static void OnKeyRelease(unsigned char key, int x, int y);
-    static void OnSpecialPress(int key, int x, int y);
-    static void OnSpecialRelease(int key, int x, int y);
+    static void OnKeyPress(unsigned char, int, int);
+    static void OnKeyRelease(unsigned char, int, int);
+    static void OnSpecialPress(int, int, int);
+    static void OnSpecialRelease(int, int, int);
     static void OnMouse(int, int, int, int);
     static void OnMotion(int, int);
 
     void update();
 
 protected:
+    InputManager();
+    ~InputManager();
+
     void press(unsigned char);
     void release(unsigned char);
     void press(int);

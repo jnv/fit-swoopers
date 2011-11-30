@@ -23,10 +23,11 @@ TransformNode* SwoopManager::Initialize()
     TransformNode * tng = new TransformNode("swoop_transform_global");
     TransformNode * tnl = new TransformNode("swoop_transform_local", tng);
 
-    MeshNode * mn = new MeshNode("data/ufo.3ds", tnl); //XXX data file via configuration
+    //MeshNode * mn = new MeshNode("data/model/swoop-maya.obj", tnl); //XXX data file via configuration
+    MeshNode * mn = new MeshNode("data/model/swoop.ac", tnl); //XXX data file via configuration
 
     tnl->translate(glm::vec3(1.0, -0.53, -5.4));
-    tnl->rotate(-95.f, 1.f, 0.f, 0.f);
+    //tnl->rotate(-95.f, 1.f, 0.f, 0.f);
     tnl->scale(glm::vec3(0.7, 0.7, 0.7));
 
     mn->loadMesh();

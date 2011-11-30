@@ -14,6 +14,17 @@ GLint MeshNode::m_posLoc = -1;
 GLint MeshNode::m_colLoc = -1;
 GLint MeshNode::m_norLoc = -1;
 
+void traverse_node(aiNode * node)
+{
+    std::cout << "node: " << node->mName.data << " ch: " << node->mNumChildren << " meshes: " << node->mNumMeshes << std::endl;
+
+    for(unsigned int i = 0; i < node->mNumChildren; i++)
+    {
+	traverse_node(node->mChildren[i]);
+    }
+
+}
+
 MeshNode::MeshNode(const char* file_name, SceneNode* parent) :
 SceneNode(file_name, parent), m_vertexBufferObject(0), m_nVertices(0)
 {
@@ -82,6 +93,8 @@ bool MeshNode::loadMesh()
 	memcpy(cur_vert, mesh->mVertices, mesh->mNumVertices * sizeof(float) * 3);
 	memcpy(cur_nor, mesh->mNormals, mesh->mNumVertices * sizeof(float) * 3);
 
+	std::cout << "mesh: " << mesh->mName.data << std::endl;
+
 	aiMaterial * material = scn->mMaterials[mesh->mMaterialIndex];
 	// copy mesh material color to all mesh vertices
 	for(unsigned v = 0; v < mesh->mNumVertices; ++v)
@@ -92,6 +105,7 @@ bool MeshNode::loadMesh()
 	    *cur_col++ = color.g;
 	    *cur_col++ = color.b;
 	    *cur_col++ = color.a;
+
 
 	    // extend bounding box
 	    for(int j = 0; j < 3; j++)
@@ -104,6 +118,13 @@ bool MeshNode::loadMesh()
 	cur_vert += mesh->mNumVertices * 3;
 	cur_nor += mesh->mNumVertices * 3;
     }
+
+    aiNode * root = scn->mRootNode;
+    //    size_t length = root->mName.length;
+    traverse_node(root);
+    //std::cout << "node: " << root->mName.data << std::endl;
+
+
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
     glBufferData(GL_ARRAY_BUFFER, m_nVertices * sizeof(float) * 10, vertices, GL_STATIC_DRAW);
