@@ -16,6 +16,18 @@ Config::~Config()
 }
 
 /**
+ * Converts string to integer
+ */
+int strToInt(const string& s, bool& success)
+{
+    int ret;
+    istringstream stream(s);
+
+    success = (stream >> ret);
+    return ret;
+}
+
+/**
  * Loads and parse file.
  * @param fname Path to configuration file.
  */
@@ -133,7 +145,6 @@ string Config::getString(const string& key) const
 
     return(string) (*it).second;
 }
-
 
 /**
  * Gets option as boolean.

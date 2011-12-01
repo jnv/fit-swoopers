@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <sstream>
 #include "util.h"
 #include "Singleton.h"
 using namespace std;
@@ -17,32 +18,32 @@ using namespace std;
 class Config : public Singleton<Config>
 {
 public:
-	/// Load and parse given configuration file
-	void parseFile(const string);
+    /// Load and parse given configuration file
+    void parseFile(const string);
 
-	//Get values of given key.
-	// Could use templates, but would be overkill for my needs
+    //Get values of given key.
+    // Could use templates, but would be overkill for my needs
 
-	int getInt(const string&) const;
-	string getString(const string&) const;
-        bool getBool(const string&) const;
-	friend class Singleton<Config>;
+    int getInt(const string&) const;
+    string getString(const string&) const;
+    bool getBool(const string&) const;
+    friend class Singleton<Config>;
 protected:
-	Config();
-	~Config();
-	bool parseLine(const string&);
-	string trim(const string&);
+    Config();
+    ~Config();
+    bool parseLine(const string&);
+    string trim(const string&);
 
-	//add key-value pair
-	void add(const string, const string);
+    //add key-value pair
+    void add(const string, const string);
 
-	/// Options storage
-	map<string, string> options_;
+    /// Options storage
+    map<string, string> options_;
 
-	/// Whether config file was already loaded. To prevent multiple calls to parseFile()
-	bool loaded_;
+    /// Whether config file was already loaded. To prevent multiple calls to parseFile()
+    bool loaded_;
 private:
-	Config(const Config&);
+    Config(const Config&);
 
 };
 

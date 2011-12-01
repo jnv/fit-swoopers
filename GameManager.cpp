@@ -67,11 +67,11 @@ void GameManager::Initialize()
 
     gm->mSceneParams.view_mat = glm::mat4();
     gm->mSceneParams.projection_mat = glm::perspective(
-						      45.f, // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
-						      gm->mAspectRatio, // Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar ?
-						      0.1f, // Near clipping plane. Keep as big as possible, or you'll get precision issues.
-						      100.0f // Far clipping plane. Keep as little as possible.
-						      );
+						       45.f, // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
+						       gm->mAspectRatio, // Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar ?
+						       0.1f, // Near clipping plane. Keep as big as possible, or you'll get precision issues.
+						       100.0f // Far clipping plane. Keep as little as possible.
+						       );
 
     /*glm::lookAt(glm::vec3(4, 3, 3), // Camera is at (4,3,3), in World Space
 	    glm::vec3(0, 0, 0), // and looks at the origin
@@ -80,6 +80,7 @@ void GameManager::Initialize()
 
     CameraManager::getInstance()->setSceneParams(&gm->mSceneParams);
     InputManager::Initialize();
+    ilInit();
     gm->buildScene();
 }
 
@@ -92,8 +93,8 @@ void GameManager::buildScene()
     CameraNode * cam_global = new CameraNode("cam_global", mRootNode);
 
 
-    TransformNode * strans = SwoopManager::Initialize();
-    strans->setParentNode(mRootNode);
+    //TransformNode * strans = SwoopManager::Initialize();
+    //strans->setParentNode(mRootNode);
 
     //XXX Animated camera... Why the hell not?
     RotationAnimNode * cam_anim = new RotationAnimNode("cam_anim", mRootNode);
@@ -114,11 +115,24 @@ void GameManager::addTerrain()
     Config* c = Config::getInstance();
     std::string file = c->getString("terrain");
 
+    /*
     // create transformation for the terrain
     TransformNode * ptrans = new TransformNode("terrain-trans", mRootNode);
     ptrans->translate(glm::vec3(0, -0.5, -10));
     //    ptrans->rotate(10.f, glm::vec3(1, 0, 0));
     ptrans->scale(glm::vec3(12, 0.2, 12));
     TerrainNode *terrain = new TerrainNode("terrain", ptrans);
-    terrain->load(file.c_str());
+    //terrain->load(file.c_str());
+    terrain->load("data/terr01-hmap.png", "data/terr01-normals.png", "data/testgrid.png" );*/
+    TransformNode * ptrans = new TransformNode("ter-trans3", mRootNode);
+    ptrans->translate(glm::vec3(-0.5, -0.5, -2.0));
+
+    TransformNode * pyra_trans = new TransformNode("ter-trans4", ptrans);
+    pyra_trans->translate(glm::vec3(0, 0, 0));
+
+    RotationAnimNode * anim = new RotationAnimNode("terrot", pyra_trans);
+    anim->setAxis(glm::vec3(1, 0, 0));
+    anim->setSpeed(0.5);
+    TerrainNode *terrain = new TerrainNode("terrain1", anim);
+    terrain->load("data/terr01-hmap.png", "data/terr01-normals.png", "data/testgrid.png");
 }

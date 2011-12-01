@@ -1,69 +1,51 @@
-// Vertex shader for meshes of class TerrainNode
-// Based on Basic Shading tutorial from http://www.opengl-tutorial.org/
-// Released under DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-
+// Fragment shader for meshes of class MeshNode
 #version 130
 
-in vec4 theColor;
-in vec3 Position_worldspace;
-in vec3 Normal_cameraspace;
-in vec3 EyeDirection_cameraspace;
-in vec3 LightDirection_cameraspace;
+smooth in vec3 thePosition; // camera space coordinates (-V if light is in camera center)
+smooth in vec2 texCoord;
 
-uniform struct AmbientLight
+uniform mat4 Mmatrix;
+uniform mat4 Vmatrix;
+
+uniform sampler2D normalMap;
+
+out vec4 outputColor;
+
+vec3 lPos = vec3(0, 0, 0);
+
+// this code samples blender tangent space normalmap to be usable on our terrain
+vec3 sampleNormalBlender()
 {
-	vec3 color;
-	vec3 position;
-	float power;
-} AmbientLight0;
+  // 1st we have to invert tex coordinates
+  vec4 texel = texture(normalMap, vec2(1, 1) - texCoord);
+  vec3 ret;
+  // now swap coordinates and remap
+  ret.x = -texel.x * 2.0 + 1.0; // [0, 1] -> [-1, 1] + invert
+  ret.y = texel.z;              // [0, 1] -> [0, 1]
+  ret.z = texel.y * 2.0 - 1.0;  // [0, 1] -> [-1, 1]
+  return ret;
+}
 
-out vec3 outputColor;
+// this code samples blender tangent space normalmap to be usable on our terrain
+vec3 sampleNormalGenerated()
+{
+  // 1st we have to invert tex coordinates
+  vec4 texel = texture(normalMap, texCoord);
+  vec3 ret;
+  // now swap coordinates and remap
+  ret.x = texel.x * 2.0 - 1.0;
+  ret.y = texel.z;
+  ret.z = -texel.y * 2.0 + 1.0;
+  return ret;
+}
 
 void main()
 {
+  //vec3 N = sampleNormalBlender();
+  vec3 N = vec3(0,1,0);
+  N = normalize(N);
+  N = (Vmatrix * Mmatrix * vec4(N, 0)).xyz;
 
-  	// Light emission properties
-	vec3 LightColor = AmbientLight0.color;
-	float LightPower = AmbientLight0.power;
-	
-	// Material properties
-	vec3 MaterialDiffuseColor = theColor.rgb;
-	vec3 MaterialAmbiantColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-	vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
-
-	// Distance to the light
-	float distance = length( AmbientLight0.position - Position_worldspace );
-
-	// Normal of the computed fragment, in camera space
-	vec3 n = normalize( Normal_cameraspace );
-	// Direction of the light (from the fragment to the light)
-	vec3 l = normalize( LightDirection_cameraspace );
-	// Cosine of the angle between the normal and the light direction, 
-	// clamped above 0
-	//  - light is at the vertical of the triangle -> 1
-	//  - light is perpendicular to the triangle -> 0
-	//  - light is behind the triangle -> 0
-	float cosTheta = clamp( dot( n,l ), 0,1 );
-	
-	// Eye vector (towards the camera)
-	vec3 E = normalize(EyeDirection_cameraspace);
-	// Direction in which the triangle reflects the light
-	vec3 R = reflect(-l,n);
-	// Cosine of the angle between the Eye vector and the Reflect vector,
-	// clamped to 0
-	//  - Looking into the reflection -> 1
-	//  - Looking elsewhere -> < 1
-	float cosAlpha = clamp( dot( E,R ), 0,1 );
-	
-	vec3 tmpColor = 
-		// Ambiant : simulates indirect lighting
-		MaterialAmbiantColor +
-		// Diffuse : "color" of the object
-		MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) +
-		// Specular : reflective highlight, like a mirror
-		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
-		
-   	outputColor = tmpColor;
-		
-		
+  vec3 L = normalize(lPos - thePosition);
+  outputColor = vec4(1, 1, 1, 1) * clamp(dot(N, L), 0, 1);
 }

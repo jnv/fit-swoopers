@@ -12,6 +12,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include <IL/il.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Singleton.h"
