@@ -42,6 +42,8 @@ public:
     static void OnTimer(int);
     static void OnReshape(int, int);
 
+    static void Reset();
+
 
 protected:
 

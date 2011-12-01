@@ -6,6 +6,7 @@
  */
 
 #include "InputManager.h"
+#include "GameManager.h"
 
 void InputManager::Initialize()
 {
@@ -89,6 +90,18 @@ void InputManager::press(unsigned char key)
 	return;
     }
 
+    if(key == 'c')
+    {
+	CameraManager::getInstance()->nextCamera();
+	return;
+    }
+
+    if(key == 'r')
+    {
+	GameManager::Reset();
+	return;
+    }
+
 
     m_keys.set(key);
 }
@@ -165,11 +178,6 @@ void InputManager::update()
     if(m_keys['e']) //cam down
     {
 	cman->translate(glm::vec3(0, -1, 0));
-    }
-    if(m_keys['c'])
-    {
-	cman->nextCamera();
-	m_keys.reset('c'); //Oneshot
     }
 
     SwoopManager * sman = SwoopManager::getInstance();

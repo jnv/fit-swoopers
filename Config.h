@@ -18,16 +18,18 @@ using namespace std;
 class Config : public Singleton<Config>
 {
 public:
+    friend class Singleton<Config>;
     /// Load and parse given configuration file
-    void parseFile(const string);
+    void parseFile(const string&);
 
     //Get values of given key.
     // Could use templates, but would be overkill for my needs
-
     int getInt(const string&) const;
     string getString(const string&) const;
     bool getBool(const string&) const;
-    friend class Singleton<Config>;
+    
+    void reload();
+
 protected:
     Config();
     ~Config();
@@ -42,6 +44,7 @@ protected:
 
     /// Whether config file was already loaded. To prevent multiple calls to parseFile()
     bool loaded_;
+    string configFile_;
 private:
     Config(const Config&);
 

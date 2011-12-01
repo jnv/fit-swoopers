@@ -33,6 +33,13 @@ CameraManager::~CameraManager()
 {
 }
 
+void CameraManager::reset()
+{
+    clog << "CameraManager::reset" << endl;
+    m_current = NULL;
+    m_cameras.clear();
+}
+
 /**
  * Cycles through cameras
  */

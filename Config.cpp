@@ -31,11 +31,8 @@ int strToInt(const string& s, bool& success)
  * Loads and parse file.
  * @param fname Path to configuration file.
  */
-void Config::parseFile(const string fname)
+void Config::parseFile(const string& fname)
 {
-    if(loaded_)
-	cerr << "Config::parseFile: Attempt to rewrite configuration" << endl;
-
     ifstream file(fname.c_str());
     int l = 0;
 
@@ -56,6 +53,7 @@ void Config::parseFile(const string fname)
     }
     file.close();
     loaded_ = true;
+    configFile_ = fname;
 }
 
 /**
@@ -163,4 +161,11 @@ bool Config::getBool(const string& key) const
     }
 
     return true;
+}
+
+void Config::reload()
+{
+    clog << "Reloading configuration file " << configFile_ << endl;
+    options_.clear();
+    parseFile(configFile_);
 }

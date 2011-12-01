@@ -97,13 +97,14 @@ void GameManager::buildScene()
     //strans->setParentNode(mRootNode);
 
     //XXX Animated camera... Why the hell not?
+    /*
     RotationAnimNode * cam_anim = new RotationAnimNode("cam_anim", mRootNode);
     //    cam_car_trans->translate(glm::vec3(1.0, -0.53, -5.4));
     //    cam_car_trans->scale(glm::vec3(0.5, 0.5, 0.5));
     cam_anim->setSpeed(.1);
     cam_anim->setAxis(glm::vec3(0, 1, 0));
     //    cam_car_trans->rotate(90.f, glm::vec3(1, 0, 0));
-    CameraNode * cam2 = new CameraNode("cam2", cam_anim);
+    CameraNode * cam2 = new CameraNode("cam2", cam_anim);*/
 
 
     // dump our scene graph tree for debug
@@ -124,15 +125,25 @@ void GameManager::addTerrain()
     TerrainNode *terrain = new TerrainNode("terrain", ptrans);
     //terrain->load(file.c_str());
     terrain->load("data/terr01-hmap.png", "data/terr01-normals.png", "data/testgrid.png" );*/
-    TransformNode * ptrans = new TransformNode("ter-trans3", mRootNode);
-    ptrans->translate(glm::vec3(-0.5, -0.5, -2.0));
+    TransformNode * trans = new TransformNode("terrain-trans1", mRootNode);
+    trans->translate(glm::vec3(-0.5, -0.5, -2.0));
 
-    TransformNode * pyra_trans = new TransformNode("ter-trans4", ptrans);
-    pyra_trans->translate(glm::vec3(0, 0, 0));
 
-    RotationAnimNode * anim = new RotationAnimNode("terrot", pyra_trans);
-    anim->setAxis(glm::vec3(1, 0, 0));
-    anim->setSpeed(0.5);
-    TerrainNode *terrain = new TerrainNode("terrain1", anim);
+    TerrainNode *terrain = new TerrainNode("terrain", trans);
     terrain->load("data/desert.tif", "data/terr01-normals.png", "data/testgrid.png");
+}
+
+
+void GameManager::Reset()
+{
+    std::cout << "Resetting scene" << endl;
+    GameManager::getInstance()->resetScene();
+}
+
+void GameManager::resetScene()
+{
+    delete mRootNode;
+    Config::getInstance()->reload();
+    CameraManager::getInstance()->reset();
+    buildScene();
 }

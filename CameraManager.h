@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <GL/glut.h>
@@ -20,6 +21,7 @@ public:
     CameraManager();
 
     ~CameraManager();
+    void reset();
 
     void nextCamera();
     bool isCurrent(SceneNode*) const;
