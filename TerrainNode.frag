@@ -8,6 +8,7 @@ uniform mat4 Mmatrix;
 uniform mat4 Vmatrix;
 
 uniform sampler2D normalMap;
+uniform sampler2D colorMap;
 
 out vec4 outputColor;
 
@@ -41,11 +42,13 @@ vec3 sampleNormalGenerated()
 
 void main()
 {
-  //vec3 N = sampleNormalBlender();
-  vec3 N = vec3(0,1,0);
+  vec3 N = sampleNormalBlender();
+  //vec3 N = vec3(0,1,0);
   N = normalize(N);
   N = (Vmatrix * Mmatrix * vec4(N, 0)).xyz;
 
+  vec4 color = texture(colorMap, texCoord);
+
   vec3 L = normalize(lPos - thePosition);
-  outputColor = vec4(1, 1, 1, 1) * clamp(dot(N, L), 0, 1);
+  outputColor = color * clamp(dot(N, L), 0, 1);
 }
