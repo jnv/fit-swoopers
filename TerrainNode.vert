@@ -43,7 +43,7 @@ void main()
   texCoord = (tile_pos + vtx_pos) * 1.0 / imgWidth;
 
   float height = texture(heightMap, texCoord).r;
-  height = height / heightCoef;
+  //height = height / heightCoef;
   // x and z coordinates match our normalized coordinates, y coord (height) is obtained from heightmap
   vec4 pos_v = Mmatrix * vec4(texCoord.x, height, -texCoord.y, 1);
   // we send our world-space positon to pixel shaders as usual

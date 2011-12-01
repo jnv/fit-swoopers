@@ -1,10 +1,5 @@
 #include "TerrainNode.h"
-#include "util.h"
 
-#include <cassert>
-#include <cstdio>
-#include <iostream>
-#include <glm/gtc/type_ptr.hpp>
 using namespace std;
 
 GLuint TerrainNode::m_program = 0;
@@ -48,9 +43,10 @@ m_nVertices(0)
 /* Loads a terragen file as well as a texture for it,  */
 
 /* interpretting it as a terrain. Resolution must be 513 x 513. */
-int TerrainNode::load(const char * hmap, const char * nmap, const char * cmap)
+int TerrainNode::load(const char * hmap, const char * cmap, const char * nmap)
 {
-    m_height_map = CreateTexture(hmap);
+    m_height_map = CreateHeightTexture(hmap, m_rawHeightMap);
+    cout << "TerrainNode m_rawHeightMap: " << m_rawHeightMap.size << endl;
     if(nmap != NULL)
 	m_normal_map = CreateTexture(nmap);
     else

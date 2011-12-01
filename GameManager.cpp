@@ -6,6 +6,7 @@
  */
 
 #include "GameManager.h"
+#include "TerrainBuilder.h"
 
 GameManager::GameManager()
 {
@@ -116,6 +117,8 @@ void GameManager::addTerrain()
     Config* c = Config::getInstance();
     std::string file = c->getString("terrain");
 
+    TerrainBuilder tb;
+
     /*
     // create transformation for the terrain
     TransformNode * ptrans = new TransformNode("terrain-trans", mRootNode);
@@ -125,14 +128,9 @@ void GameManager::addTerrain()
     TerrainNode *terrain = new TerrainNode("terrain", ptrans);
     //terrain->load(file.c_str());
     terrain->load("data/terr01-hmap.png", "data/terr01-normals.png", "data/testgrid.png" );*/
-    TransformNode * trans = new TransformNode("terrain-trans1", mRootNode);
-    trans->translate(glm::vec3(-0.5, -0.5, -2.0));
 
-
-    TerrainNode *terrain = new TerrainNode("terrain", trans);
-    terrain->load("data/desert.tif", "data/terr01-normals.png", "data/testgrid.png");
+    tb.prepareNode(mRootNode, "data/desert.tif", "data/testgrid.png", "data/terr01-normals.png");
 }
-
 
 void GameManager::Reset()
 {
