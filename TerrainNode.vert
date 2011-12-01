@@ -7,6 +7,8 @@ uniform mat4 Pmatrix;
 uniform sampler2D heightMap;
 uniform int imgWidth;
 
+uniform float heightCoef;
+
 smooth out vec3 thePosition; // camera space coordinates
 smooth out vec2 texCoord; // generated texture coordinates
 
@@ -40,8 +42,10 @@ void main()
   // also final coords are normalized to [0.0, 1.0] interval
   texCoord = (tile_pos + vtx_pos) * 1.0 / imgWidth;
 
+  float height = texture(heightMap, texCoord).r;
+  height = height / heightCoef;
   // x and z coordinates match our normalized coordinates, y coord (height) is obtained from heightmap
-  vec4 pos_v = Mmatrix * vec4(texCoord.x, texture(heightMap, texCoord).r, -texCoord.y, 1);
+  vec4 pos_v = Mmatrix * vec4(texCoord.x, height, -texCoord.y, 1);
   // we send our world-space positon to pixel shaders as usual
   thePosition = pos_v.xyz / pos_v.w;
   // we send our camera-perspective coords to opengl

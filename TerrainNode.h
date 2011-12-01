@@ -37,14 +37,14 @@ protected:
   /// width uniform location
   static GLint m_widthLoc;
 
+  static GLint m_heightCoefLoc;
+
   /// height map
   GLuint m_height_map;
-  /// height map
+  /// normal map
   GLuint m_normal_map;
-#if 1
   /// color map
   GLuint m_color_map;
-#endif
   /// height map width
   int m_width;
   /// the number of vertices

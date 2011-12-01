@@ -12,7 +12,7 @@ uniform sampler2D colorMap;
 
 out vec4 outputColor;
 
-vec3 lPos = vec3(0, 0, 0);
+vec3 lPos = vec3(1, 1, 1);
 
 // this code samples blender tangent space normalmap to be usable on our terrain
 vec3 sampleNormalBlender()

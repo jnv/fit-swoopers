@@ -134,5 +134,5 @@ void GameManager::addTerrain()
     anim->setAxis(glm::vec3(1, 0, 0));
     anim->setSpeed(0.5);
     TerrainNode *terrain = new TerrainNode("terrain1", anim);
-    terrain->load("data/terr01-hmap.png", "data/terr01-normals.png", "data/testgrid.png");
+    terrain->load("data/desert.tif", "data/terr01-normals.png", "data/testgrid.png");
 }
