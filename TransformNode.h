@@ -27,6 +27,7 @@ public:
     void rotate(float a, const float, const float, const float);
     /// scale this and children nodes
     void scale(const glm::vec3 & sc);
+    void scale(const float x, const float y, const float z);
     // debug the matrix
     void debug() const;
 

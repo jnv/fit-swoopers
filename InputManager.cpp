@@ -157,27 +157,27 @@ void InputManager::update()
 
     if(m_keys['a'] == true) //left
     {
-	cman->rotate(-15, glm::vec3(0, 1, 0));
+	cman->rotate(-5, glm::vec3(0, 1, 0));
     }
     if(m_keys['d']) //right
     {
-	cman->rotate(15, glm::vec3(0, 1, 0));
+	cman->rotate(5, glm::vec3(0, 1, 0));
     }
     if(m_keys['w']) //fwd
     {
-	cman->translate(glm::vec3(0, 0, 1));
+	cman->translate(glm::vec3(0, 0, 0.5));
     }
     if(m_keys['s']) //bwd
     {
-	cman->translate(glm::vec3(0, 0, -1));
+	cman->translate(glm::vec3(0, 0, -0.5));
     }
     if(m_keys['q']) //cam up
     {
-	cman->translate(glm::vec3(0, 1, 0));
+	cman->translate(glm::vec3(0, 0.5, 0));
     }
     if(m_keys['e']) //cam down
     {
-	cman->translate(glm::vec3(0, -1, 0));
+	cman->translate(glm::vec3(0, -0.5, 0));
     }
 
     SwoopManager * sman = SwoopManager::getInstance();

@@ -1,21 +1,23 @@
 #ifndef CAMERAMANAGER_H
 #define	CAMERAMANAGER_H
-
 #include <iostream>
 #include <stdexcept>
 #include <vector>
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 #include <GL/glut.h>
 #include "Singleton.h"
 #include "SceneNode.h"
 #include "SceneParams.h"
+#include "CameraNode.h"
+#include "TransformNode.h"
 
 class CameraManager : public Singleton<CameraManager>
 {
 public:
-    typedef std::vector<SceneNode *> Cameras;
+    typedef std::vector<CameraNode *> Cameras;
     friend class Singleton<CameraManager>;
 
     CameraManager();
@@ -23,15 +25,19 @@ public:
     ~CameraManager();
     void reset();
 
+    void createCamera(const char*, SceneNode *, TransformNode *&, CameraNode *&);
+
     void nextCamera();
-    bool isCurrent(SceneNode*) const;
-    void addCamera(SceneNode*);
-    void sceneDraw(SceneNode*);
-    void recalcView(SceneNode*);
+    bool isCurrent(CameraNode*) const;
+    void addCamera(CameraNode*);
+    void sceneDraw(CameraNode*);
+    void recalcView(CameraNode*);
+
     void setSceneParams(SceneParams * scene_params)
     {
         m_sceneParams = scene_params;
     }
+
     SceneParams * getSceneParams()
     {
         return m_sceneParams;
@@ -45,7 +51,7 @@ public:
 
 protected:
     Cameras m_cameras;
-    SceneNode * m_current;
+    CameraNode * m_current;
     unsigned int m_current_pos;
     SceneParams * m_sceneParams;
     bool m_abEnabled;

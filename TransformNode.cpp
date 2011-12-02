@@ -42,6 +42,13 @@ void TransformNode::scale(const glm::vec3 &sc)
     //    m_local_mat.scale(sc);
 }
 
+void TransformNode::scale(const float x, const float y, const float z)
+{
+    glm::mat4 trmat = glm::gtx::transform::scale(glm::vec3(x, y, z));
+    m_local_mat *= trmat;
+    //    m_local_mat.scale(sc);
+}
+
 void TransformNode::invert()
 {
     //    m_local_mat = m_local_mat.inverse();
@@ -50,5 +57,5 @@ void TransformNode::invert()
 void TransformNode::debug() const
 {
     //    m_local_mat.dump();
-    std::cout << std::endl;
+    //std::cout << std::endl;
 }
