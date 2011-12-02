@@ -9,6 +9,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <GL/glew.h>
+#include <IL/il.h>
 
 struct TextureStruct
 {
@@ -16,6 +17,7 @@ struct TextureStruct
     int w;
     int h;
     int size;
+    unsigned Bpp;
 
     ~TextureStruct()
     {

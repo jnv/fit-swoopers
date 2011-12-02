@@ -1,5 +1,4 @@
 #include "util.h"
-#include <IL/il.h>
 
 #ifdef _UNICODE
 #error "please compile without _UNICODE support (project properties -> Configuration Properties -> General -> Character Set -> Not Set"
@@ -316,6 +315,7 @@ GLuint CreateHeightTexture(const char * filename, TextureStruct& texOut)
     texOut.h = h;
     texOut.w = w;
     texOut.size = w * h * Bpp;
+    texOut.Bpp = Bpp;
 
     return texID;
 }

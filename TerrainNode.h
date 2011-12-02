@@ -29,6 +29,11 @@ public:
 
     TextureStruct getHeightMap() const;
 
+    int getWidth() const
+    {
+        return m_width;
+    }
+
 protected:
     TextureStruct m_rawHeightMap;
 
