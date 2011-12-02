@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <vector>
 #include <iostream>
+#include <string>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
@@ -14,10 +15,28 @@
 #include "CameraNode.h"
 #include "TransformNode.h"
 
+struct CameraStruct
+{
+    TransformNode * rotate;
+    TransformNode * translate;
+    CameraNode * camera;
+
+    CameraStruct(const char* name, SceneNode * parent)
+    {
+        string sname = name;
+        string tname = sname + "_translate";
+        translate = new TransformNode(tname.c_str(), parent);
+        string rname = sname + "_rotate";
+        rotate = new TransformNode(rname.c_str(), translate);
+
+        camera = new CameraNode(name, rotate);
+    }
+};
+
 class CameraManager : public Singleton<CameraManager>
 {
 public:
-    typedef std::vector<CameraNode *> Cameras;
+    typedef std::vector<CameraStruct *> Cameras;
     friend class Singleton<CameraManager>;
 
     CameraManager();
@@ -25,11 +44,11 @@ public:
     ~CameraManager();
     void reset();
 
-    void createCamera(const char*, SceneNode *, TransformNode *&, CameraNode *&);
+    CameraStruct* createCamera(const char*, SceneNode *);
 
     void nextCamera();
     bool isCurrent(CameraNode*) const;
-    void addCamera(CameraNode*);
+    void addCamera(CameraStruct*);
     void sceneDraw(CameraNode*);
     void recalcView(CameraNode*);
 
@@ -51,7 +70,7 @@ public:
 
 protected:
     Cameras m_cameras;
-    CameraNode * m_current;
+    CameraStruct * m_current;
     unsigned int m_current_pos;
     SceneParams * m_sceneParams;
     bool m_abEnabled;

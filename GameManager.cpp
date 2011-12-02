@@ -93,7 +93,7 @@ void GameManager::buildScene()
     // create scene root node
     CameraNode * cam_global;
     TransformNode * cam_t;
-    CameraManager::getInstance()->createCamera("cam-global", mRootNode, cam_t, cam_global);
+    CameraManager::getInstance()->createCamera("cam-global", mRootNode);
 
 
     //TransformNode * strans = SwoopManager::Initialize();

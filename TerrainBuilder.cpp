@@ -103,5 +103,7 @@ void TerrainBuilder::addPyramid(const int x, const int y)
     t->translate(newX, 0, -newY);
     ts->scale(glm::vec3(0.1, 0.1, 0.1));
 
+    CameraManager::getInstance()->createCamera("pyraCam", ts);
+
     PyramidNode * p = new PyramidNode("pyra", ts);
 }

@@ -15,6 +15,7 @@
 #include <IL/il.h>
 #include <iostream>
 #include <iomanip>
+#include "CameraManager.h"
 using namespace std;
 
 class TerrainBuilder

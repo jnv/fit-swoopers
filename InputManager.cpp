@@ -155,29 +155,30 @@ void InputManager::update()
 
     CameraManager * cman = CameraManager::getInstance();
 
-    if(m_keys['a'] == true) //left
+    if(m_keys['a'] == true) //cam left
     {
-	cman->rotate(-5, glm::vec3(0, 1, 0));
+	cman->translate(glm::vec3(-0.2, 0, 0));
+
     }
-    if(m_keys['d']) //right
+    if(m_keys['d']) //cam right
     {
-	cman->rotate(5, glm::vec3(0, 1, 0));
+	cman->translate(glm::vec3(0.2, 0, 0));
     }
     if(m_keys['w']) //fwd
     {
-	cman->translate(glm::vec3(0, 0, 0.5));
+	cman->translate(glm::vec3(0, 0, 0.2));
     }
     if(m_keys['s']) //bwd
     {
-	cman->translate(glm::vec3(0, 0, -0.5));
+	cman->translate(glm::vec3(0, 0, -0.2));
     }
-    if(m_keys['q']) //cam up
+    if(m_keys['q']) //cam rotate
     {
-	cman->translate(glm::vec3(0, 0.5, 0));
+	cman->rotate(-5, glm::vec3(0, 1, 0));
     }
-    if(m_keys['e']) //cam down
+    if(m_keys['e']) //cam rotate
     {
-	cman->translate(glm::vec3(0, -0.5, 0));
+	cman->rotate(5, glm::vec3(0, 1, 0));
     }
 
     SwoopManager * sman = SwoopManager::getInstance();

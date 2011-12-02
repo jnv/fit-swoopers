@@ -51,7 +51,7 @@ void CameraManager::nextCamera()
 
     try
     {
-	m_current->disable();
+	m_current->camera->disable();
 	++m_current_pos;
 	m_current = m_cameras.at(m_current_pos);
     }
@@ -60,44 +60,38 @@ void CameraManager::nextCamera()
 	std::clog << "CameraManager.nextCamera To front: " << oor.what() << endl;
 	m_current = m_cameras.front();
 	m_current_pos = 0;
-	m_current->activate();
     }
 
-    std::clog << "Switched to " << m_current->nodeName() << " camera" << endl;
+    m_current->camera->activate();
 
-    recalcView(m_current);
+    std::clog << "Switched to " << m_current->camera->nodeName() << " camera" << endl;
+
+    //recalcView(m_current);
 }
 
-void CameraManager::createCamera(const char* name, SceneNode * parent, TransformNode *& transform, CameraNode *& camera)
+CameraStruct* CameraManager::createCamera(const char* name, SceneNode * parent)
 {
-    TransformNode * t = new TransformNode("cam-transform", parent);
+    CameraStruct * cs = new CameraStruct(name, parent);
 
-    CameraNode * c = new CameraNode(name, t);
-    c->setTransform(t);
-
-    addCamera(c);
-
-    transform = t;
-    camera = c;
-
+    addCamera(cs);
+    return cs;
 }
-
 
 /**
  * Registers a given camera
  * @param camera
  */
-void CameraManager::addCamera(CameraNode* camera)
+void CameraManager::addCamera(CameraStruct* cs)
 {
-    m_cameras.push_back(camera);
+    m_cameras.push_back(cs);
 
-    std::clog << "Added camera '" << camera->nodeName() << "'" << endl;
+    std::clog << "Added camera '" << cs->camera->nodeName() << "'" << endl;
 
     if(m_current == NULL)
     {
-	m_current = camera;
+	m_current = cs;
 	m_current_pos = 0;
-	m_current->activate();
+	m_current->camera->activate();
     }
 }
 
@@ -108,9 +102,10 @@ void CameraManager::addCamera(CameraNode* camera)
  */
 bool CameraManager::isCurrent(CameraNode* camera) const
 {
-    return(m_current == camera);
+    //return(m_current == camera);
 }
 
+/*
 void CameraManager::sceneDraw(CameraNode* camera)
 {
     if(!isCurrent(camera))
@@ -119,27 +114,27 @@ void CameraManager::sceneDraw(CameraNode* camera)
     recalcView(camera);
 
     //m_scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
-}
+}*/
 
 void CameraManager::translate(const glm::vec3& tr)
 {
     //scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0, -0.1)) * scene_params.view_mat;
     //    Matrix4f local = m_current->localMatrix();
 
-//    glm::mat4 local = m_current->localMatrix();
-//    glm::mat4 mtr = glm::gtx::transform::translate(tr);
-//    m_current->setLocalMatrix(local * mtr);
+    //    glm::mat4 local = m_current->localMatrix();
+    //    glm::mat4 mtr = glm::gtx::transform::translate(tr);
+    //    m_current->setLocalMatrix(local * mtr);
 
-    m_current->getTransform()->translate(tr);
+    m_current->translate->translate(tr);
 }
 
 void CameraManager::rotate(float a, const glm::vec3& av)
 {
-//    glm::mat4 local = m_current->localMatrix();
-//    glm::mat4 mro = glm::gtx::transform::rotate(a, av);
-//    m_current->setLocalMatrix(local * mro);
+    //    glm::mat4 local = m_current->localMatrix();
+    //    glm::mat4 mro = glm::gtx::transform::rotate(a, av);
+    //    m_current->setLocalMatrix(local * mro);
 
-    m_current->getTransform()->rotate(a, av);
+    m_current->rotate->rotate(a, av);
 }
 
 void CameraManager::recalcView(CameraNode* camera)
@@ -177,7 +172,7 @@ void CameraManager::arcballDisable()
 }
 
 void CameraManager::arcballCalculate()
-{
+{/*
     if(m_abCurX == m_abLastX && m_abCurY == m_abLastY)
     {
 	return;
@@ -197,5 +192,5 @@ void CameraManager::arcballCalculate()
     m_current->setLocalMatrix(viewm);
     m_sceneParams->view_mat = viewm;
     m_abLastX = m_abCurX;
-    m_abLastY = m_abCurY;
+    m_abLastY = m_abCurY;*/
 }
