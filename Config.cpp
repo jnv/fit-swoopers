@@ -28,6 +28,23 @@ int strToInt(const string& s, bool& success)
 }
 
 /**
+ * Converts string to given type
+ * Courtesy of http://www.codeguru.com/forum/showthread.php?t=231054
+ * @param t output value
+ * @param s input string
+ * @param f base
+ * @return 
+ */
+template <class T>
+bool from_string(T& t,
+		 const std::string& s,
+		 std::ios_base& (*f)(std::ios_base&))
+{
+    std::istringstream iss(s);
+    return !(iss >> f >> t).fail();
+}
+
+/**
  * Loads and parse file.
  * @param fname Path to configuration file.
  */
@@ -161,6 +178,20 @@ bool Config::getBool(const string& key) const
     }
 
     return true;
+}
+
+float Config::getFloat(const string& key) const
+{
+    string val = getString(key);
+    float f;
+    if(from_string<float>(f, val, std::dec))
+    {
+	return f;
+    }
+
+    cerr << "Config::getInt: failed for " << key << endl;
+
+    return 0.0;
 }
 
 void Config::reload()

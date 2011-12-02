@@ -26,6 +26,7 @@ public:
     // Could use templates, but would be overkill for my needs
     int getInt(const string&) const;
     string getString(const string&) const;
+    float getFloat(const string&) const;
     bool getBool(const string&) const;
     
     void reload();
