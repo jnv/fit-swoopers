@@ -9,6 +9,7 @@
 #define	TERRAINBUILDER_H
 
 #include "TerrainNode.h"
+#include "TerragenNode.h"
 #include "TransformNode.h"
 #include "util.h"
 #include <IL/il.h>
@@ -27,7 +28,8 @@ public:
     bool loadObjects(const char *);
     void placeObjects();
 protected:
-    TerrainNode * m_terrainNode;
+    //TerrainNode * m_terrainNode;
+    TerragenNode * m_terrainNode;
     TransformNode * m_terrainParent;
 
     void addPyramid(const int, const int);

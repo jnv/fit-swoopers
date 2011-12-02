@@ -7,6 +7,7 @@
 
 #include "TerrainBuilder.h"
 #include "PyramidNode.h"
+#include "TerragenNode.h"
 
 TerrainBuilder::TerrainBuilder()
 {
@@ -21,8 +22,10 @@ SceneNode * TerrainBuilder::prepareNode(SceneNode * parent, const char * hmapfil
     m_terrainParent = new TransformNode("terrain-trans", parent);
     m_terrainParent->translate(glm::vec3(-0.5, -0.5, -2.0));
 
-    m_terrainNode = new TerrainNode("terrain", m_terrainParent);
-    m_terrainNode->load(hmapfile, cmapfile, nmapfile);
+    //m_terrainNode = new TerrainNode("terrain", m_terrainParent);
+    //m_terrainNode->load(hmapfile, cmapfile, nmapfile);
+    m_terrainNode = new TerragenNode("terrain", m_terrainParent);
+    m_terrainNode->load("data/terrain");
 
     return m_terrainParent;
 }
@@ -81,6 +84,8 @@ bool TerrainBuilder::loadObjects(const char* mapfile)
     }
 
     ilDeleteImages(1, &img_id);
+
+    return true;
 }
 
 void TerrainBuilder::placeObjects()

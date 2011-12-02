@@ -45,12 +45,12 @@ void CameraNode::draw(SceneParams * scene_params)
 	return;
     }
 
-    scene_params->view_mat = glm::inverse(globalMatrix());
+    scene_params->view_mat = globalMatrix(); //glm::inverse(globalMatrix());
 
     glm::vec3 eye = glm::mat3(globalMatrix()) * glm::vec3(1.0, 1.0, 1.0);
 
-    scene_params->view_mat = glm::lookAt(
+    /*scene_params->view_mat = glm::lookAt(
 					 eye, // The eye's position in 3d space
 					 glm::vec3(0.0f, 0.0f, 0.0f), // What the eye is looking at
-					 glm::vec3(0.0f, 1.0f, 0.0f)); // The eye's orientation vector (which way is up)
+					 glm::vec3(0.0f, 1.0f, 0.0f)); // The eye's orientation vector (which way is up)*/
 }
