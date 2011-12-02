@@ -125,7 +125,7 @@ void CameraManager::translate(const glm::vec3& tr)
     //    glm::mat4 mtr = glm::gtx::transform::translate(tr);
     //    m_current->setLocalMatrix(local * mtr);
 
-    m_current->translate->translate(tr);
+    m_current->rotate->translate(tr);
 }
 
 void CameraManager::rotate(float a, const glm::vec3& av)
