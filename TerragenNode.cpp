@@ -3,9 +3,8 @@
 using namespace std;
 
 GLuint TerragenNode::m_program = 0;
-GLint TerragenNode::m_ModelMatrixLoc = -1;
-GLint TerragenNode::m_MVPLoc = -1;
-GLint TerragenNode::m_ViewMatrixLoc = -1;
+GLint TerragenNode::m_VMmatrixLoc = -1;
+GLint TerragenNode::m_PmatrixLoc = -1;
 GLint TerragenNode::m_posLoc = -1;
 GLint TerragenNode::m_colLoc = -1;
 
@@ -25,14 +24,10 @@ m_nTriangles(0)
 	shaderList.push_back(CreateShader(GL_VERTEX_SHADER, "TerragenNode.vert"));
 	shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "TerragenNode.frag"));
 
-//	shaderList.push_back(CreateShader(GL_VERTEX_SHADER, "Spotlight.vert"));
-	shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, "Spotlight.frag"));
-
 	// Create the program with two shaders
 	m_program = CreateProgram(shaderList);
-	m_ModelMatrixLoc = glGetUniformLocation(m_program, "M");
-	m_ViewMatrixLoc = glGetUniformLocation(m_program, "V");
-	m_MVPLoc = glGetUniformLocation(m_program, "MVP");
+	m_VMmatrixLoc = glGetUniformLocation(m_program, "VMmatrix");
+	m_PmatrixLoc = glGetUniformLocation(m_program, "Pmatrix");
 	m_posLoc = glGetAttribLocation(m_program, "position");
 	m_colLoc = glGetAttribLocation(m_program, "color");
     }
@@ -56,16 +51,16 @@ TerragenNode::load(const char *baseFilename)
     // distances between neighbour grid points along x, y, and z axis
     const float _deltaX = 1.0f / _resX;
     const float _deltaZ = 1.0f / _resZ;
-    const float _deltaY = 1.0f / 256.0f; // height modulation
+    const float _deltaY = 1.0f / 5000.0f; // height modulation
 
     // size of the grid
     const float _sizeX = 1.0f;
     const float _sizeZ = 1.0f;
 
     // origin of the grid - move the grid to the center of coordinate system
-    const float _originX = -0.5f;
-    const float _originZ = -0.5f;
-    const float _originY = -0.5f;
+    const float _originX = 0.0f; //0.5f;
+    const float _originZ = -1.0f;//0.5f;
+    const float _originY = -0.2f;
 
     // the number of floats to read for heights
     size = 3L * _resX*_resZ;
@@ -184,7 +179,7 @@ TerragenNode::load(const char *baseFilename)
 
     // copy the data for heights and vertices for OpenGL bufferObject
     int iv = 0; // index for vertices
-    int ic = sizeV; // index for vertices
+    int ic = sizeV; // index for color
 
     const int SV = 3;
     for(int iz = 0; iz < _resZ - 1; iz++)
@@ -278,15 +273,14 @@ void TerragenNode::draw(SceneParams * scene_params)
     // inherited draw - draws all children
     SceneNode::draw(scene_params);
 
-    glm::mat4 MVP = scene_params->projection_mat * scene_params->view_mat * globalMatrix();
+    glm::mat4 VMmatrix = scene_params->view_mat * globalMatrix();
 
     glUseProgram(m_program);
-    glUniformMatrix4fv(m_ModelMatrixLoc, 1, GL_FALSE, glm::value_ptr(globalMatrix()));
-    glUniformMatrix4fv(m_ViewMatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->view_mat));
-    glUniformMatrix4fv(m_MVPLoc, 1, GL_FALSE, glm::value_ptr(MVP));
+    glUniformMatrix4fv(m_VMmatrixLoc, 1, GL_FALSE, glm::value_ptr(VMmatrix));
+    glUniformMatrix4fv(m_PmatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->projection_mat));
 
-    LightManager* lm = LightManager::getInstance();
-    lm->uniformAmbient(m_program);
+    //LightManager* lm = LightManager::getInstance();
+    //lm->uniformAmbient(m_program);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
     glEnableVertexAttribArray(m_posLoc);

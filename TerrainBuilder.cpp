@@ -20,12 +20,12 @@ TerrainBuilder::~TerrainBuilder()
 SceneNode * TerrainBuilder::prepareNode(SceneNode * parent, const char * hmapfile, const char * cmapfile, const char * nmapfile)
 {
     m_terrainParent = new TransformNode("terrain-trans", parent);
-    m_terrainParent->translate(glm::vec3(-0.5, -0.5, -2.0));
+    //m_terrainParent->translate(glm::vec3(-0.5, -0.5, -2.0));
 
     //m_terrainNode = new TerrainNode("terrain", m_terrainParent);
     //m_terrainNode->load(hmapfile, cmapfile, nmapfile);
     m_terrainNode = new TerragenNode("terrain", m_terrainParent);
-    m_terrainNode->load("data/terrain");
+    m_terrainNode->load("data/desert2");
 
     return m_terrainParent;
 }

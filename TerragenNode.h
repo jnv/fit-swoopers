@@ -40,10 +40,9 @@ protected:
     /// identifier for the program
     static GLuint m_program;
     /// shader view*model matrix location
-    static GLint m_ModelMatrixLoc;
+    static GLint m_VMmatrixLoc;
     /// shader projection matrix location
-    static GLint m_MVPLoc;
-    static GLint m_ViewMatrixLoc;
+    static GLint m_PmatrixLoc;
     /// position attribute location
     static GLint m_posLoc;
     /// color attribute location
