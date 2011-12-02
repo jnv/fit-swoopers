@@ -20,12 +20,14 @@ TerrainBuilder::~TerrainBuilder()
 SceneNode * TerrainBuilder::prepareNode(SceneNode * parent, const char * hmapfile, const char * cmapfile, const char * nmapfile)
 {
     m_terrainParent = new TransformNode("terrain-trans", parent);
-    //m_terrainParent->translate(glm::vec3(-0.5, -0.5, -2.0));
+    //m_terrainParent->scale(glm::vec3(2.0, 1.0, 2.0));
 
     //m_terrainNode = new TerrainNode("terrain", m_terrainParent);
     //m_terrainNode->load(hmapfile, cmapfile, nmapfile);
     m_terrainNode = new TerragenNode("terrain", m_terrainParent);
-    m_terrainNode->load("data/desert2");
+
+    float scale = Config::getInstance()->getFloat("terrain_scale");
+    m_terrainNode->load("data/desert2", scale);
 
     return m_terrainParent;
 }
@@ -63,22 +65,30 @@ bool TerrainBuilder::loadObjects(const char* mapfile)
     ILubyte * pixels = ilGetData();
     int size = w * h * uBpp;
 
-    int Bpp = (int)uBpp;
+    int Bpp = (int) uBpp;
 
-    for(int row = 0; row < h * Bpp; row+=Bpp)
+    for(int row = 0; row < h * Bpp; row += Bpp)
     {
-	for(int col = 0; col < w * Bpp; col+=Bpp)
+	for(int col = 0; col < w * Bpp; col += Bpp)
 	{
 	    int offset = row * w + col;
 
 	    if(pixels[offset] > 0 && pixels[offset] < 0xff)
 	    {
-		cout << "Found pixel " << hex << (int) pixels[offset] << dec << " at " << offset;
+		cout << "Found pixel " << hex << (int) pixels[offset] << dec << " at " << offset << endl;
 		int x = col / Bpp;
 		int y = row / Bpp;
-		cout << " " << x << "x" << y << endl;
 
-		addPyramid(x, y);
+		switch(pixels[offset])
+		{
+		case 0xcc:
+		    cout << "Adding Swoop at" << x << "x" << y << endl;
+		    addSwoop(x, y);
+		    break;
+		default:
+		    cout << "Pyramid at " << x << "x" << y << endl;
+		    addPyramid(x, y);
+		}
 	    }
 	}
     }
@@ -90,7 +100,7 @@ bool TerrainBuilder::loadObjects(const char* mapfile)
 
 void TerrainBuilder::placeObjects()
 {
-    
+
 }
 
 void TerrainBuilder::addPyramid(const int x, const int y)
@@ -98,12 +108,32 @@ void TerrainBuilder::addPyramid(const int x, const int y)
     TransformNode * t = new TransformNode("pyra-trans", m_terrainParent);
     TransformNode * ts = new TransformNode("pyra-trans-scale", t);
     int tWidth = m_terrainNode->getWidth();
-    float newX = (float)x / (float)tWidth;
-    float newY = (float)y / (float)tWidth;
+    float scale = m_terrainNode->getScale();
+    float newX = ((float) x * scale) / (float) tWidth;
+    float newY = ((float) y * scale) / (float) tWidth;
     t->translate(newX, 0, -newY);
     ts->scale(glm::vec3(0.1, 0.1, 0.1));
 
     CameraManager::getInstance()->createCamera("pyraCam", ts);
 
     PyramidNode * p = new PyramidNode("pyra", ts);
+}
+
+void TerrainBuilder::addSwoop(const int x, const int y)
+{
+    string model = Config::getInstance()->getString("swoop_model");
+    float swoopY = Config::getInstance()->getFloat("swoop_elevation");
+
+    int tWidth = m_terrainNode->getWidth();
+    float scale = m_terrainNode->getScale();
+    float newX = ((float) x * scale) / (float) tWidth;
+    float newY = ((float) y * scale) / (float) tWidth;
+
+    std::clog << "Placing swoop at height " << swoopY << std::endl;
+
+    TransformNode * strans = SwoopManager::Initialize(model.c_str());
+    strans->setParentNode(m_terrainParent);
+    strans->translate(newX, swoopY, -newY);
+
+    CameraManager::getInstance()->createCamera("swoop_cam", strans);
 }

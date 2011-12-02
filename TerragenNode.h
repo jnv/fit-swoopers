@@ -26,17 +26,23 @@ public:
     }
 
     /// load the terrain from file, returns 0 on success
-    int load(const char * filename);
+    int load(const char * filename, float scale = 1.0f);
 
     /// reimplemented draw
     void draw(SceneParams * scene_params);
 
     int getWidth()
     {
-        return 513;
+        return 513;// * m_scale;
+    }
+    float getScale()
+    {
+        return m_scale;
     }
 
 protected:
+    float m_scale;
+
     /// identifier for the program
     static GLuint m_program;
     /// shader view*model matrix location

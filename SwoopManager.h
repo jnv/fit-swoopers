@@ -11,6 +11,7 @@
 #include "MeshNode.h"
 #include "TransformNode.h"
 #include "Singleton.h"
+#include "Config.h"
 
 class SwoopManager : public Singleton<SwoopManager>
 {
@@ -19,7 +20,7 @@ public:
     SwoopManager();
     ~SwoopManager();
 
-    static TransformNode* Initialize();
+    static TransformNode* Initialize(const char*);
 
     void forward();
     void left();

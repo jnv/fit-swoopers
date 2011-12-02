@@ -16,6 +16,8 @@
 #include <iostream>
 #include <iomanip>
 #include "CameraManager.h"
+#include "SwoopManager.h"
+#include "Config.h"
 using namespace std;
 
 class TerrainBuilder
@@ -34,6 +36,7 @@ protected:
     TransformNode * m_terrainParent;
 
     void addPyramid(const int, const int);
+    void addSwoop(const int, const int);
 
 private:
 

@@ -16,7 +16,7 @@ SwoopManager::~SwoopManager()
 {
 }
 
-TransformNode* SwoopManager::Initialize()
+TransformNode* SwoopManager::Initialize(const char * model)
 {
     SwoopManager * sm = getInstance();
 
@@ -24,11 +24,12 @@ TransformNode* SwoopManager::Initialize()
     TransformNode * tnl = new TransformNode("swoop_transform_local", tng);
 
     //MeshNode * mn = new MeshNode("data/model/swoop-maya.obj", tnl); //XXX data file via configuration
-    MeshNode * mn = new MeshNode("data/model/swoop.ac", tnl); //XXX data file via configuration
+    MeshNode * mn = new MeshNode(model, tnl); //XXX data file via configuration
 
-    tnl->translate(glm::vec3(1.0, -0.53, -5.4));
-    //tnl->rotate(-95.f, 1.f, 0.f, 0.f);
-    tnl->scale(glm::vec3(0.7, 0.7, 0.7));
+    //tnl->translate(glm::vec3(1.0, -0.53, -5.4));
+    float scale = Config::getInstance()->getFloat("swoop_scale");
+    tnl->scale(glm::vec3(scale, scale, scale));
+    tnl->rotate(-90.f, 0.f, 1.f, 0.f);
 
     mn->loadMesh();
 
@@ -40,22 +41,22 @@ TransformNode* SwoopManager::Initialize()
 
 void SwoopManager::forward()
 {
-    m_transformNode->translate(0, 0, -0.5);
+    m_transformNode->translate(0, 0, -0.1);
 }
 
 void SwoopManager::backward()
 {
-    m_transformNode->translate(0, 0, 0.5);
+    m_transformNode->translate(0, 0, 0.1);
 }
 
 void SwoopManager::left()
 {
 //    m_transformNode->rotate(5, 0, 1, 0);
-    m_transformNode->translate(-0.5, 0, 0);
+    m_transformNode->translate(-0.1, 0, 0);
 }
 
 void SwoopManager::right()
 {
     //m_transformNode->rotate(-5, 0, 1, 0);
-    m_transformNode->translate(0.5, 0, 0);
+    m_transformNode->translate(0.1, 0, 0);
 }

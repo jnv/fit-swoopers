@@ -38,8 +38,9 @@ m_nTriangles(0)
 
 /* interpretting it as a terrain. Resolution must be 513 x 513. */
 int
-TerragenNode::load(const char *baseFilename)
+TerragenNode::load(const char *baseFilename, float scale)
 {
+    m_scale = scale;
     long int size;
     FILE* rawFile;
     char file[256];
@@ -49,9 +50,9 @@ TerragenNode::load(const char *baseFilename)
     int _resZ = 513;
 
     // distances between neighbour grid points along x, y, and z axis
-    const float _deltaX = 1.0f / _resX;
-    const float _deltaZ = 1.0f / _resZ;
-    const float _deltaY = 1.0f / 5000.0f; // height modulation
+    const float _deltaX = m_scale / _resX;
+    const float _deltaZ = m_scale / _resZ;
+    const float _deltaY = 1.0f / 4000.0f; // height modulation
 
     // size of the grid
     const float _sizeX = 1.0f;
@@ -59,7 +60,7 @@ TerragenNode::load(const char *baseFilename)
 
     // origin of the grid - move the grid to the center of coordinate system
     const float _originX = 0.0f; //0.5f;
-    const float _originZ = -1.0f;//0.5f;
+    const float _originZ = -m_scale;//0.5f;
     const float _originY = -0.2f;
 
     // the number of floats to read for heights

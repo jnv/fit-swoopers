@@ -128,7 +128,7 @@ void GameManager::addTerrain()
     terrain->load("data/terr01-hmap.png", "data/terr01-normals.png", "data/testgrid.png" );*/
 
     tb.prepareNode(mRootNode, "data/desert.tif", "data/testgrid.png", "data/terr01-normals.png");
-    //tb.loadObjects("data/objects.png");
+    tb.loadObjects("data/objects.png");
 }
 
 void GameManager::Reset()
