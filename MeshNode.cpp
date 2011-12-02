@@ -93,7 +93,8 @@ bool MeshNode::loadMesh()
 	memcpy(cur_vert, mesh->mVertices, mesh->mNumVertices * sizeof(float) * 3);
 	memcpy(cur_nor, mesh->mNormals, mesh->mNumVertices * sizeof(float) * 3);
 
-	std::cout << "mesh: " << mesh->mName.data << std::endl;
+
+	//std::cout << "mesh: " << mesh->mName.data << std::endl;
 
 	aiMaterial * material = scn->mMaterials[mesh->mMaterialIndex];
 	// copy mesh material color to all mesh vertices
@@ -119,9 +120,9 @@ bool MeshNode::loadMesh()
 	cur_nor += mesh->mNumVertices * 3;
     }
 
-    aiNode * root = scn->mRootNode;
+    //aiNode * root = scn->mRootNode;
     //    size_t length = root->mName.length;
-    traverse_node(root);
+    //traverse_node(root);
     //std::cout << "node: " << root->mName.data << std::endl;
 
 

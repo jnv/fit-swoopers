@@ -11,12 +11,14 @@ SceneNode::SceneNode(const char *name, SceneNode *parent):
 
 SceneNode::~SceneNode()
 {
-  setParentNode(0);
+  setParentNode(NULL);
 
   while(!m_children.empty())
   {
-    delete m_children.back();
+    //std::clog << "Deleting " <<  m_children.back()->nodeName() << std::endl;
+    SceneNode * n = m_children.back();
     m_children.pop_back();
+    delete n;
   }
 }
 

@@ -125,7 +125,10 @@ void CameraManager::translate(const glm::vec3& tr)
     //    glm::mat4 mtr = glm::gtx::transform::translate(tr);
     //    m_current->setLocalMatrix(local * mtr);
 
-    m_current->rotate->translate(tr);
+    if(m_current)
+    {
+	m_current->rotate->translate(tr);
+    }
 }
 
 void CameraManager::rotate(float a, const glm::vec3& av)
@@ -133,8 +136,10 @@ void CameraManager::rotate(float a, const glm::vec3& av)
     //    glm::mat4 local = m_current->localMatrix();
     //    glm::mat4 mro = glm::gtx::transform::rotate(a, av);
     //    m_current->setLocalMatrix(local * mro);
-
-    m_current->rotate->rotate(a, av);
+    if(m_current)
+    {
+	m_current->rotate->rotate(a, av);
+    }
 }
 
 void CameraManager::recalcView(CameraNode* camera)

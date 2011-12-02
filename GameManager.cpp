@@ -91,13 +91,9 @@ void GameManager::buildScene()
     addTerrain();
 
     // create scene root node
-    CameraNode * cam_global;
-    TransformNode * cam_t;
     CameraManager::getInstance()->createCamera("cam-global", mRootNode);
 
-
-    //TransformNode * strans = SwoopManager::Initialize();
-    //strans->setParentNode(mRootNode);
+    new SceneNode("next", mRootNode);
 
     //XXX Animated camera... Why the hell not?
     /*
@@ -132,7 +128,7 @@ void GameManager::addTerrain()
     terrain->load("data/terr01-hmap.png", "data/terr01-normals.png", "data/testgrid.png" );*/
 
     tb.prepareNode(mRootNode, "data/desert.tif", "data/testgrid.png", "data/terr01-normals.png");
-    tb.loadObjects("data/objects.png");
+    //tb.loadObjects("data/objects.png");
 }
 
 void GameManager::Reset()
@@ -144,6 +140,7 @@ void GameManager::Reset()
 void GameManager::resetScene()
 {
     delete mRootNode;
+    mRootNode = NULL;
     Config::getInstance()->reload();
     CameraManager::getInstance()->reset();
     buildScene();
