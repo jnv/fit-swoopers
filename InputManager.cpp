@@ -166,19 +166,24 @@ void InputManager::update()
     }
     if(m_keys['w']) //fwd
     {
-	cman->translate(glm::vec3(0, 0, 0.2));
+	//cman->translate(glm::vec3(0, 0, 0.2));
+	cman->translate(glm::vec3(0, 0, -0.2)); //XXX ain't this be another way around?
     }
     if(m_keys['s']) //bwd
     {
-	cman->translate(glm::vec3(0, 0, -0.2));
+	//cman->translate(glm::vec3(0, 0, -0.2));
+	cman->translate(glm::vec3(0, 0, 0.2)); //XXX ain't this be another way around?
+
     }
-    if(m_keys['q']) //cam rotate
+    if(m_keys['q']) //cam rotate left
     {
-	cman->rotate(-5, glm::vec3(0, 1, 0));
+	//cman->rotate(-5, glm::vec3(0, 1, 0));
+	cman->rotate(3.f, glm::vec3(0, 1, 0));
     }
-    if(m_keys['e']) //cam rotate
+    if(m_keys['e']) //cam rotate right
     {
-	cman->rotate(5, glm::vec3(0, 1, 0));
+	//cman->rotate(5, glm::vec3(0, 1, 0));
+	cman->rotate(-3.f, glm::vec3(0, 1, 0));
     }
 
     SwoopManager * sman = SwoopManager::getInstance();
