@@ -15,16 +15,6 @@ public:
 //    void update(double elapsed_time);
     void draw(SceneParams * scene_params);
 
-    void setTransform(TransformNode * t)
-    {
-        m_transform = t;
-    }
-
-    TransformNode * getTransform()
-    {
-        return m_transform;
-    }
-
     void activate()
     {
         m_active = true;
@@ -35,8 +25,10 @@ public:
         m_active = false;
     }
 
+    void lookAt(const glm::vec3&, const glm::vec3&, const glm::vec3& = glm::vec3(0, 1.0, 0));
+
+
 protected:
-    TransformNode * m_transform;
     bool m_active;
 
 };

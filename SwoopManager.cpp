@@ -42,6 +42,22 @@ TransformNode* SwoopManager::Initialize()
     sm->m_inited = true;
     CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal);
 
+    glm::vec3 closeleft = mesh->getBoxVertex(4);
+    glm::vec3 closeright = mesh->getBoxVertex(5);
+    glm::vec3 closecenter = closeleft + closeright;
+    closecenter /= 2;
+
+    glm::vec3 farleft = mesh->getBoxVertex(7);
+    glm::vec3 farright = mesh->getBoxVertex(6);
+    glm::vec3 farcenter = farleft + farright;
+    farcenter /= 2;
+
+    camera->local->translate(0.0, 0.02, 0.11); //Hand picked... :-P
+
+
+
+    //camera->camera->setLocalMatrix(glm::lookAt(closecenter, farcenter, glm::vec3(0, 1, 0)));
+
     mesh->printBBoxSize();
 
     return transGlobal;

@@ -48,7 +48,6 @@ protected:
     Keyset* getSet(const KeyType);
     Keyset m_keys;
     Keyset m_specialKeys;
-
 };
 
 #endif	/* INPUTMANAGER_H */

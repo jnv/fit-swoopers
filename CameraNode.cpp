@@ -56,3 +56,8 @@ void CameraNode::draw(SceneParams * scene_params)
     //					 glm::vec3(0.0f, 0.0f, 0.0f), // What the eye is looking at
     //					 glm::vec3(0.0f, 1.0f, 0.0f)); // The eye's orientation vector (which way is up)
 }
+
+void CameraNode::lookAt(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up)
+{
+
+}

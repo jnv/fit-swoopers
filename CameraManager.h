@@ -17,19 +17,19 @@
 
 struct CameraStruct
 {
-    TransformNode * rotate;
-    TransformNode * translate;
+    TransformNode * local;
+    TransformNode * global;
     CameraNode * camera;
 
     CameraStruct(const char* name, SceneNode * parent)
     {
         string sname = name;
-        string tname = sname + "_translate";
-        translate = new TransformNode(tname.c_str(), parent);
-        string rname = sname + "_rotate";
-        rotate = new TransformNode(rname.c_str(), translate);
+        string tname = sname + "_global";
+        global = new TransformNode(tname.c_str(), parent);
+        string rname = sname + "_local";
+        local = new TransformNode(rname.c_str(), global);
 
-        camera = new CameraNode(name, rotate);
+        camera = new CameraNode(name, local);
     }
 };
 
@@ -78,6 +78,7 @@ protected:
     int m_abCurX;
     int m_abLastY;
     int m_abCurY;
+    glm::vec3 m_translate;
 
     void arcballCalculate();
 

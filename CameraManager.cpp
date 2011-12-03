@@ -23,6 +23,7 @@ CameraManager::CameraManager()
 {
     m_current = NULL;
     m_abEnabled = false;
+    m_translate = glm::vec3(0.0);
 }
 
 /// NIL, assigned nodes are destroyed by SceneNode
@@ -63,6 +64,7 @@ void CameraManager::nextCamera()
     }
 
     m_current->camera->activate();
+    m_translate = glm::vec3(0.0);
 
     std::clog << "Switched to " << m_current->camera->nodeName() << " camera" << endl;
 
@@ -127,7 +129,10 @@ void CameraManager::translate(const glm::vec3& tr)
 
     if(m_current)
     {
-	m_current->rotate->translate(tr);
+	m_current->local->translate(tr);
+	m_translate += tr;
+	std::cout << "(" << m_translate.x << ", " << m_translate.y << ", " << m_translate.z << ")" << std::endl;
+
     }
 }
 
@@ -138,7 +143,7 @@ void CameraManager::rotate(float a, const glm::vec3& av)
     //    m_current->setLocalMatrix(local * mro);
     if(m_current)
     {
-	m_current->rotate->rotate(a, av);
+	m_current->local->rotate(a, av);
     }
 }
 
