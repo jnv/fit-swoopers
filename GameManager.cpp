@@ -54,6 +54,7 @@ void GameManager::OnTimer(int)
 	gm->mRootNode->update(timed);
 
     InputManager::getInstance()->update();
+    SwoopManager::getInstance()->update(timed);
     glutTimerFunc(33, GameManager::OnTimer, 0);
     glutPostRedisplay();
 }
@@ -129,6 +130,7 @@ void GameManager::addTerrain()
 
     tb.prepareNode(mRootNode, "data/desert.tif", "data/testgrid.png", "data/terr01-normals.png");
     tb.loadObjects("data/objects.png");
+    tb.placeObjects();
 }
 
 void GameManager::Reset()
@@ -139,9 +141,11 @@ void GameManager::Reset()
 
 void GameManager::resetScene()
 {
+    CameraManager::getInstance()->reset();
+    SwoopManager::getInstance()->reset();
     delete mRootNode;
     mRootNode = NULL;
     Config::getInstance()->reload();
-    CameraManager::getInstance()->reset();
+
     buildScene();
 }

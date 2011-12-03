@@ -26,6 +26,7 @@
 #include "SceneParams.h"
 #include "CameraManager.h"
 #include "CameraNode.h"
+#include "LineStripNode.h"
 #include "InputManager.h"
 #include "SwoopManager.h"
 

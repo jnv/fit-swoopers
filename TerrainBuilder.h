@@ -18,6 +18,7 @@
 #include "CameraManager.h"
 #include "SwoopManager.h"
 #include "Config.h"
+#include "LineStripNode.h"
 using namespace std;
 
 class TerrainBuilder

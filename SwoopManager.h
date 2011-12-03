@@ -26,9 +26,14 @@ public:
     void left();
     void right();
     void backward();
+    void update(double);
+
+    void reset();
+
 protected:
     MeshNode * m_swoopNode;
     TransformNode * m_transformNode;
+    bool m_inited;
 
 private:
 

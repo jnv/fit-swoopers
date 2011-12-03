@@ -10,6 +10,7 @@
 
 SwoopManager::SwoopManager()
 {
+    m_inited = false;
 }
 
 SwoopManager::~SwoopManager()
@@ -35,7 +36,7 @@ TransformNode* SwoopManager::Initialize(const char * model)
 
     sm->m_transformNode = tng;
     sm->m_swoopNode = mn;
-
+    sm->m_inited = true;
     return tng;
 }
 
@@ -51,7 +52,7 @@ void SwoopManager::backward()
 
 void SwoopManager::left()
 {
-//    m_transformNode->rotate(5, 0, 1, 0);
+    //    m_transformNode->rotate(5, 0, 1, 0);
     m_transformNode->translate(-0.1, 0, 0);
 }
 
@@ -59,4 +60,14 @@ void SwoopManager::right()
 {
     //m_transformNode->rotate(-5, 0, 1, 0);
     m_transformNode->translate(0.1, 0, 0);
+}
+
+void SwoopManager::update(double time)
+{
+
+}
+
+void SwoopManager::reset()
+{
+    m_inited = false;
 }

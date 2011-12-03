@@ -100,7 +100,14 @@ bool TerrainBuilder::loadObjects(const char* mapfile)
 
 void TerrainBuilder::placeObjects()
 {
-
+    TransformNode * t = new TransformNode("strip-trans", m_terrainParent);
+    int tWidth = m_terrainNode->getWidth();
+    float scale = m_terrainNode->getScale();
+    //t->translate(newX, 0, -newY);
+    float objScale = 1.0 / tWidth;
+    t->translate(0.0, -0.1, 0.0);
+//    t->scale(glm::vec3(objScale, objScale, objScale));
+    new LineStripNode("strip", t);
 }
 
 void TerrainBuilder::addPyramid(const int x, const int y)
