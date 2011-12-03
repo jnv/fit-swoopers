@@ -24,7 +24,13 @@ public:
     /// prints the size of the geometry box without transformation
     void printBBoxSize();
 
+    glm::vec3 getBoxVertex(int) const;
+
+    glm::vec3* getBoxVertices();
+
 protected:
+    void constructBox();
+
     /// identifier for the program
     static GLuint m_program;
     /// shader view*model matrix location
@@ -46,6 +52,8 @@ protected:
     // the bounding box of the original model
     float minbox[3];
     float maxbox[3];
+
+    glm::vec3 m_bbox[8];
 };
 
 #endif

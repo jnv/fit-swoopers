@@ -3,6 +3,7 @@
 #include <assimp/aiPostProcess.h>
 
 #include <string.h>
+#include <bitset>
 
 #include "MeshNode.h"
 
@@ -133,6 +134,8 @@ bool MeshNode::loadMesh()
 
     delete [] vertices;
 
+    constructBox();
+
     return true;
 }
 
@@ -173,4 +176,40 @@ MeshNode::printBBoxSize()
 {
     std::cout << "Min " << minbox[0] << " " << minbox[1] << " " << minbox[2] << " | ";
     std::cout << "Max " << maxbox[0] << " " << maxbox[1] << " " << maxbox[2] << std::endl;
+}
+
+/**
+ * Constructs bounding box vertices
+ *   v7     v6
+ *   +------+
+ *  /v4    /|v5
+ * +------+ |
+ * | |    | |
+ * |v3----|-+v2
+ * |/     |/
+ * +------+
+ * v0     v1
+ */
+void MeshNode::constructBox()
+{
+    //base                       x          y          z
+    m_bbox[0] = glm::vec3(minbox[0], minbox[1], minbox[2]);
+    m_bbox[1] = glm::vec3(maxbox[0], minbox[1], minbox[2]);
+    m_bbox[2] = glm::vec3(maxbox[0], minbox[1], maxbox[2]);
+    m_bbox[3] = glm::vec3(minbox[0], minbox[1], maxbox[2]);
+    //top
+    m_bbox[4] = glm::vec3(minbox[0], maxbox[1], minbox[2]);
+    m_bbox[5] = glm::vec3(maxbox[0], maxbox[1], minbox[2]);
+    m_bbox[6] = glm::vec3(maxbox[0], maxbox[1], maxbox[2]);
+    m_bbox[7] = glm::vec3(minbox[0], maxbox[1], maxbox[2]);
+}
+
+glm::vec3 MeshNode::getBoxVertex(const int vertex) const
+{
+    return m_bbox[vertex];
+}
+
+glm::vec3 * MeshNode::getBoxVertices()
+{
+    return m_bbox;
 }

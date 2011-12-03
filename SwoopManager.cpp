@@ -42,6 +42,8 @@ TransformNode* SwoopManager::Initialize()
     sm->m_inited = true;
     CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal);
 
+    mesh->printBBoxSize();
+
     return transGlobal;
 }
 
