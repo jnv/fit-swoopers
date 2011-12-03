@@ -27,7 +27,7 @@ SceneNode * TerrainBuilder::prepareNode(SceneNode * parent, const char * hmapfil
     m_terrainNode = new TerragenNode("terrain", m_terrainParent);
 
     float scale = Config::getInstance()->getFloat("terrain_scale");
-    m_terrainNode->load("data/desert2", scale);
+    m_terrainNode->load("data/desert2", scale); //XXX terrain file via config
 
     return m_terrainParent;
 }
@@ -79,6 +79,9 @@ bool TerrainBuilder::loadObjects(const char* mapfile)
 		int x = col / Bpp;
 		int y = row / Bpp;
 
+		cout << "Pyramid at " << x << "x" << y << endl;
+		addPyramid(x, y);
+		/*
 		switch(pixels[offset])
 		{
 		case 0xcc:
@@ -86,9 +89,8 @@ bool TerrainBuilder::loadObjects(const char* mapfile)
 		    addSwoop(x, y);
 		    break;
 		default:
-		    cout << "Pyramid at " << x << "x" << y << endl;
-		    addPyramid(x, y);
-		}
+
+		}*/
 	    }
 	}
     }
@@ -100,14 +102,7 @@ bool TerrainBuilder::loadObjects(const char* mapfile)
 
 void TerrainBuilder::placeObjects()
 {
-    TransformNode * t = new TransformNode("strip-trans", m_terrainParent);
-    int tWidth = m_terrainNode->getWidth();
-    float scale = m_terrainNode->getScale();
-    //t->translate(newX, 0, -newY);
-    float objScale = 1.0 / tWidth;
-    t->translate(0.0, -0.1, 0.0);
-//    t->scale(glm::vec3(objScale, objScale, objScale));
-    new LineStripNode("strip", t);
+
 }
 
 void TerrainBuilder::addPyramid(const int x, const int y)
@@ -128,19 +123,5 @@ void TerrainBuilder::addPyramid(const int x, const int y)
 
 void TerrainBuilder::addSwoop(const int x, const int y)
 {
-    string model = Config::getInstance()->getString("swoop_model");
-    float swoopY = Config::getInstance()->getFloat("swoop_elevation");
-
-    int tWidth = m_terrainNode->getWidth();
-    float scale = m_terrainNode->getScale();
-    float newX = ((float) x * scale) / (float) tWidth;
-    float newY = ((float) y * scale) / (float) tWidth;
-
-    std::clog << "Placing swoop at height " << swoopY << std::endl;
-
-    TransformNode * strans = SwoopManager::Initialize(model.c_str());
-    strans->setParentNode(m_terrainParent);
-    strans->translate(newX, swoopY, -newY);
-
-    CameraManager::getInstance()->createCamera("swoop_cam", strans);
+    
 }

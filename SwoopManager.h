@@ -12,6 +12,7 @@
 #include "TransformNode.h"
 #include "Singleton.h"
 #include "Config.h"
+#include "CameraManager.h"
 
 class SwoopManager : public Singleton<SwoopManager>
 {
@@ -20,7 +21,7 @@ public:
     SwoopManager();
     ~SwoopManager();
 
-    static TransformNode* Initialize(const char*);
+    static TransformNode* Initialize();
 
     void forward();
     void left();

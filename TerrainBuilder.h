@@ -31,6 +31,7 @@ public:
     SceneNode* prepareNode(SceneNode *, const char *, const char *, const char *);
     bool loadObjects(const char *);
     void placeObjects();
+
 protected:
     //TerrainNode * m_terrainNode;
     TerragenNode * m_terrainNode;

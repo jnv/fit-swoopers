@@ -89,23 +89,27 @@ void GameManager::Initialize()
 void GameManager::buildScene()
 {
     mRootNode = new SceneNode("root");
-    addTerrain();
+    //addTerrain();
+    CameraManager::getInstance()->createCamera("cam_global", mRootNode);
 
-    // create scene root node
-    CameraManager::getInstance()->createCamera("cam-global", mRootNode);
+    // Create terrain
+    std::string file = Config::getInstance()->getString("terrain");
 
-    new SceneNode("next", mRootNode);
+    TerrainBuilder tb;
+    SceneNode * terrain = tb.prepareNode(mRootNode, "data/desert.tif", "data/testgrid.png", "data/terr01-normals.png");
+    tb.loadObjects("data/objects.png"); // XXX objects map via config
+    tb.placeObjects();
 
-    //XXX Animated camera... Why the hell not?
-    /*
-    RotationAnimNode * cam_anim = new RotationAnimNode("cam_anim", mRootNode);
-    //    cam_car_trans->translate(glm::vec3(1.0, -0.53, -5.4));
-    //    cam_car_trans->scale(glm::vec3(0.5, 0.5, 0.5));
-    cam_anim->setSpeed(.1);
-    cam_anim->setAxis(glm::vec3(0, 1, 0));
-    //    cam_car_trans->rotate(90.f, glm::vec3(1, 0, 0));
-    CameraNode * cam2 = new CameraNode("cam2", cam_anim);*/
+    // Add Swoop to scene
+    SceneNode * swoop = SwoopManager::Initialize();
+    swoop->setParentNode(mRootNode);
 
+    // Draw helper line
+    TransformNode * lineTrans = new TransformNode("strip-trans", terrain);
+    //t->translate(newX, 0, -newY);
+    lineTrans->translate(0.0, -0.1, 0.0);
+    //    t->scale(glm::vec3(objScale, objScale, objScale));
+    new LineStripNode("strip", lineTrans);
 
     // dump our scene graph tree for debug
     mRootNode->dump();
@@ -113,10 +117,7 @@ void GameManager::buildScene()
 
 void GameManager::addTerrain()
 {
-    Config* c = Config::getInstance();
-    std::string file = c->getString("terrain");
 
-    TerrainBuilder tb;
 
     /*
     // create transformation for the terrain
@@ -128,9 +129,6 @@ void GameManager::addTerrain()
     //terrain->load(file.c_str());
     terrain->load("data/terr01-hmap.png", "data/terr01-normals.png", "data/testgrid.png" );*/
 
-    tb.prepareNode(mRootNode, "data/desert.tif", "data/testgrid.png", "data/terr01-normals.png");
-    tb.loadObjects("data/objects.png");
-    tb.placeObjects();
 }
 
 void GameManager::Reset()

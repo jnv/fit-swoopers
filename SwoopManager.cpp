@@ -17,27 +17,32 @@ SwoopManager::~SwoopManager()
 {
 }
 
-TransformNode* SwoopManager::Initialize(const char * model)
+TransformNode* SwoopManager::Initialize()
 {
+    string model = Config::getInstance()->getString("swoop_model");
+    float swoopY = Config::getInstance()->getFloat("swoop_elevation");
+
+
     SwoopManager * sm = getInstance();
 
-    TransformNode * tng = new TransformNode("swoop_transform_global");
-    TransformNode * tnl = new TransformNode("swoop_transform_local", tng);
+    TransformNode * transGlobal = new TransformNode("swoop_transform_global");
+    transGlobal->translate(0, swoopY, 0);
 
-    //MeshNode * mn = new MeshNode("data/model/swoop-maya.obj", tnl); //XXX data file via configuration
-    MeshNode * mn = new MeshNode(model, tnl); //XXX data file via configuration
-
-    //tnl->translate(glm::vec3(1.0, -0.53, -5.4));
+    TransformNode * transLocal = new TransformNode("swoop_transform_local", transGlobal);
     float scale = Config::getInstance()->getFloat("swoop_scale");
-    tnl->scale(glm::vec3(scale, scale, scale));
-    tnl->rotate(-90.f, 0.f, 1.f, 0.f);
+    transLocal->scale(glm::vec3(scale, scale, scale));
+    transLocal->rotate(-90.f, 0.f, 1.f, 0.f);
+    //tnl->translate(glm::vec3(1.0, -0.53, -5.4));
 
-    mn->loadMesh();
+    MeshNode * mesh = new MeshNode(model.c_str(), transLocal);
+    mesh->loadMesh();
 
-    sm->m_transformNode = tng;
-    sm->m_swoopNode = mn;
+    sm->m_transformNode = transGlobal;
+    sm->m_swoopNode = mesh;
     sm->m_inited = true;
-    return tng;
+    CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal);
+
+    return transGlobal;
 }
 
 void SwoopManager::forward()
