@@ -13,6 +13,7 @@
 #include "Singleton.h"
 #include "Config.h"
 #include "CameraManager.h"
+#include "CollidableNode.h"
 
 class SwoopManager : public Singleton<SwoopManager>
 {

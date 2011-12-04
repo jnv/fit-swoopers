@@ -1,5 +1,3 @@
-
-
 #include "SceneNode.h"
 
 SceneNode::SceneNode(const char *name, SceneNode *parent):

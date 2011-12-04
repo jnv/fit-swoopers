@@ -54,6 +54,8 @@ TransformNode* SwoopManager::Initialize()
 
     camera->local->translate(0.0, 0.02, 0.11); //Hand picked... :-P
 
+    new CollidableNode("swoop_collidable", mesh);
+
 
 
     //camera->camera->setLocalMatrix(glm::lookAt(closecenter, farcenter, glm::vec3(0, 1, 0)));

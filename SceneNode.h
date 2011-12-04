@@ -4,9 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
-
 #include <glm/glm.hpp>
-
 #include "SceneParams.h"
 
 /** Basic scene graph node

@@ -7,9 +7,9 @@
 #include <cstring>
 #include <cassert>
 #include <iostream>
-#include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <IL/il.h>
+#include <glm/glm.hpp>
 
 struct TextureStruct
 {
