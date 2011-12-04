@@ -8,6 +8,7 @@
 #ifndef SWOOPMANAGER_H
 #define	SWOOPMANAGER_H
 
+#include <glm/gtx/spline.hpp>
 #include "MeshNode.h"
 #include "TransformNode.h"
 #include "Singleton.h"
@@ -46,6 +47,9 @@ protected:
 
     glm::vec4 m_lastPos;
     float m_linePos;
+    glm::vec3 m_lastPoint;
+
+    glm::vec3 m_wayPoints[4];
 
 private:
 

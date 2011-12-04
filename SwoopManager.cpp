@@ -12,6 +12,15 @@ SwoopManager::SwoopManager()
 {
     m_inited = false;
     m_finished = false;
+
+    m_wayPoints[0] =
+	    glm::vec3(0.3, 0, -2.30);
+    m_wayPoints[1] =
+	    glm::vec3(0.42, 0, -1.89);
+    m_wayPoints[2] =
+	    glm::vec3(1.89, 0, -1.5);
+    m_wayPoints[3] =
+	    glm::vec3(2.50, 0, -0.42);
 }
 
 SwoopManager::~SwoopManager()
@@ -41,6 +50,8 @@ TransformNode* SwoopManager::Initialize()
     sm->m_transformNode = transGlobal;
     sm->m_swoopNode = mesh;
     sm->m_inited = true;
+    sm->m_lastPos = transGlobal->globalMatrix() * glm::vec4(0.0);
+    sm->m_lastPoint = glm::vec3(0.0);
     CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal, true);
 
     glm::vec3 closeleft = mesh->getBoxVertex(4);
@@ -68,12 +79,22 @@ TransformNode* SwoopManager::Initialize()
 
 void SwoopManager::forward()
 {
-    m_transformNode->translate(0, 0, -0.1);
+    //m_transformNode->translate(0, 0, -0.1);
+    if(m_linePos < 1.0)
+    {
+	m_linePos += 0.01;
+    }
+
 }
 
 void SwoopManager::backward()
 {
-    m_transformNode->translate(0, 0, 0.1);
+    //m_transformNode->translate(0, 0, 0.1);
+    if(m_linePos > 0.0)
+    {
+	m_linePos -= 0.01;
+	//smoothstep
+    }
 }
 
 void SwoopManager::left()
@@ -90,7 +111,36 @@ void SwoopManager::right()
 
 void SwoopManager::update(double time)
 {
+    glm::vec3 newPoint = glm::gtx::spline::catmullRom(m_wayPoints[0], m_wayPoints[1], m_wayPoints[2], m_wayPoints[3], m_linePos);
 
+//    if(newPoint == m_lastPoint)
+//    {
+//	return;
+//    }
+
+    glm::vec4 globalPoint = m_transformNode->globalMatrix() * glm::vec4(newPoint, 1.0);
+
+    const double epsilion = 0.0001; // choose something apprpriate.
+
+    if(fabs(globalPoint[0] - m_lastPos[0]) < epsilion
+	    && fabs(globalPoint[1] - m_lastPos[1]) < epsilion
+	    && fabs(globalPoint[2] - m_lastPos[2]) < epsilion)
+    {
+	return;
+
+    }
+
+    glm::vec4 delta = globalPoint - m_lastPos;
+
+    std::cout << "Point:" << newPoint.x << "," << newPoint.y << "," << newPoint.z << std::endl;
+    std::cout << "Last pos:" << m_lastPos.x << "," << m_lastPos.y << "," << m_lastPos.z << std::endl;
+    std::cout << "Global:" << globalPoint.x << "," << globalPoint.y << "," << globalPoint.z << std::endl;
+    std::cout << "Delta: " << delta.x << "," << delta.y << "," << delta.z << std::endl;
+
+
+    m_transformNode->setIdentity();
+    m_transformNode->translate(glm::vec3(globalPoint));
+    m_lastPos = globalPoint;
 }
 
 void SwoopManager::reset()
