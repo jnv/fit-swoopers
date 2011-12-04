@@ -40,16 +40,30 @@ public:
 
 
 protected:
+    void setup();
+    void finished();
+    void move();
+
     MeshNode * m_swoopNode;
     TransformNode * m_transformNode;
     bool m_inited;
     bool m_finished;
 
-    glm::vec4 m_lastPos;
     float m_linePos;
     glm::vec3 m_lastPoint;
 
-    glm::vec3 m_wayPoints[4];
+    glm::vec3 m_waypoints[4];
+
+    float m_limit_left;
+    float m_limit_right;
+    float m_accel_fwd;
+    float m_accel_bwd;
+    float m_decel;
+    float m_side_step;
+    float m_side_deviation;
+    float m_velocity;
+    float m_velocity_max_fwd;
+    float m_velocity_max_bwd;
 
 private:
 

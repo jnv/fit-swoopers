@@ -13,13 +13,13 @@ SwoopManager::SwoopManager()
     m_inited = false;
     m_finished = false;
 
-    m_wayPoints[0] =
+    m_waypoints[0] =
 	    glm::vec3(0.3, 0, -2.30);
-    m_wayPoints[1] =
+    m_waypoints[1] =
 	    glm::vec3(0.42, 0, -1.89);
-    m_wayPoints[2] =
+    m_waypoints[2] =
 	    glm::vec3(1.89, 0, -1.5);
-    m_wayPoints[3] =
+    m_waypoints[3] =
 	    glm::vec3(2.50, 0, -0.42);
 }
 
@@ -29,8 +29,10 @@ SwoopManager::~SwoopManager()
 
 TransformNode* SwoopManager::Initialize()
 {
-    string model = Config::getInstance()->getString("swoop_model");
-    float swoopY = Config::getInstance()->getFloat("swoop_elevation");
+    Config * conf = Config::getInstance();
+
+    string model = conf->getString("swoop_model");
+    float swoopY = conf->getFloat("swoop_elevation");
 
 
     SwoopManager * sm = getInstance();
@@ -50,7 +52,6 @@ TransformNode* SwoopManager::Initialize()
     sm->m_transformNode = transGlobal;
     sm->m_swoopNode = mesh;
     sm->m_inited = true;
-    sm->m_lastPos = transGlobal->globalMatrix() * glm::vec4(0.0);
     sm->m_lastPoint = glm::vec3(0.0);
     CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal, true);
 
@@ -68,6 +69,9 @@ TransformNode* SwoopManager::Initialize()
 
     new CollidableNode("swoop_collidable", mesh);
 
+    sm->setup();
+
+
 
 
     //camera->camera->setLocalMatrix(glm::lookAt(closecenter, farcenter, glm::vec3(0, 1, 0)));
@@ -77,41 +81,71 @@ TransformNode* SwoopManager::Initialize()
     return transGlobal;
 }
 
+void SwoopManager::setup()
+{
+    Config * conf = Config::getInstance();
+    m_limit_left = conf->getFloat("swoop_lim_left");
+    m_limit_right = conf->getFloat("swoop_lim_right");
+
+    m_accel_fwd = conf->getFloat("swoop_accel_fwd");
+    m_accel_bwd = conf->getFloat("swoop_accel_bwd");
+    m_side_step = conf->getFloat("swoop_side_step");
+    m_decel = conf->getFloat("swoop_decel");
+    m_velocity_max_fwd = conf->getFloat("swoop_velocity_max_fwd");
+    m_velocity_max_bwd = conf->getFloat("swoop_velocity_max_bwd");
+    m_velocity_max_bwd = -m_velocity_max_bwd;
+    m_side_deviation = 0;
+}
+
 void SwoopManager::forward()
 {
     //m_transformNode->translate(0, 0, -0.1);
-    if(m_linePos < 1.0)
-    {
-	m_linePos += 0.01;
-    }
+    m_velocity += m_accel_bwd;
 
 }
 
 void SwoopManager::backward()
 {
     //m_transformNode->translate(0, 0, 0.1);
-    if(m_linePos > 0.0)
-    {
-	m_linePos -= 0.01;
-	//smoothstep
-    }
+    //m_linePos -= m_accel_bwd;
+    m_velocity -= m_accel_bwd;
+    //smoothstep
 }
 
 void SwoopManager::left()
 {
     //    m_transformNode->rotate(5, 0, 1, 0);
-    m_transformNode->translate(-0.1, 0, 0);
+    if(m_limit_left < m_side_deviation)
+    {
+	m_transformNode->translate(-m_side_step, 0, 0);
+	m_side_deviation -= m_side_step;
+    }
+
+    std::cout << m_side_deviation << std::endl;
 }
 
 void SwoopManager::right()
 {
     //m_transformNode->rotate(-5, 0, 1, 0);
-    m_transformNode->translate(0.1, 0, 0);
+    if(m_side_deviation < m_limit_right)
+    {
+	m_transformNode->translate(m_side_step, 0, 0);
+	m_side_deviation += m_side_step;
+    }
+
+    std::cout << m_side_deviation << std::endl;
+
 }
 
 void SwoopManager::update(double time)
 {
-    glm::vec3 newPoint = glm::gtx::spline::catmullRom(m_wayPoints[0], m_wayPoints[1], m_wayPoints[2], m_wayPoints[3], m_linePos);
+    if(m_finished)
+    {
+	return;
+    }
+    move();
+
+    glm::vec3 newPoint = glm::gtx::spline::catmullRom(m_waypoints[0], m_waypoints[1], m_waypoints[2], m_waypoints[3], m_linePos);
 
     if(newPoint == m_lastPoint)
     {
@@ -130,7 +164,6 @@ void SwoopManager::update(double time)
 
 
     m_transformNode->translate(glm::vec3(delta));
-    m_lastPos = newGlobPoint;
     m_lastPoint = newPoint;
 }
 
@@ -138,4 +171,45 @@ void SwoopManager::reset()
 {
     m_inited = false;
     m_finished = false;
+}
+
+void SwoopManager::finished()
+{
+    m_finished = true;
+}
+
+void SwoopManager::move()
+{
+
+    m_linePos += m_velocity;
+
+    if(m_velocity > 0.0)
+    {
+	m_velocity -= m_decel;
+    }
+    else if(m_velocity < 0.0)
+    {
+	m_velocity += m_decel;
+    }
+
+    if(fabs(m_velocity) < m_decel)
+    {
+	m_velocity = 0.0;
+    }
+
+    if(m_velocity < m_velocity_max_bwd)
+    {
+	m_velocity = m_velocity_max_bwd;
+    }
+    else if(m_velocity > m_velocity_max_fwd)
+    {
+	m_velocity = m_velocity_max_fwd;
+    }
+
+//    m_velocity = glm::clamp(m_velocity, m_velocity_max_bwd, m_velocity_max_fwd);
+
+    if(m_linePos >= 1.0)
+    {
+	finished();
+    }
 }
