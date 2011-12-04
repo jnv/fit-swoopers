@@ -113,34 +113,25 @@ void SwoopManager::update(double time)
 {
     glm::vec3 newPoint = glm::gtx::spline::catmullRom(m_wayPoints[0], m_wayPoints[1], m_wayPoints[2], m_wayPoints[3], m_linePos);
 
-//    if(newPoint == m_lastPoint)
-//    {
-//	return;
-//    }
-
-    glm::vec4 globalPoint = m_transformNode->globalMatrix() * glm::vec4(newPoint, 1.0);
-
-    const double epsilion = 0.0001; // choose something apprpriate.
-
-    if(fabs(globalPoint[0] - m_lastPos[0]) < epsilion
-	    && fabs(globalPoint[1] - m_lastPos[1]) < epsilion
-	    && fabs(globalPoint[2] - m_lastPos[2]) < epsilion)
+    if(newPoint == m_lastPoint)
     {
 	return;
-
     }
 
-    glm::vec4 delta = globalPoint - m_lastPos;
+    glm::vec4 oldGlobPoint = m_transformNode->globalMatrix() * glm::vec4(m_lastPoint, 1.0);
+    glm::vec4 newGlobPoint = m_transformNode->globalMatrix() * glm::vec4(newPoint, 1.0);
 
-    std::cout << "Point:" << newPoint.x << "," << newPoint.y << "," << newPoint.z << std::endl;
-    std::cout << "Last pos:" << m_lastPos.x << "," << m_lastPos.y << "," << m_lastPos.z << std::endl;
-    std::cout << "Global:" << globalPoint.x << "," << globalPoint.y << "," << globalPoint.z << std::endl;
-    std::cout << "Delta: " << delta.x << "," << delta.y << "," << delta.z << std::endl;
+    glm::vec4 delta = newGlobPoint - oldGlobPoint;
+
+    //    std::cout << "Point:" << newPoint.x << "," << newPoint.y << "," << newPoint.z << std::endl;
+    //    std::cout << "oldGlobPoint:" << oldGlobPoint.x << "," << oldGlobPoint.y << "," << oldGlobPoint.z << std::endl;
+    //    std::cout << "Global:" << newGlobPoint.x << "," << newGlobPoint.y << "," << newGlobPoint.z << std::endl;
+    //    std::cout << "Delta: " << delta.x << "," << delta.y << "," << delta.z << std::endl;
 
 
-    m_transformNode->setIdentity();
-    m_transformNode->translate(glm::vec3(globalPoint));
-    m_lastPos = globalPoint;
+    m_transformNode->translate(glm::vec3(delta));
+    m_lastPos = newGlobPoint;
+    m_lastPoint = newPoint;
 }
 
 void SwoopManager::reset()
