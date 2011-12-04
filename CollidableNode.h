@@ -13,6 +13,9 @@ public:
 
     void draw(SceneParams *);
 
+    static void SwitchDraw();
+    static void SetDraw(const bool);
+
 protected:
     MeshNode * m_mesh;
     glm::vec3 * m_vertices;
@@ -25,6 +28,8 @@ protected:
     static GLint m_PVMmatrixLoc;
     /// position attribute location
     static GLint m_posLoc;
+    /// whether to draw wireframe
+    static bool m_draw;
 
 private:
 

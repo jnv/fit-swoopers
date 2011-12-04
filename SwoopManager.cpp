@@ -11,6 +11,7 @@
 SwoopManager::SwoopManager()
 {
     m_inited = false;
+    m_finished = false;
 }
 
 SwoopManager::~SwoopManager()
@@ -40,7 +41,7 @@ TransformNode* SwoopManager::Initialize()
     sm->m_transformNode = transGlobal;
     sm->m_swoopNode = mesh;
     sm->m_inited = true;
-    CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal);
+    CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal, true);
 
     glm::vec3 closeleft = mesh->getBoxVertex(4);
     glm::vec3 closeright = mesh->getBoxVertex(5);
@@ -95,4 +96,5 @@ void SwoopManager::update(double time)
 void SwoopManager::reset()
 {
     m_inited = false;
+    m_finished = false;
 }

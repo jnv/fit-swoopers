@@ -4,6 +4,7 @@ GLuint CollidableNode::m_vertexBufferObject = 0;
 GLuint CollidableNode::m_program = 0;
 GLint CollidableNode::m_PVMmatrixLoc = -1;
 GLint CollidableNode::m_posLoc = -1;
+bool CollidableNode::m_draw = false;
 
 CollidableNode::CollidableNode(const char * name, MeshNode * parent) : SceneNode(name, parent)
 {
@@ -43,6 +44,11 @@ void CollidableNode::draw(SceneParams * scene_params)
     // inherited draw - draws all children
     SceneNode::draw(scene_params);
 
+    if(!CollidableNode::m_draw)
+    {
+	return;
+    }
+
     glm::mat4 matrix = scene_params->projection_mat * scene_params->view_mat * globalMatrix();
 
     glUseProgram(m_program);
@@ -56,4 +62,14 @@ void CollidableNode::draw(SceneParams * scene_params)
     glDrawArrays(GL_LINE_LOOP, 0, 8); // 8 = 4+4 floats per vertex
 
     glDisableVertexAttribArray(m_posLoc);
+}
+
+void CollidableNode::SwitchDraw()
+{
+    CollidableNode::m_draw = !CollidableNode::m_draw;
+}
+
+void CollidableNode::SetDraw(const bool value)
+{
+    CollidableNode::m_draw = value;
 }

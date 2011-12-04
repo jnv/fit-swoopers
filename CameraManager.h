@@ -44,11 +44,10 @@ public:
     ~CameraManager();
     void reset();
 
-    CameraStruct* createCamera(const char*, SceneNode *);
+    CameraStruct* createCamera(const char*, SceneNode *, const bool = false);
 
     void nextCamera();
     bool isCurrent(CameraNode*) const;
-    void addCamera(CameraStruct*);
     void sceneDraw(CameraNode*);
     void recalcView(CameraNode*);
 
@@ -69,6 +68,8 @@ public:
     void arcballUpdate(int, int);
 
 protected:
+    void addCamera(CameraStruct*, const bool = false);
+
     Cameras m_cameras;
     CameraStruct * m_current;
     unsigned int m_current_pos;

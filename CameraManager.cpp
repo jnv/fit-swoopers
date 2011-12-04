@@ -71,11 +71,11 @@ void CameraManager::nextCamera()
     //recalcView(m_current);
 }
 
-CameraStruct* CameraManager::createCamera(const char* name, SceneNode * parent)
+CameraStruct* CameraManager::createCamera(const char* name, SceneNode * parent, const bool setActive)
 {
     CameraStruct * cs = new CameraStruct(name, parent);
 
-    addCamera(cs);
+    addCamera(cs, setActive);
     return cs;
 }
 
@@ -83,7 +83,7 @@ CameraStruct* CameraManager::createCamera(const char* name, SceneNode * parent)
  * Registers a given camera
  * @param camera
  */
-void CameraManager::addCamera(CameraStruct* cs)
+void CameraManager::addCamera(CameraStruct* cs, const bool setActive)
 {
     m_cameras.push_back(cs);
 
@@ -95,6 +95,15 @@ void CameraManager::addCamera(CameraStruct* cs)
 	m_current_pos = 0;
 	m_current->camera->activate();
     }
+    else if(setActive)
+    {
+	m_current->camera->disable();
+	m_current = cs;
+	m_current_pos = m_cameras.size() - 1; // Active camera is on last position
+	m_current->camera->activate();
+
+    }
+
 }
 
 /**

@@ -32,10 +32,20 @@ public:
 
     void reset();
 
+    bool hasFinished() const
+    {
+        return m_finished;
+    }
+
+
 protected:
     MeshNode * m_swoopNode;
     TransformNode * m_transformNode;
     bool m_inited;
+    bool m_finished;
+
+    glm::vec4 m_lastPos;
+    float m_linePos;
 
 private:
 
