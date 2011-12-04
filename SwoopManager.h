@@ -20,15 +20,14 @@ class SwoopManager : public Singleton<SwoopManager>
 {
 public:
     friend class Singleton<SwoopManager>;
-    SwoopManager();
-    ~SwoopManager();
-
     static TransformNode* Initialize();
 
     void forward();
     void left();
     void right();
     void backward();
+    void bump();
+
     void update(double);
 
     void reset();
@@ -66,6 +65,8 @@ protected:
     float m_velocity_max_bwd;
 
 private:
+    SwoopManager();
+    ~SwoopManager();
 
 };
 

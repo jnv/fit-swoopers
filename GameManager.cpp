@@ -55,6 +55,9 @@ void GameManager::OnTimer(int)
 
     InputManager::getInstance()->update();
     SwoopManager::getInstance()->update(timed);
+
+    //Detect finished
+
     glutTimerFunc(33, GameManager::OnTimer, 0);
     glutPostRedisplay();
 }

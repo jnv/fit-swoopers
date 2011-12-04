@@ -95,6 +95,7 @@ void SwoopManager::setup()
     m_velocity_max_bwd = conf->getFloat("swoop_velocity_max_bwd");
     m_velocity_max_bwd = -m_velocity_max_bwd;
     m_side_deviation = 0;
+    m_velocity = 0.0;
 }
 
 void SwoopManager::forward()
@@ -181,7 +182,14 @@ void SwoopManager::finished()
 void SwoopManager::move()
 {
 
-    m_linePos += m_velocity;
+    if(m_linePos >= 0.0)
+    {
+	m_linePos += m_velocity;
+    }
+    else
+    {
+	m_linePos = 0.0;
+    }
 
     if(m_velocity > 0.0)
     {
@@ -206,10 +214,15 @@ void SwoopManager::move()
 	m_velocity = m_velocity_max_fwd;
     }
 
-//    m_velocity = glm::clamp(m_velocity, m_velocity_max_bwd, m_velocity_max_fwd);
+    //    m_velocity = glm::clamp(m_velocity, m_velocity_max_bwd, m_velocity_max_fwd);
 
     if(m_linePos >= 1.0)
     {
 	finished();
     }
+}
+
+void SwoopManager::bump()
+{
+    m_velocity = -m_accel_bwd;
 }
