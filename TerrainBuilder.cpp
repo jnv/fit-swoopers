@@ -27,7 +27,8 @@ SceneNode * TerrainBuilder::prepareNode(SceneNode * parent, const char * hmapfil
     m_terrainNode = new TerragenNode("terrain", m_terrainParent);
 
     float scale = Config::getInstance()->getFloat("terrain_scale");
-    m_terrainNode->load("data/desert2", scale); //XXX terrain file via config
+    std::string terrainfile = Config::getInstance()->getString("terrain");
+    m_terrainNode->load(terrainfile.c_str(), scale);
 
     return m_terrainParent;
 }
