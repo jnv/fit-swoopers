@@ -23,6 +23,7 @@
 #include "RotationAnimNode.h"
 #include "TerrainNode.h"
 #include "MeshNode.h"
+#include "SkyboxNode.h"
 #include "SceneParams.h"
 #include "CameraManager.h"
 #include "CameraNode.h"
