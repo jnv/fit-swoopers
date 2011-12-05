@@ -71,9 +71,9 @@ bool CollisionManager::hasCollision()
     //    glm::vec2 v3 = m_movable->getGlobalVertex2D(3);
 
     float left = v0.x;
-    float top = v2.y;
+    float top = v0.y;
     float right = v2.x;
-    float bottom = v0.y;
+    float bottom = v2.y;
 
 
     for(Collidables::iterator it = m_collidables.begin(); it != m_collidables.end(); ++it)
@@ -114,7 +114,7 @@ bool CollisionManager::hasCollision()
 
 	//top edge
 	//top < top' < bottom
-	if(v2.y < top && top < v0.y)
+	if(v0.y < top && top < v2.y)
 	    //if(top < v2.y && v2.y < bottom)
 	{
 	    isVert = true;
@@ -123,7 +123,7 @@ bool CollisionManager::hasCollision()
 
 	//bottom edge
 	//top < bottom' < bottom
-	if(v2.y < bottom && bottom < v0.y)
+	if(v0.y < bottom && bottom < v2.y)
 	{
 	    isVert = true;
 	    std::cout << "Vertical collision on bottom edge" << std::endl;
