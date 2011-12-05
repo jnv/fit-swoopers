@@ -64,6 +64,8 @@ protected:
     float m_velocity_max_fwd;
     float m_velocity_max_bwd;
 
+    bool m_collides;
+
 private:
     SwoopManager();
     ~SwoopManager();

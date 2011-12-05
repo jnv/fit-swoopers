@@ -146,10 +146,7 @@ void SwoopManager::update(double time)
     {
 	return;
     }
-    if(CollisionManager::getInstance()->hasCollision())
-    {
-	bump();
-    }
+    m_collides = CollisionManager::getInstance()->hasCollision();
 
     move();
 
@@ -188,6 +185,11 @@ void SwoopManager::finished()
 
 void SwoopManager::move()
 {
+    if(m_collides)
+    {
+	bump();
+    }
+
 
     if(m_linePos >= 0.0)
     {
