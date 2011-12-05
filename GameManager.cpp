@@ -122,7 +122,7 @@ void GameManager::buildScene()
     //t->translate(newX, 0, -newY);
     lineTrans->translate(0.0, -0.1, 0.0);
     //    t->scale(glm::vec3(objScale, objScale, objScale));
-    new LineStripNode("strip", lineTrans);
+    //new LineStripNode("strip", lineTrans);
 
     // dump our scene graph tree for debug
     mRootNode->dump();

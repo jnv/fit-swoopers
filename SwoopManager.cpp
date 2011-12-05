@@ -15,13 +15,13 @@ SwoopManager::SwoopManager()
     m_finished = false;
 
     m_waypoints[0] =
-	    glm::vec3(0.3, 0, -2.30);
+	    glm::vec3(1.0, 0, 0.0);
     m_waypoints[1] =
-	    glm::vec3(0.42, 0, -1.89);
+	    glm::vec3(1.25, 0, -0.05);
     m_waypoints[2] =
-	    glm::vec3(1.89, 0, -1.5);
+	    glm::vec3(1.75, 0, -2.75);
     m_waypoints[3] =
-	    glm::vec3(2.50, 0, -0.42);
+	    glm::vec3(2.0, 0, -3.0);
 }
 
 SwoopManager::~SwoopManager()

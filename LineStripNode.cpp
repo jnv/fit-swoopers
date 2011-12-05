@@ -8,10 +8,10 @@ GLint LineStripNode::m_posLoc = -1;
 GLint LineStripNode::m_colLoc = -1;
 
 static const float vertexData[] = {
-    0.3, 0, -2.30,
-    0.42, 0, -1.89,
-    1.89, 0, -1.5,
-    2.50, 0, -0.42,
+    -0.5, 0, 0.5,
+    2.75, 0, -0.25,
+    0.25, 0, -2.75,
+    3.5, 0, -3.5,
 };
 
 LineStripNode::LineStripNode(const char * name, SceneNode * parent) :
