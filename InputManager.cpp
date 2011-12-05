@@ -154,7 +154,8 @@ void InputManager::update()
     }
 
     CameraManager * cman = CameraManager::getInstance();
-    float camMove = 0.005;
+    float camMove = 0.01;
+    float camAngle = 2.f;
 
     if(m_keys['a'] == true) //cam left
     {
@@ -179,12 +180,12 @@ void InputManager::update()
     if(m_keys['q']) //cam rotate left
     {
 	//cman->rotate(-5, glm::vec3(0, 1, 0));
-	cman->rotate(1.f, glm::vec3(0, 1, 0));
+	cman->rotate(camAngle, glm::vec3(0, 1, 0));
     }
     if(m_keys['e']) //cam rotate right
     {
 	//cman->rotate(5, glm::vec3(0, 1, 0));
-	cman->rotate(-1.f, glm::vec3(0, 1, 0));
+	cman->rotate(-camAngle, glm::vec3(0, 1, 0));
     }
 
 
