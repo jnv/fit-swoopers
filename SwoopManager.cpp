@@ -176,6 +176,7 @@ void SwoopManager::reset()
 {
     m_inited = false;
     m_finished = false;
+    CollisionManager::getInstance()->reset();
 }
 
 void SwoopManager::finished()
