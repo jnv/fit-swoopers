@@ -97,7 +97,7 @@ bool CollisionManager::hasCollision()
 	if(v0.x < left && left < v2.x)
 	{
 	    isHoriz = true;
-	    std::cout << "Horizontal collision on left edge" << std::endl;
+	    //	    std::cout << "Horizontal collision on left edge" << std::endl;
 	}
 
 	// right edge
@@ -105,11 +105,11 @@ bool CollisionManager::hasCollision()
 	if(v0.x < right && right < v2.x)
 	{
 	    isHoriz = true;
-	    std::cout << "Horizontal collision on right edge" << std::endl;
+	    //	    std::cout << "Horizontal collision on right edge" << std::endl;
 	}
 
-	std::cout << v2.y << " < " << top << " && ";
-	std::cout << top << " < " << v0.y << std::endl;
+	//	std::cout << v2.y << " < " << top << " && ";
+	//	std::cout << top << " < " << v0.y << std::endl;
 
 
 	//top edge
@@ -118,7 +118,7 @@ bool CollisionManager::hasCollision()
 	    //if(top < v2.y && v2.y < bottom)
 	{
 	    isVert = true;
-	    std::cout << "Vertical collision on top edge" << std::endl;
+	    //	    std::cout << "Vertical collision on top edge" << std::endl;
 	}
 
 	//bottom edge
@@ -126,7 +126,7 @@ bool CollisionManager::hasCollision()
 	if(v0.y < bottom && bottom < v2.y)
 	{
 	    isVert = true;
-	    std::cout << "Vertical collision on bottom edge" << std::endl;
+	    //	    std::cout << "Vertical collision on bottom edge" << std::endl;
 	}
 
 	// inner collision
@@ -137,10 +137,10 @@ bool CollisionManager::hasCollision()
 	    if(v0.x < left && left < v2.x)
 	    {
 		//top' < top < bottom'
-		if(v2.y < top && top < v0.y)
+		if(v0.y < top && top < v2.y)
 		{
 		    isInner = true;
-		    std::cout << "Inner collision" << std::endl;
+		    std::clog << "Inner collision" << std::endl;
 		    return true;
 		}
 	    }
@@ -149,7 +149,7 @@ bool CollisionManager::hasCollision()
 
 	if(isHoriz && isVert)
 	{
-	    std::cout << "COLLISION!!!!" << std::endl;
+	    std::clog << "Collision" << std::endl;
 	    return true;
 	}
 
