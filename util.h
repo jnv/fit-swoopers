@@ -32,6 +32,7 @@ GLuint CreateProgram(const std::vector<GLuint> &shaderList);
 GLuint CreateTexture(const char * filename);
 GLuint CreateNormalTexture(const char * filename);
 GLuint CreateHeightTexture(const char *, TextureStruct&);
+TextureStruct * LoadTextureData(const char * filename);
 
 inline void clampf(float &v, const float vmin, const float vmax)
 {

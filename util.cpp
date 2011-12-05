@@ -90,6 +90,68 @@ GLuint CreateProgram(const std::vector<GLuint> &shaderList)
 
 GLuint CreateTexture(const char * filename)
 {
+    /*
+    ILuint img_id;
+    ilGenImages(1, &img_id); // generate one image ID (name)
+    ilBindImage(img_id); // bind that generated id
+
+    // set origin to LOWER LEFT corner (the orientation which OpenGL uses)
+    ilEnable(IL_ORIGIN_SET);
+    ilSetInteger(IL_ORIGIN_MODE, IL_ORIGIN_LOWER_LEFT);
+
+    // this will load image data to the currently bound image
+    if(ilLoadImage(filename) == IL_FALSE)
+    {
+	ilDeleteImages(1, &img_id);
+	printf("cannot load image \"%s\"\n", filename);
+	return 0;
+    }
+
+    // if the image was correctly loaded, we can obtain some informatins about our image
+    ILint w = ilGetInteger(IL_IMAGE_WIDTH);
+    ILint h = ilGetInteger(IL_IMAGE_HEIGHT);
+    ILenum f = ilGetInteger(IL_IMAGE_FORMAT);
+    //printf("loaded %i x %i image\n", w, h);
+    // there are many possible image formats and data types
+    // we will convert all image types to RGB or RGBA format, with one byte per channel
+    unsigned Bpp = (f == IL_RGBA || f == IL_BGRA ? 4 : 3);
+    unsigned char * data = new unsigned char[w * h * Bpp];
+    // thiw will convert image to RGB or RGBA, one byte per channel and store data to our array
+    ilCopyPixels(0, 0, 0, w, h, 1, Bpp == 4 ? IL_RGBA : IL_RGB, IL_UNSIGNED_BYTE, data);
+
+    // bogus ATI drivers may require this call to work with mipmaps
+    //glEnable(GL_TEXTURE_2D);
+     */
+
+    TextureStruct * texture = LoadTextureData(filename);
+
+    if(texture == NULL)
+    {
+	return 0;
+    }
+
+    GLuint texID;
+    // generate and bind one texture
+    glGenTextures(1, &texID);
+    glBindTexture(GL_TEXTURE_2D, texID);
+    // set linear filtering
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // upload our image data to OpenGL
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->w, texture->h, 0, texture->Bpp == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, texture->data);
+    // create mipmaps
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    // free our data (they were copied to OpenGL)
+    delete texture;
+    //ilDeleteImages(1, &img_id);
+
+    return texID;
+}
+
+TextureStruct * LoadTextureData(const char * filename)
+{
+
     ILuint img_id;
     ilGenImages(1, &img_id); // generate one image ID (name)
     ilBindImage(img_id); // bind that generated id
@@ -121,23 +183,17 @@ GLuint CreateTexture(const char * filename)
     // bogus ATI drivers may require this call to work with mipmaps
     //glEnable(GL_TEXTURE_2D);
 
-    GLuint texID;
-    // generate and bind one texture
-    glGenTextures(1, &texID);
-    glBindTexture(GL_TEXTURE_2D, texID);
-    // set linear filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // upload our image data to OpenGL
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, Bpp == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
-    // create mipmaps
-    glGenerateMipmap(GL_TEXTURE_2D);
+    TextureStruct * ret = new TextureStruct();
 
-    // free our data (they were copied to OpenGL)
-    delete [] data;
+    ret->Bpp = Bpp;
+    ret->w = w;
+    ret->h = h;
+    ret->size = w*h*Bpp;
+    ret->data = data;
+    
     ilDeleteImages(1, &img_id);
 
-    return texID;
+    return ret;
 }
 
 GLuint CreateNormalTexture(const char * filename)
