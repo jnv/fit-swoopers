@@ -110,7 +110,7 @@ void SkyboxNode::draw(SceneParams* scene_params)
  */
 void SkyboxNode::loadTexture(const char* prefix)
 {
-    std::string faces[6] = {"pos_x.tga", "neg_x.tga", "pos_y.tga", "neg_y.tga", "pos_z.tga", "neg_z.tga"};
+    std::string faces[6] = {"pos_x", "neg_x", "pos_y", "neg_y", "pos_z", "neg_z"};
 
     GLenum cube[6] = {GL_TEXTURE_CUBE_MAP_POSITIVE_X,
 	GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
@@ -135,7 +135,7 @@ void SkyboxNode::loadTexture(const char* prefix)
 
     for(int i = 0; i < 6; i++)
     {
-	std::string file = prefix + faces[i];
+	std::string file = prefix + faces[i] + ".jpg";
 	TextureStruct * texture = LoadTextureData(file.c_str());
 
 	glTexImage2D(cube[i], 0, GL_RGBA, texture->w, texture->h, 0, texture->Bpp == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, texture->data);

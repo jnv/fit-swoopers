@@ -96,10 +96,10 @@ void GameManager::buildScene()
     TransformNode * skyTrans = new TransformNode("skybox_trans", mRootNode);
     SkyboxNode * skybox = new SkyboxNode("skybox", skyTrans);
 
-    skyTrans->translate(1.0, 0.75, -1.0);
-    skyTrans->scale(5.0, 5.0, 5.0);
-    skyTrans->translate(0.0, 0.75, 0.0);
-    skybox->loadTexture("data/skybox_");
+    skyTrans->translate(1.0, 0.7, -1.0);
+    skyTrans->scale(glm::vec3(20.0));
+    //skyTrans->translate(0.0, 0.75, 0.0);
+    skybox->loadTexture("data/skybox/");
 
 
     //addTerrain();
