@@ -86,10 +86,11 @@ bool MeshNode::loadMesh()
     for(unsigned m = 0; m < scn->mNumMeshes; ++m)
 	m_nVertices += scn->mMeshes[m]->mNumVertices;
 
-    float * vertices = new float[10 * m_nVertices]; // 10 floats per vertex (xyx + RGBA + nor)
+    float * vertices = new float[12 * m_nVertices]; // 12 floats per vertex (xyz + RGBA + nor + texpos)
     float * cur_vert = vertices;
     float * cur_col = vertices + 3 * m_nVertices;
     float * cur_nor = vertices + 7 * m_nVertices;
+    float * cur_texpos = vertices + 10 * m_nVertices;
     GLuint buffer;
 
     for(unsigned m = 0; m < scn->mNumMeshes; ++m)
@@ -124,21 +125,28 @@ bool MeshNode::loadMesh()
 
 	if(mesh->HasTextureCoords(0))
 	{
-	    //std::cout << "Has TexCoords for " << nodeName() << std::endl;
-	    float *texCoords = (float *) malloc(sizeof(float) *2 * mesh->mNumVertices);
+	    std::cout << "Has TexCoords for " << nodeName() << std::endl;
+//	    float *texCoords = (float *) malloc(sizeof(float) *2 * mesh->mNumVertices);
+	    unsigned delta;
 	    for(unsigned int k = 0; k < mesh->mNumVertices; ++k)
 	    {
+		delta = k*2;
+//		cur_vert[cur_texpos + delta] = mesh->mTextureCoords[0][k].x;
+//		cur_vert[cur_texpos + delta + 1] = mesh->mTextureCoords[0][k].y;
 
-		texCoords[k * 2] = mesh->mTextureCoords[0][k].x;
-		texCoords[k * 2 + 1] = mesh->mTextureCoords[0][k].y;
+//		texCoords[k * 2] = mesh->mTextureCoords[0][k].x;
+//		texCoords[k * 2 + 1] = mesh->mTextureCoords[0][k].y;
 	    }
+	    cur_texpos = cur_texpos + delta + 1 + 1;
 	    
-	    glGenBuffers(1, &buffer);
-	    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	    glBufferData(GL_ARRAY_BUFFER, sizeof(float) *2 * mesh->mNumVertices, texCoords, GL_STATIC_DRAW);
-	    glEnableVertexAttribArray(m_texCoordLoc);
-	    glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, 0, 0, 0);
+//	    glGenBuffers(1, &buffer);
+//	    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+//	    glBufferData(GL_ARRAY_BUFFER, sizeof(float) *2 * mesh->mNumVertices, texCoords, GL_STATIC_DRAW);
+//	    glEnableVertexAttribArray(m_texCoordLoc);
+//	    glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, 0, 0, 0);
 	}
+
+
 
 
 	cur_vert += mesh->mNumVertices * 3;
@@ -152,7 +160,7 @@ bool MeshNode::loadMesh()
     //std::cout << "node: " << root->mName.data << std::endl;
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, m_nVertices * sizeof(float) * 10, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_nVertices * sizeof(float) * 12, vertices, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     delete [] vertices;
@@ -181,15 +189,18 @@ void MeshNode::draw(SceneParams * scene_params)
     glEnableVertexAttribArray(m_posLoc);
     glEnableVertexAttribArray(m_colLoc);
     glEnableVertexAttribArray(m_norLoc);
+    glEnableVertexAttribArray(m_texCoordLoc);
     glVertexAttribPointer(m_posLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glVertexAttribPointer(m_colLoc, 4, GL_FLOAT, GL_FALSE, 0, (void*) (3 * sizeof(float) * m_nVertices));
     glVertexAttribPointer(m_norLoc, 3, GL_FLOAT, GL_FALSE, 0, (void*) (7 * sizeof(float) * m_nVertices));
+    glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, GL_FALSE, 0, (void*) (10 * sizeof(float) * m_nVertices));
 
     glDrawArrays(GL_TRIANGLES, 0, m_nVertices);
 
     glDisableVertexAttribArray(m_posLoc);
     glDisableVertexAttribArray(m_colLoc);
     glDisableVertexAttribArray(m_norLoc);
+    glDisableVertexAttribArray(m_texCoordLoc);
 }
 
 /// prints the size of the geometry box without transformation
