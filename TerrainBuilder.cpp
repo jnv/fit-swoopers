@@ -80,8 +80,13 @@ bool TerrainBuilder::loadObjects(const char* mapfile)
 		int x = col / Bpp;
 		int y = row / Bpp;
 
-		cout << "Pyramid at " << x << "x" << y << endl;
-		addPyramid(x, y);
+		if(pixels[offset] == 0xcc)
+		{
+		    addRock(x, y);
+		}
+
+		//		cout << "Pyramid at " << x << "x" << y << endl;
+		//		addPyramid(x, y);
 		/*
 		switch(pixels[offset])
 		{
@@ -124,5 +129,25 @@ void TerrainBuilder::addPyramid(const int x, const int y)
 
 void TerrainBuilder::addSwoop(const int x, const int y)
 {
-    
+
+}
+
+void TerrainBuilder::addRock(const int x, const int y)
+{
+    TransformNode * t = new TransformNode("rock-trans", m_terrainParent);
+    //TransformNode * ts = new TransformNode("pyra-trans-scale", t);
+    int tWidth = m_terrainNode->getWidth();
+    float scale = m_terrainNode->getScale();
+    float newX = ((float) x * scale) / (float) tWidth;
+    float newY = ((float) y * scale) / (float) tWidth;
+    t->translate(newX, -0.185, -newY);
+    t->scale(glm::vec3(0.014, 0.014, 0.014));
+
+
+    RockNode * r = new RockNode(t);
+    r->loadMesh();
+    r->loadTexture();
+
+//    MeshNode * m = new MeshNode("data/rock.obj", t);
+//    m->loadMesh();
 }

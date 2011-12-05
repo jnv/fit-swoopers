@@ -19,6 +19,7 @@
 #include "SwoopManager.h"
 #include "Config.h"
 #include "LineStripNode.h"
+#include "RockNode.h"
 using namespace std;
 
 class TerrainBuilder
@@ -39,6 +40,8 @@ protected:
 
     void addPyramid(const int, const int);
     void addSwoop(const int, const int);
+    void addRock(const int, const int);
+
 
 private:
 

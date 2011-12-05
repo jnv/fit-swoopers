@@ -110,7 +110,7 @@ GLuint CreateTexture(const char * filename)
     ILint w = ilGetInteger(IL_IMAGE_WIDTH);
     ILint h = ilGetInteger(IL_IMAGE_HEIGHT);
     ILenum f = ilGetInteger(IL_IMAGE_FORMAT);
-    printf("loaded %i x %i image\n", w, h);
+    //printf("loaded %i x %i image\n", w, h);
     // there are many possible image formats and data types
     // we will convert all image types to RGB or RGBA format, with one byte per channel
     unsigned Bpp = (f == IL_RGBA || f == IL_BGRA ? 4 : 3);

@@ -154,25 +154,26 @@ void InputManager::update()
     }
 
     CameraManager * cman = CameraManager::getInstance();
+    float camMove = 0.005;
 
     if(m_keys['a'] == true) //cam left
     {
-	cman->translate(glm::vec3(-0.1, 0, 0));
+	cman->translate(glm::vec3(-camMove, 0, 0));
 
     }
     if(m_keys['d']) //cam right
     {
-	cman->translate(glm::vec3(0.1, 0, 0));
+	cman->translate(glm::vec3(camMove, 0, 0));
     }
     if(m_keys['w']) //fwd
     {
 	//cman->translate(glm::vec3(0, 0, 0.2));
-	cman->translate(glm::vec3(0, 0, -0.1)); //XXX ain't this be another way around?
+	cman->translate(glm::vec3(0, 0, -camMove)); //XXX ain't this be another way around?
     }
     if(m_keys['s']) //bwd
     {
 	//cman->translate(glm::vec3(0, 0, -0.2));
-	cman->translate(glm::vec3(0, 0, 0.1)); //XXX ain't this be another way around?
+	cman->translate(glm::vec3(0, 0, camMove)); //XXX ain't this be another way around?
 
     }
     if(m_keys['q']) //cam rotate left

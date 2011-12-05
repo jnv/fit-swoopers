@@ -12,14 +12,14 @@ class MeshNode : public SceneNode
 {
 public:
     /// mesh name is equal to model file name
-    MeshNode(const char* file_name = "", SceneNode* parent = NULL);
+    MeshNode(const char* file_name = "", SceneNode* parent = NULL, const bool = true);
     ~MeshNode();
 
     /// load geometry
     bool loadMesh();
 
     /// reimplemented draw
-    void draw(SceneParams * scene_params);
+    virtual void draw(SceneParams * scene_params);
 
     /// prints the size of the geometry box without transformation
     void printBBoxSize();
@@ -44,6 +44,8 @@ protected:
     static GLint m_colLoc;
     /// normal attribute location
     static GLint m_norLoc;
+    
+    static GLint m_texCoordLoc;
     /// identifier for the buffer object
     GLuint m_vertexBufferObject;
     /// count of vertices
