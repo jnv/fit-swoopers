@@ -14,7 +14,7 @@
 #include "Singleton.h"
 #include "Config.h"
 #include "CameraManager.h"
-#include "CollidableNode.h"
+#include "CollisionManager.h"
 
 class SwoopManager : public Singleton<SwoopManager>
 {

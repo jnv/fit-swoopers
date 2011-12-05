@@ -7,6 +7,7 @@
 
 #include "SwoopManager.h"
 #include "TransformNode.h"
+#include "CollisionManager.h"
 
 SwoopManager::SwoopManager()
 {
@@ -55,19 +56,20 @@ TransformNode* SwoopManager::Initialize()
     sm->m_lastPoint = glm::vec3(0.0);
     CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal, true);
 
-    glm::vec3 closeleft = mesh->getBoxVertex(4);
-    glm::vec3 closeright = mesh->getBoxVertex(5);
-    glm::vec3 closecenter = closeleft + closeright;
-    closecenter /= 2;
-
-    glm::vec3 farleft = mesh->getBoxVertex(7);
-    glm::vec3 farright = mesh->getBoxVertex(6);
-    glm::vec3 farcenter = farleft + farright;
-    farcenter /= 2;
-
+//    glm::vec3 closeleft = mesh->getBoxVertex(4);
+//    glm::vec3 closeright = mesh->getBoxVertex(5);
+//    glm::vec3 closecenter = closeleft + closeright;
+//    closecenter /= 2;
+//
+//    glm::vec3 farleft = mesh->getBoxVertex(7);
+//    glm::vec3 farright = mesh->getBoxVertex(6);
+//    glm::vec3 farcenter = farleft + farright;
+//    farcenter /= 2;
+    
     camera->local->translate(0.0, 0.02, 0.11); //Hand picked... :-P
 
-    new CollidableNode("swoop_collidable", mesh);
+    CollisionManager::getInstance()->makeCollidable(mesh, true);
+    CollisionManager::getInstance()->draw();
 
     sm->setup();
 
@@ -144,6 +146,11 @@ void SwoopManager::update(double time)
     {
 	return;
     }
+    if(CollisionManager::getInstance()->hasCollision())
+    {
+	bump();
+    }
+
     move();
 
     glm::vec3 newPoint = glm::gtx::spline::catmullRom(m_waypoints[0], m_waypoints[1], m_waypoints[2], m_waypoints[3], m_linePos);

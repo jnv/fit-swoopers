@@ -20,6 +20,7 @@
 #include "Config.h"
 #include "LineStripNode.h"
 #include "RockNode.h"
+#include "CollisionManager.h"
 using namespace std;
 
 class TerrainBuilder

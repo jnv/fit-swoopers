@@ -151,4 +151,5 @@ void TerrainBuilder::addRock(const int x, const int y)
     MeshNode * m = new MeshNode("data/rock.obj", t);
     m->loadMesh();
     m->loadTexture("data/rock-text.jpg", "data/rock-norm.png");
+    CollisionManager::getInstance()->makeCollidable(m);
 }

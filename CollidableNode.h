@@ -16,12 +16,19 @@ public:
     static void SwitchDraw();
     static void SetDraw(const bool);
 
+    glm::vec3 getGlobalVertex(const int) const;
+    glm::vec2 getGlobalVertex2D(const int) const;
+
+    const float left() const;
+    const float right() const;
+    const float top() const;
+    const float bottom() const;
 protected:
     MeshNode * m_mesh;
     glm::vec3 * m_vertices;
 
     /// identifier for the buffer object
-    static GLuint m_vertexBufferObject;
+    GLuint m_vertexBufferObject;
     /// identifier for the program
     static GLuint m_program;
     /// shader matrix location

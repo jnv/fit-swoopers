@@ -112,6 +112,7 @@ bool MeshNode::loadMesh()
 	//std::cout << "mesh: " << mesh->mName.data << std::endl;
 
 	aiMaterial * material = scn->mMaterials[mesh->mMaterialIndex];
+	bool hasTexCoords = mesh->HasTextureCoords(0);
 	// copy mesh material color to all mesh vertices
 	for(unsigned v = 0; v < mesh->mNumVertices; ++v)
 	{
@@ -126,11 +127,13 @@ bool MeshNode::loadMesh()
 	    // extend bounding box
 	    for(int j = 0; j < 3; j++)
 	    {
-		if(cur_vert[3 * v + j] < minbox[j]) minbox[j] = cur_vert[3 * v + j];
-		if(cur_vert[3 * v + j] > maxbox[j]) maxbox[j] = cur_vert[3 * v + j];
+		if(cur_vert[3 * v + j] < minbox[j])
+		    minbox[j] = cur_vert[3 * v + j];
+		if(cur_vert[3 * v + j] > maxbox[j])
+		    maxbox[j] = cur_vert[3 * v + j];
 	    }
 
-	    if(mesh->HasTextureCoords(0))
+	    if(hasTexCoords)
 	    {
 		*cur_texc++ = mesh->mTextureCoords[0][v].x;
 		*cur_texc++ = mesh->mTextureCoords[0][v].y;
