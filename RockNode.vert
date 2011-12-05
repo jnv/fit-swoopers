@@ -9,11 +9,13 @@ in vec3 position;
 in vec3 normal;
 in vec2 texCoord;
 
-out vec4 vertexPos;
-out vec2 TexCoord;
+out vec3 vertexPos;
+out vec2 fragTexCoord;
 
 void main()
 {
-	TexCoord = vec2(texCoord);
-	gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position,1.0);
+	fragTexCoord = texCoord;
+	vec4 pos = Pmatrix * Vmatrix * Mmatrix * vec4(position,1.0);
+	vertexPos = vec3(pos);
+	gl_Position = pos;
 }

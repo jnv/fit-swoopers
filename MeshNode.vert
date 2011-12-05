@@ -11,12 +11,14 @@ uniform vec3 LightPosition_worldspace;
 in vec3 position;
 in vec4 color;
 in vec3 normal;
+in vec2 texCoord;
 
 out vec3 Position_worldspace;
 out vec3 Normal_cameraspace;
 out vec3 EyeDirection_cameraspace;
 out vec3 LightDirection_cameraspace;
 out vec4 theColor;
+out vec2 fragTexCoord;
 
 void main()
 {
@@ -49,4 +51,5 @@ void main()
 	
 	// UV of the vertex. No special space for this one.
 	theColor = color;
+	fragTexCoord = texCoord;
 }

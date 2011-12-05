@@ -15,6 +15,9 @@ GLint MeshNode::m_posLoc = -1;
 GLint MeshNode::m_colLoc = -1;
 GLint MeshNode::m_norLoc = -1;
 GLint MeshNode::m_texCoordLoc = -1;
+GLint MeshNode::m_hasTexLoc = -1;
+GLint MeshNode::m_normalSamplerLoc = -1;
+GLint MeshNode::m_colorSamplerLoc = -1;
 
 void traverse_node(aiNode * node)
 {
@@ -30,6 +33,7 @@ void traverse_node(aiNode * node)
 MeshNode::MeshNode(const char* file_name, SceneNode* parent, const bool buildShaders) :
 SceneNode(file_name, parent), m_vertexBufferObject(0), m_nVertices(0)
 {
+    m_hasTexture = false;
     if((m_program == 0) && buildShaders)
     {
 	std::vector<GLuint> shaderList;
@@ -43,10 +47,14 @@ SceneNode(file_name, parent), m_vertexBufferObject(0), m_nVertices(0)
 	m_ModelMatrixLoc = glGetUniformLocation(m_program, "M");
 	m_ViewMatrixLoc = glGetUniformLocation(m_program, "V");
 	m_MVPLoc = glGetUniformLocation(m_program, "MVP");
+	m_hasTexLoc = glGetUniformLocation(m_program, "hasTexture");
+
 	m_posLoc = glGetAttribLocation(m_program, "position");
 	m_colLoc = glGetAttribLocation(m_program, "color");
 	m_norLoc = glGetAttribLocation(m_program, "normal");
 	m_texCoordLoc = glGetAttribLocation(m_program, "texCoord");
+	m_normalSamplerLoc = glGetUniformLocation(m_program, "normalMap");
+	m_colorSamplerLoc = glGetUniformLocation(m_program, "colorMap");
     }
 
     glGenBuffers(1, &m_vertexBufferObject);
@@ -64,7 +72,7 @@ bool MeshNode::loadMesh()
     for(i = 0; i < 3; i++) minbox[i] = 1e38;
     for(i = 0; i < 3; i++) maxbox[i] = -1e38;
 
-    const aiScene * scn = imp.ReadFile(nodeName().c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_GenUVCoords | aiProcess_ImproveCacheLocality | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph);
+    const aiScene * scn = imp.ReadFile(nodeName().c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_GenUVCoords);
     //aiProcess_ImproveCacheLocality | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph
 
     if(!scn)
@@ -86,12 +94,13 @@ bool MeshNode::loadMesh()
     for(unsigned m = 0; m < scn->mNumMeshes; ++m)
 	m_nVertices += scn->mMeshes[m]->mNumVertices;
 
-    float * vertices = new float[12 * m_nVertices]; // 12 floats per vertex (xyz + RGBA + nor + texpos)
+    float * vertices = new float[12 * m_nVertices]; // 12 floats per vertex (xyz + RGBA + nor + texc)
     float * cur_vert = vertices;
     float * cur_col = vertices + 3 * m_nVertices;
     float * cur_nor = vertices + 7 * m_nVertices;
-    float * cur_texpos = vertices + 10 * m_nVertices;
-    GLuint buffer;
+    float * cur_texc = vertices + 10 * m_nVertices;
+
+    //float * texCoords = new float[2 * m_nVertices];
 
     for(unsigned m = 0; m < scn->mNumMeshes; ++m)
     {
@@ -121,43 +130,36 @@ bool MeshNode::loadMesh()
 		if(cur_vert[3 * v + j] > maxbox[j]) maxbox[j] = cur_vert[3 * v + j];
 	    }
 
-	}
-
-	if(mesh->HasTextureCoords(0))
-	{
-	    std::cout << "Has TexCoords for " << nodeName() << std::endl;
-//	    float *texCoords = (float *) malloc(sizeof(float) *2 * mesh->mNumVertices);
-	    unsigned delta;
-	    for(unsigned int k = 0; k < mesh->mNumVertices; ++k)
+	    if(mesh->HasTextureCoords(0))
 	    {
-		delta = k*2;
-//		cur_vert[cur_texpos + delta] = mesh->mTextureCoords[0][k].x;
-//		cur_vert[cur_texpos + delta + 1] = mesh->mTextureCoords[0][k].y;
-
-//		texCoords[k * 2] = mesh->mTextureCoords[0][k].x;
-//		texCoords[k * 2 + 1] = mesh->mTextureCoords[0][k].y;
+		*cur_texc++ = mesh->mTextureCoords[0][v].x;
+		*cur_texc++ = mesh->mTextureCoords[0][v].y;
+		//		std::cout << mesh->mTextureCoords[0][v].x << " - " << mesh->mTextureCoords[0][v].y << std::endl;
 	    }
-	    cur_texpos = cur_texpos + delta + 1 + 1;
-	    
-//	    glGenBuffers(1, &buffer);
-//	    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-//	    glBufferData(GL_ARRAY_BUFFER, sizeof(float) *2 * mesh->mNumVertices, texCoords, GL_STATIC_DRAW);
-//	    glEnableVertexAttribArray(m_texCoordLoc);
-//	    glVertexAttribPointer(m_texCoordLoc, 2, GL_FLOAT, 0, 0, 0);
+	    else
+	    {
+		*cur_texc++ = 0.0;
+		*cur_texc++ = 0.0;
+	    }
+
 	}
-
-
-
 
 	cur_vert += mesh->mNumVertices * 3;
 	cur_nor += mesh->mNumVertices * 3;
+	//cur_texc += mesh->mNumVertices * 2;
     }
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     //aiNode * root = scn->mRootNode;
     //    size_t length = root->mName.length;
     //traverse_node(root);
     //std::cout << "node: " << root->mName.data << std::endl;
+
+    //    std::cout << "------------------" << std::endl;
+    //    for(unsigned i = 10 * m_nVertices; i < 12 * m_nVertices; i+=2)
+    //    {
+    //	std::cout << vertices[i] << " - " << vertices[i + 1] << std::endl;
+    //    }
+
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
     glBufferData(GL_ARRAY_BUFFER, m_nVertices * sizeof(float) * 12, vertices, GL_STATIC_DRAW);
@@ -178,6 +180,19 @@ void MeshNode::draw(SceneParams * scene_params)
     glm::mat4 MVP = scene_params->projection_mat * scene_params->view_mat * globalMatrix();
 
     glUseProgram(m_program);
+
+    if(m_hasTexture)
+    {
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_normal_map);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_color_map);
+
+	glUniform1i(m_normalSamplerLoc, 0);
+	glUniform1i(m_colorSamplerLoc, 1);
+    }
+
+    glUniform1i(m_hasTexLoc, m_hasTexture);
     glUniformMatrix4fv(m_ModelMatrixLoc, 1, GL_FALSE, glm::value_ptr(globalMatrix()));
     glUniformMatrix4fv(m_ViewMatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->view_mat));
     glUniformMatrix4fv(m_MVPLoc, 1, GL_FALSE, glm::value_ptr(MVP));
@@ -201,6 +216,18 @@ void MeshNode::draw(SceneParams * scene_params)
     glDisableVertexAttribArray(m_colLoc);
     glDisableVertexAttribArray(m_norLoc);
     glDisableVertexAttribArray(m_texCoordLoc);
+}
+
+void MeshNode::loadTexture(const char * textureFile, const char * normFile)
+{
+    m_color_map = CreateTexture(textureFile);
+    m_normal_map = CreateTexture(normFile);
+
+    if(m_color_map != 0 && m_normal_map != 0)
+    {
+	m_hasTexture = true;
+    }
+
 }
 
 /// prints the size of the geometry box without transformation

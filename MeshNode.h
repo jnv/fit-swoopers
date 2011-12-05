@@ -18,6 +18,8 @@ public:
     /// load geometry
     bool loadMesh();
 
+    void loadTexture(const char *, const char *);
+
     /// reimplemented draw
     virtual void draw(SceneParams * scene_params);
 
@@ -44,18 +46,32 @@ protected:
     static GLint m_colLoc;
     /// normal attribute location
     static GLint m_norLoc;
-    
+
     static GLint m_texCoordLoc;
     /// identifier for the buffer object
     GLuint m_vertexBufferObject;
     /// count of vertices
     GLuint m_nVertices;
 
+    static GLint m_hasTexLoc;
+
     // the bounding box of the original model
     float minbox[3];
     float maxbox[3];
 
     glm::vec3 m_bbox[8];
+
+    bool m_hasTexture;
+
+    /// normal map
+    GLuint m_normal_map;
+    /// color map
+    GLuint m_color_map;
+
+    static GLint m_normalSamplerLoc;
+    static GLint m_colorSamplerLoc;
+
+
 };
 
 #endif

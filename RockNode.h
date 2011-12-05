@@ -35,12 +35,6 @@ protected:
     static GLint m_colorSamplerLoc;
     /// width uniform location
     static GLint m_widthLoc;
-    /// position attribute location
-    static GLint m_posLoc;
-    /// color attribute location
-    static GLint m_colLoc;
-    /// normal attribute location
-    static GLint m_norLoc;
 
     /// normal map
     GLuint m_normal_map;

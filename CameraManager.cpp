@@ -140,7 +140,7 @@ void CameraManager::translate(const glm::vec3& tr)
     {
 	m_current->local->translate(tr);
 	m_translate += tr;
-	std::cout << "(" << m_translate.x << ", " << m_translate.y << ", " << m_translate.z << ")" << std::endl;
+//	std::cout << "(" << m_translate.x << ", " << m_translate.y << ", " << m_translate.z << ")" << std::endl;
 
     }
 }

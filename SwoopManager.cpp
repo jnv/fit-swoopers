@@ -122,7 +122,7 @@ void SwoopManager::left()
 	m_side_deviation -= m_side_step;
     }
 
-    std::cout << m_side_deviation << std::endl;
+    //    std::cout << m_side_deviation << std::endl;
 }
 
 void SwoopManager::right()
@@ -134,7 +134,7 @@ void SwoopManager::right()
 	m_side_deviation += m_side_step;
     }
 
-    std::cout << m_side_deviation << std::endl;
+    //    std::cout << m_side_deviation << std::endl;
 
 }
 

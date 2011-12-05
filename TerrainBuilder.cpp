@@ -144,10 +144,11 @@ void TerrainBuilder::addRock(const int x, const int y)
     t->scale(glm::vec3(0.014, 0.014, 0.014));
 
 
-    RockNode * r = new RockNode(t);
-    r->loadMesh();
-    r->loadTexture();
+//    RockNode * r = new RockNode(t);
+//    r->loadMesh();
+//    r->loadTexture();
 
-//    MeshNode * m = new MeshNode("data/rock.obj", t);
-//    m->loadMesh();
+    MeshNode * m = new MeshNode("data/rock.obj", t);
+    m->loadMesh();
+    m->loadTexture("data/rock-text.png", "data/rock-norm.png");
 }
