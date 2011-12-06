@@ -55,6 +55,7 @@ void GameManager::OnTimer(int)
 
     InputManager::getInstance()->update();
     SwoopManager::getInstance()->update(timed);
+    LightManager::getInstance()->update();
 
     //Detect finished
 

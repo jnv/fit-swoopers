@@ -66,7 +66,12 @@ TransformNode* SwoopManager::Initialize()
 //    glm::vec3 farcenter = farleft + farright;
 //    farcenter /= 2;
     
-    camera->local->translate(0.0, 0.02, 0.11); //Hand picked... :-P
+    camera->local->translate(0.0, 0.02, 0.11);
+
+    TransformNode * light = new TransformNode("light", transGlobal);
+    LightManager::getInstance()->setPointlightNode(light);
+    light->translate(0.0, 0.0, -0.5);
+
 
     CollisionManager::getInstance()->makeCollidable(mesh, true);
 

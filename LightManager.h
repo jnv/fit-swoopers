@@ -43,6 +43,8 @@ protected:
     glm::vec4 m_pointlightGlobalPos;
     glm::vec3 m_directionalPos;
     glm::vec4 m_directionalColor;
+    glm::vec4 m_lightPos;
+    glm::vec3 m_lightColor;
     bool m_directionalEnabled;
 
 

@@ -13,22 +13,38 @@ uniform vec4 directionalLight_color;
 
 void main()
 {
-  vec3 V = normalize(- thePosition);
-  vec3 light1 = vec3(0.309363, -0.74156, -4.86074);
-  vec3 axis1 = vec3(-1,-1,0);
-  vec3 light2 = vec3(0.123297, -0.68428, -5.200);
-  vec3 axis2 = vec3(-1,-1,0);
+  vec3 N = normalize(theNormal);
+  vec3 lightPos = vec3(1, 0.5, -2);
+  vec3 spotlightDir = vec3(-1,-1,0);
+  vec3 E = -(theNormal.xyz);
 
-  float svetlo = dot(V, normalize(theNormal));
+  float pointl = dot(normalize(-thePosition), N);
 
-  if (dot(normalize(thePosition-light1),normalize(axis1)) > 0.707){
-    svetlo = svetlo - dot(V,normalize(axis1));
+  /*if (dot(normalize(thePosition-light1),normalize(axis1)) > 0.707){
+    svetlo -= dot(normalize(-thePosition),normalize(axis1));
+  }*/
+  
+  vec3 L = normalize(directionalLight_position - thePosition);
+
+  outputColor = theColor * clamp(dot(N, L), 0, 1);
+  
+  //if spotlight enabled
+  vec3 lightDir = (lightPos - thePosition.xyz).xyz;
+  
+  float spotEffect = dot(normalize(spotlightDir), normalize(-lightDir));
+  if(spotEffect > 0.707)
+  {
+  	vec3 HV = normalize(L + E);
+  	float NdotHV = max(dot(N, HV), 0.0);
+  	//outputColor += vec4(1.0);
   }
 
-  if (dot(normalize(thePosition-light2),normalize(axis2)) > 0.707){
-    svetlo = svetlo - dot(V,normalize(axis2));
-  }
+  
 
-  outputColor = theColor;// * svetlo;
- 
+  /*if (dot(normalize(thePosition-light2),normalize(axis2)) > 0.707){
+    svetlo = svetlo - dot(N,normalize(axis2));
+  }*/
+  
+  
 }
+

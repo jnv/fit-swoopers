@@ -55,7 +55,7 @@ void main()
 		MaterialDiffuseColor =  texture(colorMap, fragTexCoord).rgb;
 	}
 	
-	vec3 MaterialAmbiantColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
+	vec3 MaterialAmbiantColor = vec3(0.3) * MaterialDiffuseColor;
 	vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
 
 	// Distance to the light
@@ -65,7 +65,7 @@ void main()
 	vec3 n = Normal_cameraspace;
 	if(hasTexture)
 	{
-		n = sampleNormalBlender();
+		//n = sampleNormalBlender();
 	}
 	n = normalize(n);
 	
@@ -95,4 +95,5 @@ void main()
 		MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) +
 		// Specular : reflective highlight, like a mirror
 		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
+		
 }

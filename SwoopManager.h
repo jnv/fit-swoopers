@@ -15,6 +15,7 @@
 #include "Config.h"
 #include "CameraManager.h"
 #include "CollisionManager.h"
+#include "LightManager.h"
 
 class SwoopManager : public Singleton<SwoopManager>
 {

@@ -8,6 +8,8 @@ LightManager::LightManager()
     m_directionalPos = glm::vec3(1.5, 4.0, -4.0);
     m_directionalColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
     m_directionalEnabled = true;
+    m_lightPos = glm::vec4(0, 7, -5, 1.0);
+    m_lightColor = glm::vec3(1, 1, 1);
 }
 
 LightManager::~LightManager()
@@ -16,11 +18,9 @@ LightManager::~LightManager()
 
 void LightManager::uniformAmbient(GLuint program)
 {
-    glm::vec3 lightPos = glm::vec3(0, 7, -5);
-    glm::vec3 lightColor = glm::vec3(1, 1, 1);
-    glUniform3f(glGetUniformLocation(program, "AmbientLight0.position"), lightPos.x, lightPos.y, lightPos.z);
-    glUniform3f(glGetUniformLocation(program, "AmbientLight0.color"), lightColor.x, lightColor.y, lightColor.z);
-    glUniform1f(glGetUniformLocation(program, "AmbientLight0.power"), 50.0f);
+    glUniform3f(glGetUniformLocation(program, "AmbientLight0.position"), m_lightPos.x, m_lightPos.y, m_lightPos.z);
+    glUniform3f(glGetUniformLocation(program, "AmbientLight0.color"), m_lightColor.x, m_lightColor.y, m_lightColor.z);
+    glUniform1f(glGetUniformLocation(program, "AmbientLight0.power"), 0.1f);
 }
 
 void LightManager::uniformSpotlight(GLuint program)
@@ -39,6 +39,6 @@ void LightManager::update()
 {
     if(m_pointlightNode)
     {
-	m_pointlightGlobalPos = m_pointlightNode->globalMatrix() * glm::vec4(1, 1, 1, 1);
+	m_lightPos = m_pointlightNode->globalMatrix() * glm::vec4(0, 0, 0, 1);
     }
 }
