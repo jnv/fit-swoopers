@@ -93,13 +93,16 @@ void GameManager::buildScene()
 {
     mRootNode = new SceneNode("root");
 
-    TransformNode * skyTrans = new TransformNode("skybox_trans", mRootNode);
-    SkyboxNode * skybox = new SkyboxNode("skybox", skyTrans);
+    TransformNode * skyboxTrans = new TransformNode("skybox_trans", mRootNode);
+    SkyboxNode * skybox = new SkyboxNode("skybox", skyboxTrans);
 
-    skyTrans->translate(1.0, 0.7, -1.0);
-    skyTrans->scale(glm::vec3(20.0));
+    skyboxTrans->translate(1.0, 0.7, -1.0);
+    skyboxTrans->scale(glm::vec3(20.0));
     //skyTrans->translate(0.0, 0.75, 0.0);
     skybox->loadTexture("data/skybox/");
+
+    SkyNode * sky = new SkyNode("sky", skybox);
+    sky->loadTexture("data/cloud.png");
 
 
     //addTerrain();

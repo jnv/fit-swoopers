@@ -120,8 +120,6 @@ void SkyboxNode::loadTexture(const char* prefix)
 	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z};
 
 
-    GLuint texID;
-
     glGenTextures(1, &m_color_map);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_color_map);
 
