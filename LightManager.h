@@ -10,7 +10,9 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/core/type.hpp>
 #include "Singleton.h"
+#include "SceneNode.h"
 
 class LightManager : public Singleton<LightManager>
 {
@@ -21,6 +23,29 @@ public:
 
     void uniformAmbient(GLuint);
     void uniformSpotlight(GLuint);
+    void uniformDirectional(GLuint);
+
+    void uniformPointlight(GLuint);
+
+    void setPointlightNode(SceneNode * node)
+    {
+        m_pointlightNode = node;
+    }
+
+    void update();
+
+
+
+
+protected:
+
+    SceneNode * m_pointlightNode;
+    glm::vec4 m_pointlightGlobalPos;
+    glm::vec3 m_directionalPos;
+    glm::vec4 m_directionalColor;
+    bool m_directionalEnabled;
+
+
 private:
 
 };
