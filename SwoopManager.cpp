@@ -69,7 +69,9 @@ TransformNode* SwoopManager::Initialize()
     camera->local->translate(0.0, 0.02, 0.11); //Hand picked... :-P
 
     CollisionManager::getInstance()->makeCollidable(mesh, true);
-    CollisionManager::getInstance()->draw();
+
+    bool colDraw = conf->getBool("collidables_draw");
+    CollisionManager::getInstance()->setDraw(colDraw);
 
     sm->setup();
 

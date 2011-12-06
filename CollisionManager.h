@@ -14,6 +14,7 @@ public:
     void makeCollidable(MeshNode *, const bool = false);
     void reset();
     void draw();
+    void setDraw(const bool);
     bool hasCollision();
 
 protected:

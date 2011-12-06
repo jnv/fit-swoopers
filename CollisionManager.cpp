@@ -52,6 +52,11 @@ void CollisionManager::draw()
     CollidableNode::SetDraw(true);
 }
 
+void CollisionManager::setDraw(const bool val)
+{
+    CollidableNode::SetDraw(val);
+}
+
 /**
  * Check if m_movable collides with any of m_collidable
  * Based on http://www.owenpellegrin.com/articles/vb-net/simple-collision-detection/
