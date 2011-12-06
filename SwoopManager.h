@@ -17,6 +17,7 @@
 #include "CollisionManager.h"
 #include "LightManager.h"
 
+/// Singleton to handle swoop bike's initialization, movement, collision
 class SwoopManager : public Singleton<SwoopManager>
 {
 public:

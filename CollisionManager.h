@@ -4,6 +4,9 @@
 #include "CollidableNode.h"
 #include <vector>
 
+/**
+ * Singleton for collision checking
+ */
 class CollisionManager : public Singleton<CollisionManager>
 {
 public:

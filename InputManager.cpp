@@ -1,13 +1,7 @@
-/* 
- * File:   InputManager.cpp
- * Author: j
- * 
- * Created on 7. listopad 2011, 14:36
- */
-
 #include "InputManager.h"
 #include "GameManager.h"
 
+/// Binds glut callbacks
 void InputManager::Initialize()
 {
     ::glutKeyboardFunc(InputManager::OnKeyPress);
@@ -26,18 +20,21 @@ InputManager::~InputManager()
 {
 }
 
+/// Callback target for key press
 void InputManager::OnKeyPress(unsigned char key, int x, int y)
 {
     InputManager * m = InputManager::getInstance();
     m->press(key);
 }
 
+/// Callback target for key release
 void InputManager::OnKeyRelease(unsigned char key, int x, int y)
 {
     InputManager * m = InputManager::getInstance();
     m->release(key);
 }
 
+/// Callback target for special key press
 void InputManager::OnSpecialPress(int key, int x, int y)
 {
     InputManager * m = InputManager::getInstance();
@@ -50,6 +47,7 @@ void InputManager::OnSpecialRelease(int key, int x, int y)
     m->release(key);
 }
 
+/// Callback for mouse handling
 void InputManager::OnMouse(int button, int state, int x, int y)
 {
     CameraManager * cm = CameraManager::getInstance();
@@ -112,6 +110,7 @@ void InputManager::press(unsigned char key)
     m_keys.set(key);
 }
 
+/// Hanlde standard key release
 void InputManager::release(unsigned char key)
 {
     m_keys.reset(key);
@@ -134,11 +133,17 @@ void InputManager::press(int key)
     m_specialKeys.set(key);
 }
 
+/// Hanlde special key release
 void InputManager::release(int key)
 {
     m_specialKeys.reset(key);
 }
 
+/**
+ * @deprecated in favor of release() overloading
+ * @param type
+ * @return 
+ */
 InputManager::Keyset* InputManager::getSet(const KeyType type)
 {
     Keyset* set;
@@ -152,6 +157,9 @@ InputManager::Keyset* InputManager::getSet(const KeyType type)
     return set;
 }
 
+/**
+ * Handle pressed keys
+ */
 void InputManager::update()
 {
     if(m_keys[27]) //ESC

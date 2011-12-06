@@ -6,7 +6,7 @@
 #include "SceneNode.h"
 #include "util.h"
 
-/// Node, that draws pyramid from task3
+/// Helper class to draw given line
 class LineStripNode : public SceneNode
 {
 public:

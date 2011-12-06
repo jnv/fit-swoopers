@@ -5,6 +5,7 @@ GLint CollidableNode::m_PVMmatrixLoc = -1;
 GLint CollidableNode::m_posLoc = -1;
 bool CollidableNode::m_draw = false;
 
+/// Prepares shader for debug drawing
 CollidableNode::CollidableNode(const char * name, MeshNode * parent) : SceneNode(name, parent)
 {
     m_vertices = parent->getBoxVertices();
@@ -35,6 +36,7 @@ CollidableNode::~CollidableNode()
 {
 }
 
+/// Draws bounding "box" (rather say... vertices) if m_draw is enabled
 void CollidableNode::draw(SceneParams * scene_params)
 {
     // inherited draw - draws all children
@@ -60,16 +62,23 @@ void CollidableNode::draw(SceneParams * scene_params)
     glDisableVertexAttribArray(m_posLoc);
 }
 
+/// Inverts state of m_draw
 void CollidableNode::SwitchDraw()
 {
     CollidableNode::m_draw = !CollidableNode::m_draw;
 }
 
+/// Sets m_draw
 void CollidableNode::SetDraw(const bool value)
 {
     CollidableNode::m_draw = value;
 }
 
+/**
+ * Returns the vertex of given index in world space coords
+ * @param index
+ * @return vertex position
+ */
 glm::vec3 CollidableNode::getGlobalVertex(const int index) const
 {
     glm::vec4 result = globalMatrix() * glm::vec4(m_vertices[index], 1.0);
@@ -77,6 +86,11 @@ glm::vec3 CollidableNode::getGlobalVertex(const int index) const
     return glm::vec3(result);
 }
 
+/**
+ * Get just X and Z of vertex of given index (we don't check for Y in collision testing
+ * @param index
+ * @return vertex position in world space coords
+ */
 glm::vec2 CollidableNode::getGlobalVertex2D(const int index) const
 {
     glm::vec4 result = globalMatrix() * glm::vec4(m_vertices[index], 1.0);

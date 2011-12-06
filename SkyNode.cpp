@@ -1,10 +1,3 @@
-/* 
- * File:   SkyNode.cpp
- * Author: j
- * 
- * Created on 5. prosinec 2011, 22:00
- */
-
 #include <GL/glew.h>
 
 #include "SkyNode.h"

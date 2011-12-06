@@ -1,6 +1,7 @@
 
 #include "LightManager.h"
 
+///Initialize lights
 LightManager::LightManager()
 {
     m_pointlightNode = NULL;
@@ -17,6 +18,7 @@ LightManager::~LightManager()
 {
 }
 
+/// Uniforms ambient light for given shader program
 void LightManager::uniformAmbient(GLuint program)
 {
     glUniform3f(glGetUniformLocation(program, "AmbientLight0.position"), m_lightPos.x, m_lightPos.y, m_lightPos.z);
@@ -30,6 +32,7 @@ void LightManager::uniformSpotlight(GLuint program)
 
 }
 
+/// Uniforms directional light for given shader program
 void LightManager::uniformDirectional(GLuint program)
 {
     glUniform1i(glGetUniformLocation(program, "directionalLight_enabled"), m_directionalEnabled);
@@ -37,6 +40,7 @@ void LightManager::uniformDirectional(GLuint program)
     glUniform4f(glGetUniformLocation(program, "directionalLight_color"), m_directionalColor.r, m_directionalColor.g, m_directionalColor.b, m_directionalColor.a);
 }
 
+/// Recalculate movable light position on update
 void LightManager::update()
 {
     if(m_pointlightNode)

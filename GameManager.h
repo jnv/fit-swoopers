@@ -32,6 +32,9 @@
 #include "InputManager.h"
 #include "SwoopManager.h"
 
+/**
+ * An antipatternish god class which handles basic initialization, callbacks and scene building
+ */
 class GameManager : public Singleton<GameManager>
 {
 public:

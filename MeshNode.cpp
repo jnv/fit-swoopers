@@ -19,6 +19,8 @@ GLint MeshNode::m_hasTexLoc = -1;
 GLint MeshNode::m_normalSamplerLoc = -1;
 GLint MeshNode::m_colorSamplerLoc = -1;
 
+
+/// Helper debug function to traverse Assimp aiNodes
 void traverse_node(aiNode * node)
 {
     std::cout << "node: " << node->mName.data << " ch: " << node->mNumChildren << " meshes: " << node->mNumMeshes << std::endl;
@@ -221,6 +223,7 @@ void MeshNode::draw(SceneParams * scene_params)
     glDisableVertexAttribArray(m_texCoordLoc);
 }
 
+/// Loads color and normal texture
 void MeshNode::loadTexture(const char * textureFile, const char * normFile)
 {
     m_color_map = CreateTexture(textureFile);

@@ -17,6 +17,7 @@ TerrainBuilder::~TerrainBuilder()
 {
 }
 
+/// Prepares terragen node
 SceneNode * TerrainBuilder::prepareNode(SceneNode * parent, const char * hmapfile, const char * cmapfile, const char * nmapfile)
 {
     m_terrainParent = new TransformNode("terrain-trans", parent);
@@ -33,6 +34,7 @@ SceneNode * TerrainBuilder::prepareNode(SceneNode * parent, const char * hmapfil
     return m_terrainParent;
 }
 
+/// Loads and iterates objects bitmap to add nodes to terrain
 bool TerrainBuilder::loadObjects(const char* mapfile)
 {
     ILuint img_id;
@@ -111,6 +113,7 @@ void TerrainBuilder::placeObjects()
 
 }
 
+/// Debug helper to place PyramidNode on terrain
 void TerrainBuilder::addPyramid(const int x, const int y)
 {
     TransformNode * t = new TransformNode("pyra-trans", m_terrainParent);
@@ -132,6 +135,7 @@ void TerrainBuilder::addSwoop(const int x, const int y)
 
 }
 
+/// Add collidable MeshNode of rock onto terrain
 void TerrainBuilder::addRock(const int x, const int y)
 {
     TransformNode * t = new TransformNode("rock-trans", m_terrainParent);

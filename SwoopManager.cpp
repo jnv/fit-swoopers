@@ -1,14 +1,7 @@
-/* 
- * File:   SwoopManager.cpp
- * Author: j
- * 
- * Created on 8. listopad 2011, 1:35
- */
-
 #include "SwoopManager.h"
-#include "TransformNode.h"
-#include "CollisionManager.h"
 
+
+/// Prepares swoop's waypoints
 SwoopManager::SwoopManager()
 {
     m_inited = false;
@@ -28,6 +21,7 @@ SwoopManager::~SwoopManager()
 {
 }
 
+/// Prepare swoop's model and related nodes
 TransformNode* SwoopManager::Initialize()
 {
     Config * conf = Config::getInstance();
@@ -90,6 +84,7 @@ TransformNode* SwoopManager::Initialize()
     return transGlobal;
 }
 
+/// Load variables from configuration
 void SwoopManager::setup()
 {
     Config * conf = Config::getInstance();
@@ -107,6 +102,7 @@ void SwoopManager::setup()
     m_velocity = 0.0;
 }
 
+/// Increment swoop's velocity
 void SwoopManager::forward()
 {
     //m_transformNode->translate(0, 0, -0.1);
@@ -114,6 +110,7 @@ void SwoopManager::forward()
 
 }
 
+/// Decrement swoop's velocity
 void SwoopManager::backward()
 {
     //m_transformNode->translate(0, 0, 0.1);
@@ -122,6 +119,7 @@ void SwoopManager::backward()
     //smoothstep
 }
 
+/// Move swoop left
 void SwoopManager::left()
 {
     //    m_transformNode->rotate(5, 0, 1, 0);
@@ -134,6 +132,7 @@ void SwoopManager::left()
     //    std::cout << m_side_deviation << std::endl;
 }
 
+/// Move swoop right
 void SwoopManager::right()
 {
     //m_transformNode->rotate(-5, 0, 1, 0);
@@ -147,6 +146,7 @@ void SwoopManager::right()
 
 }
 
+/// Update swoops location depending on its position on Catmull-Rom Spline
 void SwoopManager::update(double time)
 {
     if(m_finished)
@@ -179,6 +179,7 @@ void SwoopManager::update(double time)
     m_lastPoint = newPoint;
 }
 
+/// Clean up
 void SwoopManager::reset()
 {
     m_inited = false;
@@ -186,11 +187,13 @@ void SwoopManager::reset()
     CollisionManager::getInstance()->reset();
 }
 
+/// Called once swoop has reached 1.0 on spline
 void SwoopManager::finished()
 {
     m_finished = true;
 }
 
+/// Swoop's movement on spline based on current velocity
 void SwoopManager::move()
 {
     if(m_collides)
@@ -239,6 +242,8 @@ void SwoopManager::move()
     }
 }
 
+
+/// Called when swoop collides with something
 void SwoopManager::bump()
 {
     m_velocity = -m_accel_bwd;

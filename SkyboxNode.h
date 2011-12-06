@@ -6,6 +6,9 @@
 #include "SceneNode.h"
 #include "util.h"
 
+/**
+ * Draws a regular cube with skybox texture
+ */
 class SkyboxNode : public SceneNode
 {
 public:

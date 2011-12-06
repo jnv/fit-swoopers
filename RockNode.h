@@ -1,8 +1,5 @@
-/* 
- * File:   RockNode.h
- * Author: j
- *
- * Created on 4. prosinec 2011, 23:50
+/**
+ * @deprecated GLSL apparenlty doesn't play well with inheritance
  */
 
 #ifndef ROCKNODE_H

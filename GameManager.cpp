@@ -1,10 +1,3 @@
-/* 
- * File:   GameManager.cpp
- * Author: j
- * 
- * Created on 30. listopad 2011, 22:42
- */
-
 #include "GameManager.h"
 #include "TerrainBuilder.h"
 
@@ -20,8 +13,6 @@ GameManager::~GameManager()
 
 /**
  * Called to update the display.
- * You should call glutSwapBuffers after all of your rendering to display what you rendered.
- * If you need continuous updates of the screen, call glutPostRedisplay() at the end of the function.
  */
 void GameManager::OnDisplay()
 {
@@ -36,6 +27,11 @@ void GameManager::OnDisplay()
     glutSwapBuffers();
 }
 
+/**
+ * Called on window resize
+ * @param w
+ * @param h
+ */
 void GameManager::OnReshape(int w, int h)
 {
     glViewport(0, 0, (GLsizei) w, (GLsizei) h);
@@ -44,6 +40,11 @@ void GameManager::OnReshape(int w, int h)
     gm->mSceneParams.projection_mat = glm::perspective(45.f, gm->mAspectRatio, 0.1f, 100.0f);
 }
 
+/**
+ * Called on timer
+ * Handles scene graph updates
+ * @param 
+ */
 void GameManager::OnTimer(int)
 {
     double timed = 0.001 * (double) glutGet(GLUT_ELAPSED_TIME); // milliseconds
@@ -63,6 +64,9 @@ void GameManager::OnTimer(int)
     glutPostRedisplay();
 }
 
+/**
+ * Basic application initialization, ran only once
+ */
 void GameManager::Initialize()
 {
     GameManager * gm = GameManager::getInstance();
@@ -90,6 +94,9 @@ void GameManager::Initialize()
     gm->buildScene();
 }
 
+/**
+ * (Re)populates the scene graph
+ */
 void GameManager::buildScene()
 {
     mRootNode = new SceneNode("root");
@@ -132,6 +139,9 @@ void GameManager::buildScene()
     mRootNode->dump();
 }
 
+/**
+ * @deprecated in favor of TerrainBuilder
+ */
 void GameManager::addTerrain()
 {
 
@@ -148,12 +158,18 @@ void GameManager::addTerrain()
 
 }
 
+/**
+ * Static callback to reset the scene graph
+ */
 void GameManager::Reset()
 {
     std::cout << "Resetting scene" << endl;
     GameManager::getInstance()->resetScene();
 }
 
+/**
+ * Resets singletons, rebuilds scene graph
+ */
 void GameManager::resetScene()
 {
     CameraManager::getInstance()->reset();

@@ -14,8 +14,7 @@
 #include "util.h"
 #include "SceneNode.h"
 
-/// Node, that draws pyramid from task3
-
+/// Generates terrain from Terragen file
 class TerragenNode : public SceneNode
 {
 public:

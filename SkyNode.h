@@ -1,10 +1,3 @@
-/* 
- * File:   SkyNode.h
- * Author: j
- *
- * Created on 5. prosinec 2011, 22:00
- */
-
 #ifndef SKYNODE_H
 #define	SKYNODE_H
 
@@ -13,6 +6,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "util.h"
 
+/**
+ * Creates plane with animated teture (movement is based on m_move)
+ */
 class SkyNode : public SceneNode
 {
 public:

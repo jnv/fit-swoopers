@@ -10,8 +10,7 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-/// Node, that draws pyramid from task3
-
+/// Unused
 class TerrainNode : public SceneNode
 {
 public:

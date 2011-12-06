@@ -23,6 +23,7 @@
 #include "CollisionManager.h"
 using namespace std;
 
+/// Builds and populates terrain using objects map
 class TerrainBuilder
 {
 public:

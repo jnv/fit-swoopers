@@ -1,5 +1,6 @@
 #include "CameraManager.h"
 
+
 glm::vec3 get_arcball_vector(int x, int y)
 {
     int screen_width = glutGet(GLUT_WINDOW_WIDTH);
@@ -17,7 +18,7 @@ glm::vec3 get_arcball_vector(int x, int y)
 }
 
 /**
- * Just initializes m_current
+ * Initializes singleton
  */
 CameraManager::CameraManager()
 {
@@ -27,11 +28,11 @@ CameraManager::CameraManager()
 }
 
 /// NIL, assigned nodes are destroyed by SceneNode
-
 CameraManager::~CameraManager()
 {
 }
 
+/// Resets manager to empty state
 void CameraManager::reset()
 {
     clog << "CameraManager::reset" << endl;
@@ -71,6 +72,7 @@ void CameraManager::nextCamera()
     //recalcView(m_current);
 }
 
+/// Creates camera struct, assigns it to parent and stores in vector
 CameraStruct* CameraManager::createCamera(const char* name, SceneNode * parent, const bool setActive)
 {
     CameraStruct * cs = new CameraStruct(name, parent);
@@ -80,8 +82,9 @@ CameraStruct* CameraManager::createCamera(const char* name, SceneNode * parent, 
 }
 
 /**
- * Registers a given camera
- * @param camera
+ * Stores camera struct in vector
+ * @param cs struct to store
+ * @param setActive whether the added camera should be set as active
  */
 void CameraManager::addCamera(CameraStruct* cs, const bool setActive)
 {
@@ -109,6 +112,7 @@ void CameraManager::addCamera(CameraStruct* cs, const bool setActive)
 /**
  * Whether the given camera is active
  * @param camera
+ * @depreacted each camera node checks this individually
  * @return
  */
 bool CameraManager::isCurrent(CameraNode* camera) const
@@ -127,6 +131,7 @@ void CameraManager::sceneDraw(CameraNode* camera)
     //m_scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
 }*/
 
+/// Translates local transform node of current camera
 void CameraManager::translate(const glm::vec3& tr)
 {
     //scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0, -0.1)) * scene_params.view_mat;
@@ -145,6 +150,7 @@ void CameraManager::translate(const glm::vec3& tr)
     }
 }
 
+/// Rotates local transform node of current camera
 void CameraManager::rotate(float a, const glm::vec3& av)
 {
     //    glm::mat4 local = m_current->localMatrix();
@@ -156,6 +162,11 @@ void CameraManager::rotate(float a, const glm::vec3& av)
     }
 }
 
+/**
+ * Recalculates view
+ * @deprecated in favor of CameraNode function
+ * @param camera
+ */
 void CameraManager::recalcView(CameraNode* camera)
 {
 
@@ -169,6 +180,11 @@ void CameraManager::recalcView(CameraNode* camera)
     }
 }
 
+/**
+ * Enable arcball handling (usually on mouse click)
+ * @param x
+ * @param y
+ */
 void CameraManager::arcballEnable(int x, int y)
 {
     m_abEnabled = true;
@@ -176,6 +192,11 @@ void CameraManager::arcballEnable(int x, int y)
     m_abLastY = m_abCurY = y;
 }
 
+/**
+ * Update arcball (on mouse move)
+ * @param x
+ * @param y
+ */
 void CameraManager::arcballUpdate(int x, int y)
 {
     if(m_abEnabled)
@@ -186,11 +207,13 @@ void CameraManager::arcballUpdate(int x, int y)
     }
 }
 
+/// Disable arcball (mouse release)
 void CameraManager::arcballDisable()
 {
     m_abEnabled = false;
 }
 
+/// Recalculates arcball, rotates current camera's local matrix
 void CameraManager::arcballCalculate()
 {
     if(m_abCurX == m_abLastX && m_abCurY == m_abLastY)

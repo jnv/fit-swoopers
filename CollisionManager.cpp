@@ -1,10 +1,3 @@
-/* 
- * File:   CollisionManager.cpp
- * Author: j
- * 
- * Created on 4. prosinec 2011, 19:02
- */
-
 #include "CollisionManager.h"
 
 CollisionManager::CollisionManager()
@@ -16,6 +9,11 @@ CollisionManager::~CollisionManager()
 {
 }
 
+/**
+ * Adds collidableNode to the given mesh
+ * @param mesh
+ * @param movable If true, the node will be handled as a reference node against which all other collidables will be tested
+ */
 void CollisionManager::makeCollidable(MeshNode * mesh, const bool movable)
 {
     std::string name = mesh->nodeName();

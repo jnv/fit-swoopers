@@ -5,6 +5,9 @@
 #include "SceneNode.h"
 #include "MeshNode.h"
 
+/**
+ * Reference node for simple collision testing
+ */
 class CollidableNode : public SceneNode
 {
 public:

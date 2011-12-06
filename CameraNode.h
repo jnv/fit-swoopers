@@ -6,6 +6,9 @@
 #include "SceneNode.h"
 #include "TransformNode.h"
 
+/**
+ * Handles view matrix recalculation depending on node's globalMatrix
+ */
 class CameraNode : public SceneNode
 {
 public:

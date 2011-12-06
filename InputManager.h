@@ -15,6 +15,9 @@
 
 #define INPUT_BITSET_SIZE 255
 
+/**
+ * Singleton to execute actions depending on input
+ */
 class InputManager : public Singleton<InputManager>
 {
 public:

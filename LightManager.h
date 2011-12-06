@@ -14,6 +14,7 @@
 #include "Singleton.h"
 #include "SceneNode.h"
 
+/// Singleton for dumb light management
 class LightManager : public Singleton<LightManager>
 {
 public:

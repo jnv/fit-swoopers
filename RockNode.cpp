@@ -1,10 +1,3 @@
-/* 
- * File:   RockNode.cpp
- * Author: j
- * 
- * Created on 4. prosinec 2011, 23:50
- */
-
 #include "RockNode.h"
 
 

@@ -15,6 +15,9 @@
 #include "CameraNode.h"
 #include "TransformNode.h"
 
+/**
+ * Stores camera and its transform nodes
+ */
 struct CameraStruct
 {
     TransformNode * local;
@@ -33,6 +36,9 @@ struct CameraStruct
     }
 };
 
+/**
+ * Singleton to manage cameras
+ */
 class CameraManager : public Singleton<CameraManager>
 {
 public:
