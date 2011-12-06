@@ -202,7 +202,7 @@ void CameraManager::arcballCalculate()
     glm::vec3 vb = get_arcball_vector(m_abCurX, m_abCurY);
     float angle = acos(min(1.0f, glm::dot(va, vb)));
     glm::vec3 axis_in_camera_coord = glm::cross(va, vb);
-    glm::mat3 camera2object = glm::inverse(glm::mat3(m_current->local->globalMatrix()));
+    glm::mat3 camera2object = glm::inverse(glm::mat3(m_current->local->localMatrix()) * glm::mat3(m_current->local->globalMatrix()));
     //    glm::mat3 camera2object = glm::inverse(glm::mat3() * glm::mat3(mesh.object2world));
     glm::vec3 axis_in_object_coord = camera2object * axis_in_camera_coord;
     ;
