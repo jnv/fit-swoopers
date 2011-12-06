@@ -118,6 +118,7 @@ void CameraManager::addCamera(CameraStruct* cs, const bool setActive)
 bool CameraManager::isCurrent(CameraNode* camera) const
 {
     //return(m_current == camera);
+	return false;
 }
 
 /*
