@@ -29,7 +29,15 @@ void LightManager::uniformAmbient(GLuint program)
 
 void LightManager::uniformSpotlight(GLuint program)
 {
-
+	glUniform1i(glGetUniformLocation(program, "Spotlight1.enabled"), m_lightEnabled);
+	glUniform1f(glGetUniformLocation(program, "Spotlight1.range"), 8.0);
+	glUniform1f(glGetUniformLocation(program, "Spotlight1.cosInnerCone"), glm::cos(4.0f));
+	glUniform1f(glGetUniformLocation(program, "Spotlight1.cosOuterCone"), glm::cos(9.0f));
+	glUniform3f(glGetUniformLocation(program, "Spotlight1.position"), m_lightPos.x, m_lightPos.y, m_lightPos.z);
+	glUniform3f(glGetUniformLocation(program, "Spotlight1.direction"), 0.0f, 0.0f, -1.0f);
+	glUniform4f(glGetUniformLocation(program, "Spotlight1.ambient"), 0.3f, 0.3f, 0.3f, 0.3f);
+	glUniform4f(glGetUniformLocation(program, "Spotlight1.diffuse"), 1.0f, 1.0f, 1.0f, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "Spotlight1.specular"), 0.5f, 0.5f, 0.5f, 0.5f);
 }
 
 /// Uniforms directional light for given shader program
@@ -38,6 +46,11 @@ void LightManager::uniformDirectional(GLuint program)
     glUniform1i(glGetUniformLocation(program, "directionalLight_enabled"), m_directionalEnabled);
     glUniform3f(glGetUniformLocation(program, "directionalLight_position"), m_directionalPos.x, m_directionalPos.y, m_directionalPos.z);
     glUniform4f(glGetUniformLocation(program, "directionalLight_color"), m_directionalColor.r, m_directionalColor.g, m_directionalColor.b, m_directionalColor.a);
+
+	glUniform3f(glGetUniformLocation(program, "DirectionalLight1.direction"), 0.0, -1.0, 1.0);
+	glUniform4f(glGetUniformLocation(program, "DirectionalLight1.ambient"), m_directionalColor.r, m_directionalColor.g, m_directionalColor.b, m_directionalColor.a);
+	glUniform4f(glGetUniformLocation(program, "DirectionalLight1.diffuse"), 1.0f, 1.0f, 1.0f, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "DirectionalLight1.specular"), 1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 /// Recalculate movable light position on update
