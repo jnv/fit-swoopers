@@ -47,6 +47,10 @@ int main(int argc, char** argv)
     glutInitWindowSize(w, h);
     glutCreateWindow("Swoopers");
 
+    // Enable blending
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glutDisplayFunc(GameManager::OnDisplay);
     // register callback for change of window
     glutReshapeFunc(GameManager::OnReshape);

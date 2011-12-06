@@ -280,8 +280,10 @@ void TerragenNode::draw(SceneParams * scene_params)
     glUniformMatrix4fv(m_VMmatrixLoc, 1, GL_FALSE, glm::value_ptr(VMmatrix));
     glUniformMatrix4fv(m_PmatrixLoc, 1, GL_FALSE, glm::value_ptr(scene_params->projection_mat));
 
-    //LightManager* lm = LightManager::getInstance();
+
+    LightManager* lm = LightManager::getInstance();
     //lm->uniformAmbient(m_program);
+    lm->uniformDirectional(m_program);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject);
     glEnableVertexAttribArray(m_posLoc);

@@ -7,6 +7,10 @@ smooth in vec3 theNormal; // camera space normal (often denoted N)
 
 out vec4 outputColor;
 
+uniform bool directionalLight_enabled;
+uniform vec3 directionalLight_position;
+uniform vec4 directionalLight_color;
+
 void main()
 {
   vec3 V = normalize(- thePosition);
