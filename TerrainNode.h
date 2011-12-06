@@ -1,3 +1,8 @@
+/**
+ * TerrainNode is not being used
+ * @see TerragenNode
+ */
+
 #ifndef TERRAINNODE_H
 #define TERRAINNODE_H
 

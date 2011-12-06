@@ -1,6 +1,11 @@
 #include "CameraManager.h"
 
-
+/**
+ * Generate arcball vector for given X and Y
+ * @param x
+ * @param y
+ * @return arcball vector
+ */
 glm::vec3 get_arcball_vector(int x, int y)
 {
     int screen_width = glutGet(GLUT_WINDOW_WIDTH);
@@ -24,7 +29,7 @@ CameraManager::CameraManager()
 {
     m_current = NULL;
     m_abEnabled = false;
-    m_translate = glm::vec3(0.0);
+    //m_translate = glm::vec3(0.0);
 }
 
 /// NIL, assigned nodes are destroyed by SceneNode
@@ -65,7 +70,7 @@ void CameraManager::nextCamera()
     }
 
     m_current->camera->activate();
-    m_translate = glm::vec3(0.0);
+    //m_translate = glm::vec3(0.0);
 
     std::clog << "Switched to " << m_current->camera->nodeName() << " camera" << endl;
 
@@ -112,7 +117,7 @@ void CameraManager::addCamera(CameraStruct* cs, const bool setActive)
 /**
  * Whether the given camera is active
  * @param camera
- * @depreacted each camera node checks this individually
+ * @deprecated each camera node checks this individually
  * @return
  */
 bool CameraManager::isCurrent(CameraNode* camera) const
@@ -120,17 +125,6 @@ bool CameraManager::isCurrent(CameraNode* camera) const
     //return(m_current == camera);
 	return false;
 }
-
-/*
-void CameraManager::sceneDraw(CameraNode* camera)
-{
-    if(!isCurrent(camera))
-	return;
-
-    recalcView(camera);
-
-    //m_scene_params.view_mat = Matrix4<float>::FromTranslation(Vec3f(0, 0.1, 0)) * scene_params.view_mat;
-}*/
 
 /// Translates local transform node of current camera
 void CameraManager::translate(const glm::vec3& tr)
@@ -145,7 +139,7 @@ void CameraManager::translate(const glm::vec3& tr)
     if(m_current)
     {
 	m_current->local->translate(tr);
-	m_translate += tr;
+	//m_translate += tr;
 //	std::cout << "(" << m_translate.x << ", " << m_translate.y << ", " << m_translate.z << ")" << std::endl;
 
     }

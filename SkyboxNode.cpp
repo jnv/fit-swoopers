@@ -47,6 +47,11 @@ static const float vertexData[] = {
     1.0f, -1.0f, 1.0f
 };
 
+/**
+ * Bind shaders and variables locations
+ * @param name
+ * @param parent
+ */
 SkyboxNode::SkyboxNode(const char * name, SceneNode * parent) : SceneNode(name, parent)
 {
     if(m_program == 0)
@@ -75,11 +80,18 @@ SkyboxNode::SkyboxNode(const char * name, SceneNode * parent) : SceneNode(name, 
 
 }
 
+/**
+ * Deletes the texture in m_color_map
+ */
 SkyboxNode::~SkyboxNode()
 {
     glDeleteTextures(1, &m_color_map);
 }
 
+/**
+ * Draws the SkyBox
+ * @param scene_params
+ */
 void SkyboxNode::draw(SceneParams* scene_params)
 {
     // inherited draw - draws all children
@@ -105,6 +117,7 @@ void SkyboxNode::draw(SceneParams* scene_params)
 }
 
 /**
+ * Loads skybox texture
  * Based on OpenGL SuperBible 5th edition
  * @param prefix
  */

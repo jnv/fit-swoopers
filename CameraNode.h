@@ -18,11 +18,12 @@ public:
 //    void update(double elapsed_time);
     void draw(SceneParams * scene_params);
 
+    /// Activate current camera -> will recalculate scene_params on draw call
     void activate()
     {
         m_active = true;
     }
-
+    /// Deactivate current camera -> won't have any effect on scene drawing
     void disable()
     {
         m_active = false;
@@ -32,6 +33,7 @@ public:
 
 
 protected:
+    /// Is current camera active?
     bool m_active;
 
 };

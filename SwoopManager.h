@@ -16,6 +16,8 @@
 #include "CameraManager.h"
 #include "CollisionManager.h"
 #include "LightManager.h"
+#include <sstream>
+
 
 /// Singleton to handle swoop bike's initialization, movement, collision
 class SwoopManager : public Singleton<SwoopManager>
@@ -34,6 +36,7 @@ public:
 
     void reset();
 
+    /// Whether the swoop has reached the final waypoint
     bool hasFinished() const
     {
         return m_finished;
@@ -44,6 +47,8 @@ protected:
     void setup();
     void finished();
     void move();
+    glm::vec3 getSplinePoint(const float s) const;
+
 
     MeshNode * m_swoopNode;
     TransformNode * m_transformNode;
@@ -53,7 +58,7 @@ protected:
     float m_linePos;
     glm::vec3 m_lastPoint;
 
-    glm::vec3 m_waypoints[4];
+    glm::vec3 * m_points;
 
     float m_limit_left;
     float m_limit_right;
@@ -65,6 +70,8 @@ protected:
     float m_velocity;
     float m_velocity_max_fwd;
     float m_velocity_max_bwd;
+
+    int m_nPoints;
 
     bool m_collides;
 

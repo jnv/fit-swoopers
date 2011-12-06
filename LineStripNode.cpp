@@ -14,6 +14,7 @@ static const float vertexData[] = {
     3.5, 0, -3.5,
 };
 
+/// Init shaders
 LineStripNode::LineStripNode(const char * name, SceneNode * parent) :
 SceneNode(name, parent)
 {
@@ -39,6 +40,7 @@ SceneNode(name, parent)
     }
 }
 
+/// Draw LINE_STRIP
 void LineStripNode::draw(SceneParams * scene_params)
 {
     // inherited draw - draws all children

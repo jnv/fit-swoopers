@@ -1,6 +1,9 @@
 #include "GameManager.h"
 #include "TerrainBuilder.h"
 
+/**
+ * Init aspect ratio and set mRootNode to null
+ */
 GameManager::GameManager()
 {
     mRootNode = NULL;
@@ -43,7 +46,7 @@ void GameManager::OnReshape(int w, int h)
 /**
  * Called on timer
  * Handles scene graph updates
- * @param 
+ * @param int
  */
 void GameManager::OnTimer(int)
 {
@@ -140,7 +143,7 @@ void GameManager::buildScene()
 }
 
 /**
- * @deprecated in favor of TerrainBuilder
+ * @deprecated replaced by TerrainBuilder
  */
 void GameManager::addTerrain()
 {

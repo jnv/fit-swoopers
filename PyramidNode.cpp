@@ -110,7 +110,11 @@ static const float vertexData[] = {
    1.0f, 0.0f, 1.0f, 1.0f,
 };
 
-
+/**
+ * Load shaders, bind variables locations
+ * @param name
+ * @param parent
+ */
 PyramidNode::PyramidNode(const char * name, SceneNode * parent):
   SceneNode(name, parent)
 {
@@ -138,6 +142,10 @@ PyramidNode::PyramidNode(const char * name, SceneNode * parent):
   }
 }
 
+/**
+ * Draw the pyramid
+ * @param scene_params
+ */
 void PyramidNode::draw(SceneParams * scene_params)
 {
   // inherited draw - draws all children

@@ -50,7 +50,9 @@ protected:
     void press(int);
     void release(int);
     Keyset* getSet(const KeyType);
+    /// Bitmap of standard keys
     Keyset m_keys;
+    /// Bitmap of special keys
     Keyset m_specialKeys;
 };
 

@@ -1,5 +1,10 @@
 #include "SceneNode.h"
 
+/**
+ * Generic constructor to set name, parent and local matrix
+ * @param name
+ * @param parent
+ */
 SceneNode::SceneNode(const char *name, SceneNode *parent):
   m_name(name), m_parent(0)
 {
@@ -7,6 +12,9 @@ SceneNode::SceneNode(const char *name, SceneNode *parent):
   m_local_mat = glm::mat4(1.0f);
 }
 
+/**
+ * Recursively destroy all children
+ */
 SceneNode::~SceneNode()
 {
   setParentNode(NULL);
@@ -20,6 +28,10 @@ SceneNode::~SceneNode()
   }
 }
 
+/**
+ * Recursively update children based on the elapsed_time
+ * @param elapsed_time
+ */
 void SceneNode::update(double elapsed_time)
 {
   // if we have parent, multiply parent's matrix with ours
@@ -38,6 +50,10 @@ void SceneNode::update(double elapsed_time)
   }
 }
 
+/**
+ * Draw children
+ * @param scene_params
+ */
 void SceneNode::draw(SceneParams * scene_params)
 {
   for(Children::iterator it = m_children.begin(); it != m_children.end(); ++it)

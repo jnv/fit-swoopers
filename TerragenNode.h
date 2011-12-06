@@ -14,7 +14,7 @@
 #include "util.h"
 #include "SceneNode.h"
 
-/// Generates terrain from Terragen file
+/// Generates terrain from a Terragen file
 class TerragenNode : public SceneNode
 {
 public:

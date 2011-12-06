@@ -27,6 +27,7 @@ void LightManager::uniformAmbient(GLuint program)
     glUniform1i(glGetUniformLocation(program, "AmbientLight0.enabled"), m_lightEnabled);
 }
 
+/// Uniforms sotlight for given a shader program
 void LightManager::uniformSpotlight(GLuint program)
 {
 	glUniform1i(glGetUniformLocation(program, "Spotlight1.enabled"), m_lightEnabled);

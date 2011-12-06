@@ -2,26 +2,46 @@
 
 
 /// Prepares swoop's waypoints
+
 SwoopManager::SwoopManager()
 {
     m_inited = false;
     m_finished = false;
 
-    m_waypoints[0] =
-	    glm::vec3(1.0, 0, 0.0);
-    m_waypoints[1] =
-	    glm::vec3(1.25, 0, -0.05);
-    m_waypoints[2] =
-	    glm::vec3(1.75, 0, -2.75);
-    m_waypoints[3] =
-	    glm::vec3(2.0, 0, -3.0);
+    Config * conf = Config::getInstance();
+
+    m_nPoints = conf->getInt("swoop_n_waypoints");
+
+    if(m_nPoints < 4)
+    {
+	std::cerr << "Please, specify at least 4 waypoints" << std::endl;
+    }
+
+    m_points = new glm::vec3[m_nPoints];
+
+    std::clog << "Loading " << m_nPoints << " points" << std::endl;
+    for(int i = 0; i < m_nPoints; ++i)
+    {
+	std::ostringstream oss;
+	oss << "swoop_wp" << i;
+	m_points[i] = conf->getVec3(oss.str());
+
+	std::clog << m_points[i].x << ", " << m_points[i].y << ", " << m_points[i].z;
+    }
+
 }
 
+/**
+ * Resets waypoints
+ */
 SwoopManager::~SwoopManager()
 {
+    m_nPoints = 0;
+    delete [] m_points;
 }
 
 /// Prepare swoop's model and related nodes
+
 TransformNode* SwoopManager::Initialize()
 {
     Config * conf = Config::getInstance();
@@ -50,16 +70,16 @@ TransformNode* SwoopManager::Initialize()
     sm->m_lastPoint = glm::vec3(0.0);
     CameraStruct * camera = CameraManager::getInstance()->createCamera("swoop_cam", transGlobal, true);
 
-//    glm::vec3 closeleft = mesh->getBoxVertex(4);
-//    glm::vec3 closeright = mesh->getBoxVertex(5);
-//    glm::vec3 closecenter = closeleft + closeright;
-//    closecenter /= 2;
-//
-//    glm::vec3 farleft = mesh->getBoxVertex(7);
-//    glm::vec3 farright = mesh->getBoxVertex(6);
-//    glm::vec3 farcenter = farleft + farright;
-//    farcenter /= 2;
-    
+    //    glm::vec3 closeleft = mesh->getBoxVertex(4);
+    //    glm::vec3 closeright = mesh->getBoxVertex(5);
+    //    glm::vec3 closecenter = closeleft + closeright;
+    //    closecenter /= 2;
+    //
+    //    glm::vec3 farleft = mesh->getBoxVertex(7);
+    //    glm::vec3 farright = mesh->getBoxVertex(6);
+    //    glm::vec3 farcenter = farleft + farright;
+    //    farcenter /= 2;
+
     camera->local->translate(0.0, 0.02, 0.11);
 
     TransformNode * light = new TransformNode("light", transGlobal);
@@ -74,9 +94,6 @@ TransformNode* SwoopManager::Initialize()
 
     sm->setup();
 
-
-
-
     //camera->camera->setLocalMatrix(glm::lookAt(closecenter, farcenter, glm::vec3(0, 1, 0)));
 
     mesh->printBBoxSize();
@@ -85,6 +102,7 @@ TransformNode* SwoopManager::Initialize()
 }
 
 /// Load variables from configuration
+
 void SwoopManager::setup()
 {
     Config * conf = Config::getInstance();
@@ -103,6 +121,7 @@ void SwoopManager::setup()
 }
 
 /// Increment swoop's velocity
+
 void SwoopManager::forward()
 {
     //m_transformNode->translate(0, 0, -0.1);
@@ -111,6 +130,7 @@ void SwoopManager::forward()
 }
 
 /// Decrement swoop's velocity
+
 void SwoopManager::backward()
 {
     //m_transformNode->translate(0, 0, 0.1);
@@ -120,6 +140,7 @@ void SwoopManager::backward()
 }
 
 /// Move swoop left
+
 void SwoopManager::left()
 {
     //    m_transformNode->rotate(5, 0, 1, 0);
@@ -133,6 +154,7 @@ void SwoopManager::left()
 }
 
 /// Move swoop right
+
 void SwoopManager::right()
 {
     //m_transformNode->rotate(-5, 0, 1, 0);
@@ -147,6 +169,7 @@ void SwoopManager::right()
 }
 
 /// Update swoops location depending on its position on Catmull-Rom Spline
+
 void SwoopManager::update(double time)
 {
     if(m_finished)
@@ -157,7 +180,9 @@ void SwoopManager::update(double time)
 
     move();
 
-    glm::vec3 newPoint = glm::gtx::spline::catmullRom(m_waypoints[0], m_waypoints[1], m_waypoints[2], m_waypoints[3], m_linePos);
+    glm::vec3 newPoint = glm::gtx::spline::catmullRom(m_points[0], m_points[1], m_points[2], m_points[3], m_linePos);
+    //glm::vec3 newPoint = getSplinePoint(m_linePos);
+
 
     if(newPoint == m_lastPoint)
     {
@@ -180,6 +205,7 @@ void SwoopManager::update(double time)
 }
 
 /// Clean up
+
 void SwoopManager::reset()
 {
     m_inited = false;
@@ -188,12 +214,14 @@ void SwoopManager::reset()
 }
 
 /// Called once swoop has reached 1.0 on spline
+
 void SwoopManager::finished()
 {
     m_finished = true;
 }
 
 /// Swoop's movement on spline based on current velocity
+
 void SwoopManager::move()
 {
     if(m_collides)
@@ -244,7 +272,16 @@ void SwoopManager::move()
 
 
 /// Called when swoop collides with something
+
 void SwoopManager::bump()
 {
     m_velocity = -m_accel_bwd;
+}
+
+glm::vec3 SwoopManager::getSplinePoint(const float pos) const
+{
+    int index = ((int) glm::floor(pos * (m_nPoints - 3))) + 1; // get the nearest point corresponding to current pos
+
+    return glm::gtx::spline::catmullRom(m_points[index - 1], m_points[index], m_points[index + 1], m_points[index + 2], pos);
+
 }

@@ -49,11 +49,6 @@ void TransformNode::scale(const float x, const float y, const float z)
     //    m_local_mat.scale(sc);
 }
 
-void TransformNode::invert()
-{
-    //    m_local_mat = m_local_mat.inverse();
-}
-
 void TransformNode::debug() const
 {
     //    m_local_mat.dump();

@@ -180,6 +180,12 @@ bool Config::getBool(const string& key) const
     return true;
 }
 
+/**
+ * Get option as float
+ *
+ * @param key Opt. name
+ * @return value
+ */
 float Config::getFloat(const string& key) const
 {
     string val = getString(key);
@@ -194,9 +200,30 @@ float Config::getFloat(const string& key) const
     return 0.0;
 }
 
+/**
+ * Clear options map and reload the config file
+ */
 void Config::reload()
 {
     clog << "Reloading configuration file " << configFile_ << endl;
     options_.clear();
     parseFile(configFile_);
+}
+
+/**
+ * Parse option as vector
+ * @param key
+ * @return parsed vector
+ */
+glm::vec3 Config::getVec3(const string& key) const
+{
+    string val = getString(key);
+
+    float v0, v1, v2;
+
+    istringstream stream(val);
+
+    stream >> v0 >> v1 >> v2;
+
+    return glm::vec3(v0, v1, v2);
 }

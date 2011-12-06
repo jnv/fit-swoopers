@@ -1,6 +1,10 @@
 #include <GL/glew.h>
 
 #include "SkyNode.h"
+
+/**
+ * Simple plane with two triangles
+ */
 static const float vertexData[] = {
     1, 1,
     -1, 1,
@@ -21,6 +25,11 @@ GLint SkyNode::m_moveLoc = -1;
 GLint SkyNode::m_texCoordLoc = -1;
 GLint SkyNode::m_colorSamplerLoc = -1;
 
+/**
+ * Loads shaders, binds vars locations
+ * @param name
+ * @param parent
+ */
 SkyNode::SkyNode(const char * name, SceneNode * parent) : SceneNode(name, parent)
 {
 
@@ -54,6 +63,11 @@ SkyNode::~SkyNode()
 {
 }
 
+/**
+ * Loads the given texture file and sets it for repeat
+ * @param file
+ * @return true on success
+ */
 bool SkyNode::loadTexture(const char* file)
 {
     m_color_map = CreateTexture(file);
@@ -73,6 +87,10 @@ bool SkyNode::loadTexture(const char* file)
     return true;
 }
 
+/**
+ * Draw the SkyNode, increment m_move to move texture
+ * @param scene_params
+ */
 void SkyNode::draw(SceneParams *scene_params)
 {
     SceneNode::draw(scene_params);

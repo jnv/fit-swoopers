@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include "SceneNode.h"
-#include "Vec3.h"
+
 class RotationAnimNode : public SceneNode
 {
 public:

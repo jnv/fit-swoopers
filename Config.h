@@ -6,6 +6,7 @@
 #include <sstream>
 #include "util.h"
 #include "Singleton.h"
+#include <glm/glm.hpp>
 using namespace std;
 
 #define BUFFER_LEN 1024 //< Maximum length of line
@@ -23,11 +24,11 @@ public:
     void parseFile(const string&);
 
     //Get values of given key.
-    // Could use templates, but would be overkill for my needs
     int getInt(const string&) const;
     string getString(const string&) const;
     float getFloat(const string&) const;
     bool getBool(const string&) const;
+    glm::vec3 getVec3(const string&) const;
     
     void reload();
 

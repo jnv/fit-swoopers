@@ -20,9 +20,14 @@
  */
 struct CameraStruct
 {
+    /// Local transformation
     TransformNode * local;
+    /// Global transformation (mostly leftover)
     TransformNode * global;
+    /// Camera
     CameraNode * camera;
+
+    /// Initializes all contained nodes
 
     CameraStruct(const char* name, SceneNode * parent)
     {
@@ -43,6 +48,7 @@ class CameraManager : public Singleton<CameraManager>
 {
 public:
     typedef std::vector<CameraStruct *> Cameras;
+
     friend class Singleton<CameraManager>;
 
     CameraManager();
@@ -76,19 +82,29 @@ public:
 protected:
     void addCamera(CameraStruct*, const bool = false);
 
+    /// Vector of all associated cameras
     Cameras m_cameras;
+    /// Currently used camera (struct)
     CameraStruct * m_current;
+    /// Index of the current camera
     unsigned int m_current_pos;
+    /// Direct access to scene_params
     SceneParams * m_sceneParams;
+
+    /// Whether to calculate arcball (activated with mouse)
     bool m_abEnabled;
+    /// Last arcball X position
     int m_abLastX;
+    /// Current arcball X position
     int m_abCurX;
+    /// Last arcball Y position
     int m_abLastY;
+    /// Current arcball Y position
     int m_abCurY;
-    glm::vec3 m_translate;
+
+    //glm::vec3 m_translate;
 
     void arcballCalculate();
-
 
 private:
 

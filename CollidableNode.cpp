@@ -31,7 +31,7 @@ CollidableNode::CollidableNode(const char * name, MeshNode * parent) : SceneNode
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 }
-
+/// Nil.
 CollidableNode::~CollidableNode()
 {
 }

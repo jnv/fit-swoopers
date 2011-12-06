@@ -39,17 +39,27 @@ void CollisionManager::makeCollidable(MeshNode * mesh, const bool movable)
 
 }
 
+/**
+ * Clear all collidables and movable (without deleting'em - that's GameManager's concern)
+ */
 void CollisionManager::reset()
 {
     m_collidables.clear();
     m_movable = NULL;
 }
 
+/**
+ * Enable bounding box drawing
+ */
 void CollisionManager::draw()
 {
     CollidableNode::SetDraw(true);
 }
 
+/**
+ * Set drawing to val
+ * @param val
+ */
 void CollisionManager::setDraw(const bool val)
 {
     CollidableNode::SetDraw(val);

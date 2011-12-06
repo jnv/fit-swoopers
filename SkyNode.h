@@ -27,11 +27,13 @@ protected:
     static GLuint m_program;
     static GLint m_PVMmatrixLoc;
     static GLint m_posLoc;
+    /// Shader location for m_move
     static GLint m_moveLoc;
     static GLint m_colorSamplerLoc;
     static GLint m_texCoordLoc;
     GLuint m_color_map;
 
+    /// Used for texture movement
     float m_move;
 private:
 

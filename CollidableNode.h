@@ -27,7 +27,9 @@ public:
     const float top() const;
     const float bottom() const;
 protected:
+    /// Ref to parent aka MeshNode, so we keep access to its verticles
     MeshNode * m_mesh;
+    /// Local store of parent's verticles
     glm::vec3 * m_vertices;
 
     /// identifier for the buffer object

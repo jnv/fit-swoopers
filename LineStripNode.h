@@ -6,7 +6,7 @@
 #include "SceneNode.h"
 #include "util.h"
 
-/// Helper class to draw given line
+/// Helper class to a line in scene
 class LineStripNode : public SceneNode
 {
 public:

@@ -7,6 +7,10 @@
 #include "util.h"
 #include "MeshNode.h"
 
+/**
+ * This class is not used
+ * @deprecated
+ */
 class RockNode : public MeshNode
 {
 public:

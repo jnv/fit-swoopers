@@ -1,20 +1,15 @@
 #include "CameraNode.h"
 
+/// Just call parent's constructor
 CameraNode::CameraNode(const char *name, SceneNode *parent) :
 SceneNode(name, parent)
 {
 }
 
+/// nil.
 CameraNode::~CameraNode()
 {
 }
-
-//void CameraNode::update(double elapsed_time)
-//{
-//    m_camera_manager->sceneUpdate(this);
-//
-//    //SceneNode::update(elapsed_time);
-//}
 
 /**
  * If this camera is active, store inversion of globalMatrix as view matrix

@@ -34,9 +34,12 @@ m_nTriangles(0)
 }
 
 
-/* Loads a terragen file as well as a texture for it,  */
-
-/* interpretting it as a terrain. Resolution must be 513 x 513. */
+/**
+ * Loads a terragen file and color texture
+ * @param baseFilename
+ * @param scale
+ * @return false on ok?!
+ */
 int
 TerragenNode::load(const char *baseFilename, float scale)
 {
@@ -269,6 +272,10 @@ TerragenNode::load(const char *baseFilename, float scale)
     return false; // ok
 }
 
+/**
+ * Draws the terrain
+ * @param scene_params
+ */
 void TerragenNode::draw(SceneParams * scene_params)
 {
     // inherited draw - draws all children

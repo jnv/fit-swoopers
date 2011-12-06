@@ -32,6 +32,12 @@ void traverse_node(aiNode * node)
 
 }
 
+/**
+ * Load shaders and get variable locations
+ * @param file_name file for mesh
+ * @param parent parent node
+ * @param buildShaders whether the shaders should be built - could be used e.g. by subclasses
+ */
 MeshNode::MeshNode(const char* file_name, SceneNode* parent, const bool buildShaders) :
 SceneNode(file_name, parent), m_vertexBufferObject(0), m_nVertices(0)
 {
@@ -62,11 +68,16 @@ SceneNode(file_name, parent), m_vertexBufferObject(0), m_nVertices(0)
     glGenBuffers(1, &m_vertexBufferObject);
 }
 
+/// Delete VBO
 MeshNode::~MeshNode()
 {
     glDeleteBuffers(1, &m_vertexBufferObject);
 }
 
+/**
+ * Loads mesh using Assimp
+ * @return true on success
+ */
 bool MeshNode::loadMesh()
 {
     Assimp::Importer imp;
@@ -177,6 +188,10 @@ bool MeshNode::loadMesh()
     return true;
 }
 
+/**
+ * Draws a mesh
+ * @param scene_params
+ */
 void MeshNode::draw(SceneParams * scene_params)
 {
     // inherited draw - draws all children
@@ -237,7 +252,6 @@ void MeshNode::loadTexture(const char * textureFile, const char * normFile)
 }
 
 /// prints the size of the geometry box without transformation
-
 void
 MeshNode::printBBoxSize()
 {
@@ -271,11 +285,19 @@ void MeshNode::constructBox()
     m_bbox[7] = glm::vec3(minbox[0], maxbox[1], maxbox[2]);
 }
 
+/**
+ * Get the local vertex of a given ID
+ * @param vertex ID of a requested vertex
+ * @return vertex
+ */
 glm::vec3 MeshNode::getBoxVertex(const int vertex) const
 {
     return m_bbox[vertex];
 }
 
+/**
+ * Get an array of all vertices
+ */
 glm::vec3 * MeshNode::getBoxVertices()
 {
     return m_bbox;
