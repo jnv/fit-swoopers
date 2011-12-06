@@ -11,6 +11,7 @@
 #include "Singleton.h"
 #include "CameraManager.h"
 #include "SwoopManager.h"
+#include "LightManager.h"
 
 #define INPUT_BITSET_SIZE 255
 

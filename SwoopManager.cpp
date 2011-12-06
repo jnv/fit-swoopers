@@ -70,7 +70,7 @@ TransformNode* SwoopManager::Initialize()
 
     TransformNode * light = new TransformNode("light", transGlobal);
     LightManager::getInstance()->setPointlightNode(light);
-    light->translate(0.0, 0.0, -0.5);
+    light->translate(0.0, 0.0, -0.51);
 
 
     CollisionManager::getInstance()->makeCollidable(mesh, true);

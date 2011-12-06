@@ -10,6 +10,7 @@ LightManager::LightManager()
     m_directionalEnabled = true;
     m_lightPos = glm::vec4(0, 7, -5, 1.0);
     m_lightColor = glm::vec3(1, 1, 1);
+    m_lightEnabled = true;
 }
 
 LightManager::~LightManager()
@@ -21,6 +22,7 @@ void LightManager::uniformAmbient(GLuint program)
     glUniform3f(glGetUniformLocation(program, "AmbientLight0.position"), m_lightPos.x, m_lightPos.y, m_lightPos.z);
     glUniform3f(glGetUniformLocation(program, "AmbientLight0.color"), m_lightColor.x, m_lightColor.y, m_lightColor.z);
     glUniform1f(glGetUniformLocation(program, "AmbientLight0.power"), 0.1f);
+    glUniform1i(glGetUniformLocation(program, "AmbientLight0.enabled"), m_lightEnabled);
 }
 
 void LightManager::uniformSpotlight(GLuint program)

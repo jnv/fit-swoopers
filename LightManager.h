@@ -32,9 +32,14 @@ public:
         m_pointlightNode = node;
     }
 
+    void switchLight()
+    {
+        m_lightEnabled = !m_lightEnabled;
+    }
+
     void update();
 
-
+    bool m_lightEnabled;
 
 
 protected:

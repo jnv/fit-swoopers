@@ -19,6 +19,7 @@ uniform struct AmbientLight
 	vec3 color;
 	vec3 position;
 	float power;
+	bool enabled;
 } AmbientLight0;
 
 out vec3 outputColor;
@@ -88,12 +89,17 @@ void main()
 	//  - Looking elsewhere -> < 1
 	float cosAlpha = clamp( dot( E,R ), 0,1 );
 	
-	outputColor = 
-		// Ambiant : simulates indirect lighting
-		MaterialAmbiantColor +
+	// Ambiant : simulates indirect lighting
+	outputColor = MaterialAmbiantColor;
+	
+	
+	
+	if(AmbientLight0.enabled)// && (dot(l, normalize(vec3(0,0,-1.0)))  > 0.7 ) )
+	{
+		outputColor +=
 		// Diffuse : "color" of the object
 		MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) +
 		// Specular : reflective highlight, like a mirror
 		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
-		
+	}	
 }

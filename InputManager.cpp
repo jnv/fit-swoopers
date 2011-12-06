@@ -102,6 +102,12 @@ void InputManager::press(unsigned char key)
 	return;
     }
 
+    if(key == 'l')
+    {
+	LightManager::getInstance()->switchLight();
+	return;
+    }
+
 
     m_keys.set(key);
 }

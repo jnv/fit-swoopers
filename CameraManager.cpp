@@ -182,6 +182,7 @@ void CameraManager::arcballUpdate(int x, int y)
     {
 	m_abCurX = x;
 	m_abCurY = y;
+	arcballCalculate();
     }
 }
 
@@ -191,7 +192,7 @@ void CameraManager::arcballDisable()
 }
 
 void CameraManager::arcballCalculate()
-{/*
+{
     if(m_abCurX == m_abLastX && m_abCurY == m_abLastY)
     {
 	return;
@@ -201,15 +202,16 @@ void CameraManager::arcballCalculate()
     glm::vec3 vb = get_arcball_vector(m_abCurX, m_abCurY);
     float angle = acos(min(1.0f, glm::dot(va, vb)));
     glm::vec3 axis_in_camera_coord = glm::cross(va, vb);
-    glm::mat3 camera2object = glm::inverse(glm::mat3(m_current->localMatrix()) * glm::mat3(m_current->globalMatrix()));
+    glm::mat3 camera2object = glm::inverse(glm::mat3(m_current->local->globalMatrix()));
     //    glm::mat3 camera2object = glm::inverse(glm::mat3() * glm::mat3(mesh.object2world));
     glm::vec3 axis_in_object_coord = camera2object * axis_in_camera_coord;
     ;
     //    mesh.object2world = glm::rotate(mesh.object2world, glm::degrees(angle), axis_in_object_coord);
-    glm::mat4 viewm = glm::rotate(m_sceneParams->view_mat, glm::degrees(angle), axis_in_object_coord);
+    //glm::mat4 viewm = glm::rotate(m_sceneParams->view_mat, glm::degrees(angle), axis_in_object_coord);
     ;
-    m_current->setLocalMatrix(viewm);
-    m_sceneParams->view_mat = viewm;
+    m_current->local->rotate(glm::degrees(angle), axis_in_object_coord);
+   // m_current->local->setLocalMatrix(viewm);
+    //m_sceneParams->view_mat = viewm;
     m_abLastX = m_abCurX;
-    m_abLastY = m_abCurY;*/
+    m_abLastY = m_abCurY;
 }
